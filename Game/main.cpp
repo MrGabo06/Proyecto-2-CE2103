@@ -7,17 +7,23 @@ int main(void)
     const int screenWidth = 1500;
     const int screenHeight = 750;
     InitWindow(screenWidth, screenHeight, "Selda");
-    Player player(500, 100, "sprites/goku.png");
+    Player player(500, 100);
+
+    int currentFrame = 0;
+    const int frameSpeed = 8;
+    int frameCounter = 0;
+
+    Rectangle frameRec = {0.0f, 0.0f, (float) player.currentSpriteSheet.width/4, (float)player.currentSpriteSheet.height};
 
     while (!WindowShouldClose())
     {
-        float deltaTime = GetFrameTime();
-        player.UpdatePlayer(&player, deltaTime);
+        float frameTime = GetFrameTime();
+        player.movePlayer(frameTime);
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
-        DrawTexture(player.getSprite(), player.getPosition().x, player.getPosition().y, WHITE);
+        DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
         EndDrawing();
     }
 
