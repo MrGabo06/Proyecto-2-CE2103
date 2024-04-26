@@ -6,8 +6,7 @@ using namespace std;
 #define PLAYER_JUMP_SPD 200.0f
 #define PLAYER_HOR_SPD 200.0f
 
-class Player : public Entity
-{
+class Player : public Entity {
 private:
     //Attributes
     
