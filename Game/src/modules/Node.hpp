@@ -37,12 +37,12 @@ class B_Node {
 
         /// @brief Get the reference to the right child node
         /// @return Pointer to right child node in memory
-        const B_Node<T>* getRight(){
+        B_Node<T>* getRight(){
             return this->R;
         }
         /// @brief Get the reference to the left child node
         /// @return Pointer to left child node in memory
-        const B_Node<T>* getLeft(){
+        B_Node<T>* getLeft(){
             return this->L;
         }
 
@@ -59,12 +59,12 @@ class B_Node {
 
         /// @brief Get the reference to the next node
         /// @return Pointer to next node in memory
-        const B_Node<T>* getNext(){
+        B_Node<T>* getNext(){
             return this->R;
         }
         /// @brief Get the reference to the previous node
         /// @return Pointer to previous node in memory
-        const B_Node<T>* getPrev(){
+        B_Node<T>* getPrev(){
             return this->L;
         }
         /// @brief Destructor method

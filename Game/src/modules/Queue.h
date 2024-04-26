@@ -12,7 +12,7 @@ class Queue{
         DoubleLinkedList<T> elements;
     public:
         /// @brief Default constructor
-        Queue();
+        Queue(){};
 
         /// @brief Adds a new element at the back of the queue
         /// @param data: value to inserted in the queue
@@ -34,7 +34,7 @@ class Queue{
 
         /// @brief Get the current size of the queue
         int size();
-}
+};
 
 #include "Queue.cpp"
 

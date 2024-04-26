@@ -35,8 +35,13 @@ void DoubleLinkedList<T>::remove(int index){
     int counter = 0;
     while (current != nullptr){
         if (counter == index){
-            B_Node<T>* temp = current;
-
+            // List pointers fixing
+            if ( index == 0){
+                this->head = current->getNext();
+            } else if (index == this->size-1){
+                this->tail = current->getPrev();
+            }
+            // Node connection fixing
             if (current->getPrev() != nullptr){
                 current->getPrev()->setNext(current->getNext());
             }
@@ -44,7 +49,8 @@ void DoubleLinkedList<T>::remove(int index){
                 current->getNext()->setPrev(current->getPrev());
             }
 
-            delete temp;
+            // Delete the node
+            delete current;
             this->size--;
             break;
         }
@@ -54,12 +60,18 @@ void DoubleLinkedList<T>::remove(int index){
 }
 
 template<typename T>
-void DoubleLinkedList<T>::remove(T search_value){
+void DoubleLinkedList<T>::find_remove(T search_value){
     B_Node<T>* current = this->head;
+    int counter = 0;
     while (current != nullptr){
         if (current->data == search_value){
-            B_Node<T>* temp = current;
-
+            // List pointers fixing
+            if ( counter == 0){
+                this->head = current->getNext();
+            } else if (counter == this->size-1){
+                this->tail = current->getPrev();
+            }
+            // Node connection fixing
             if (current->getPrev() != nullptr){
                 current->getPrev()->setNext(current->getNext());
             }
@@ -67,11 +79,13 @@ void DoubleLinkedList<T>::remove(T search_value){
                 current->getNext()->setPrev(current->getPrev());
             }
 
-            delete temp;
+            // Delete the node
+            delete current;
             this->size--;
             break;
         }
         current = current->getNext();
+        counter++;
     }
 }
 

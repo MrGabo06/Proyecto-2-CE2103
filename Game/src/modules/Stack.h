@@ -5,14 +5,14 @@
 #include "DoubleLinkedList.h"
 
 /// @brief C++ implementation of a stack data structure
-/// @tparam T 
+/// @tparam T: data type name
 template<typename T>
 class Stack{
     private:
         DoubleLinkedList<T> elements;
     public:
         /// @brief Default constructor
-        Stack();
+        Stack(){};
 
         /// @brief Adds a new element at the top of the Stack
         /// @param data: data to insert in the Stack
@@ -24,7 +24,7 @@ class Stack{
 
         /// @brief Get the current size of the Stack
         int size();
-}
+};
 
 #include "Stack.cpp"
 

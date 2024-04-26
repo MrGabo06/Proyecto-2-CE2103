@@ -8,8 +8,8 @@ GAME = Game/src/main.cpp
 PROPS = Game/src/include/**.cpp
 
 Selda:
-	${CC} -g ${I} ${PROPS} ${GAME} -o output ${L} ${RAYLIB}
-	./output
+	${CC} -g ${I} ${PROPS} ${GAME} -o selda ${L} ${RAYLIB}
+	./selda
 
 clean:
-	rm ./output
+	rm ./selda

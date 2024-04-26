@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "Game/src/modules",
+                "Game/src/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

@@ -32,7 +32,7 @@ class DoubleLinkedList{
 
         /// @brief Remove an element from the list
         /// @param search_value: data contained in the node to remove
-        void remove(T search_value);
+        void find_remove(T search_value);
 
         /// @brief Find the reference to a node based on its position
         /// @param index: position of the node
@@ -43,7 +43,7 @@ class DoubleLinkedList{
         /// @param index: position of the element
         /// @return Data from the node
         T& get(int index);
-}
+};
 
 #include "DoubleLinkedList.cpp"
 
