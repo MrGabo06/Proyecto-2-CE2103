@@ -2,8 +2,7 @@
 #include "raymath.h"
 #include "include/player.h"
 
-int main(void)
-{
+int main(void) {
     const int screenWidth = 1500;
     const int screenHeight = 750;
     InitWindow(screenWidth, screenHeight, "Selda");
@@ -13,7 +12,7 @@ int main(void)
     const int frameSpeed = 8;
     int frameCounter = 0;
 
-    Rectangle frameRec = {0.0f, 0.0f, (float) player.currentSpriteSheet.width/4, (float)player.currentSpriteSheet.height};
+    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     while (!WindowShouldClose())
     {
