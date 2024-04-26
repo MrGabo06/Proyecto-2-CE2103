@@ -37,8 +37,12 @@ void DoubleLinkedList<T>::remove(int index){
         if (counter == index){
             B_Node<T>* temp = current;
 
-            current->getPrev()->setNext(current->getNext());
-            current->getNext()->setPrev(current->getPrev());
+            if (current->getPrev() != nullptr){
+                current->getPrev()->setNext(current->getNext());
+            }
+            if (current->getNext() != nullptr){
+                current->getNext()->setPrev(current->getPrev());
+            }
 
             delete temp;
             this->size--;
@@ -56,8 +60,12 @@ void DoubleLinkedList<T>::remove(T search_value){
         if (current->data == search_value){
             B_Node<T>* temp = current;
 
-            current->getPrev()->setNext(current->getNext());
-            current->getNext()->setPrev(current->getPrev());
+            if (current->getPrev() != nullptr){
+                current->getPrev()->setNext(current->getNext());
+            }
+            if (current->getNext() != nullptr){
+                current->getNext()->setPrev(current->getPrev());
+            }
 
             delete temp;
             this->size--;
@@ -68,7 +76,7 @@ void DoubleLinkedList<T>::remove(T search_value){
 }
 
 template<typename T>
-B_Node<T>* DoubleLinkedList<T>::get(int index){
+B_Node<T>* DoubleLinkedList<T>::find(int index){
     if (index >= this->size || index < 0){
         throw std::out_of_range("Index out of range");
     }
@@ -85,7 +93,7 @@ B_Node<T>* DoubleLinkedList<T>::get(int index){
 }
 
 template<typename T>
-T& DoubleLinkedList<T>::find(int index){
+T& DoubleLinkedList<T>::get(int index){
     if (index >= this->size || index < 0){
         throw std::out_of_range("Index out of range");
     }

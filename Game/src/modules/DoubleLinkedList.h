@@ -34,15 +34,15 @@ class DoubleLinkedList{
         /// @param search_value: data contained in the node to remove
         void remove(T search_value);
 
-        /// @brief Get a reference to a node based on its position
+        /// @brief Find the reference to a node based on its position
         /// @param index: position of the node
         /// @return Pointer to the node
-        B_Node<T>* get(int index);
+        B_Node<T>* find(int index);
 
-        /// @brief Find the data of a node from the list
+        /// @brief Get the data of a node from the list
         /// @param index: position of the element
         /// @return Data from the node
-        T& find(int index);
+        T& get(int index);
 }
 
 #include "DoubleLinkedList.cpp"
