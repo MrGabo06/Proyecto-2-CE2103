@@ -13,7 +13,8 @@ int main(void) {
 
     float chunk_sizes[] = {(float)player.currentSpriteSheet.width / 3.5 , (float)player.currentSpriteSheet.width / 3.5};
     Map2D map(Level::first, chunk_sizes);
-        map.generate(); 
+        map.generate();
+        map.locate_at(&player, 0, 0); 
 
     int currentFrame = 0;
     const int frameSpeed = 8;

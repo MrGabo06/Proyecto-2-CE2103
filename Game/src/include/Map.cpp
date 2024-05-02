@@ -165,3 +165,18 @@ MapChunk& Map2D::get(int i, int j){
     G_Node<MapChunk>* node = this->grid.getNode(selection);
     return node->data;
 }
+
+void Map2D::locate_at(Entity* entity, int i, int j){
+    // [ NODE <CHUNK> RETRIEVAL ]
+    if (i > this->grid_size[0] || i < 0){
+        throw std::out_of_range("i value is out of range");
+    }
+    if (j > this->grid_size[1] || j < 0){
+        throw std::out_of_range("j value is out of range");
+    }
+    int row_gap = this->grid.size()/this->grid_size[0];
+    int selection = j + i*row_gap;
+    G_Node<MapChunk>* node = this->grid.getNode(selection);
+    // [ SET THE LOCATION FOR THE ENTITY]
+    entity->setLocation(node);
+}

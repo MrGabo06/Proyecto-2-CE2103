@@ -6,6 +6,7 @@
 #define entityVerticalSpeed 200.0f
 #define entityHorizontalSpeed 200.0f
 
+/// @brief Generic class for game objects
 class Entity{
 private: // Attributes
     Vector2 position;
