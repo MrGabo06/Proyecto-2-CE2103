@@ -13,16 +13,16 @@ private:
 
 public:
     //Attributes
-    const Texture2D movingUpSprite = LoadTexture("gameAssets/playerSprites/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("gameAssets/playerSprites/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("gameAssets/playerSprites/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("gameAssets/playerSprites/playerRight.png");   
+    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
+    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
 
     Texture2D currentSpriteSheet = movingDownSprite;
 
     //Constructor
     Player(float xCord, float yCord)
-    {
+   {
         this->setHealthPoints(5);
         this->setPosition(xCord, yCord);
     }
