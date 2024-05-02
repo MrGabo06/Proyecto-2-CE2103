@@ -1,25 +1,23 @@
 #include "raylib.h"
 
+#include "../modules/Node.hpp"
+#include "MapChunk.h"
+
 #define entityVerticalSpeed 200.0f
 #define entityHorizontalSpeed 200.0f
 
-class Entity
-{
-private:
-    //Attributes
+class Entity{
+private: // Attributes
     Vector2 position;
     int healthPoints = 0;
-
+    G_Node<MapChunk>* location;
 public:
-    //Attributes
     const char mvUp = 'U';
     const char mvDown = 'D';
     const char mvLeft = 'L';
     const char mvRight = 'R';
-
-    //Methods
-    void move(float frameTime, const char dir)
-    {
+public: //Methods
+    void move(float frameTime, const char dir){
         if (dir == mvUp)
         {
             this->position.y -= entityVerticalSpeed * frameTime;
@@ -41,19 +39,20 @@ public:
         }
     }
 
-    Vector2 getPosition()
-    {
+    Vector2 getPosition(){
         return position;
     }
 
-    void setHealthPoints(int newHp)
-    {
+    void setHealthPoints(int newHp){
         healthPoints = newHp;
     }
 
-    void setPosition(float xCords, float yCords)
-    {
+    void setPosition(float xCords, float yCords){
         position.x = xCords;
         position.y = yCords;
+    }
+
+    void setLocation(G_Node<MapChunk>* map_chunk){
+        this->location = map_chunk;
     }
 };

@@ -19,7 +19,7 @@ enum Level {
     fifth
 };
 
-/// @brief Class for creating a two dimensional map with matrix like grid of chunk assets
+/// @brief Class for creating a two dimensional map with matrix-like grid of world chunks
 class Map2D{
     private: // Atributes
         Graph<MapChunk> grid;
@@ -28,10 +28,12 @@ class Map2D{
         float width;
         float height;
         int grid_size[2] = {0 , 0};
-
     public: // Methods
 
-        /// @brief Default constructor
+        /// @brief Default constructor 
+        Map2D();
+
+        /// @brief Constructor
         /// @param level_to_load: initial level to load its asset files
         /// @param chunk_size: width and length size for an individual chunk
         Map2D(Level level_to_load, float* chunk_size);
@@ -49,6 +51,18 @@ class Map2D{
         /// @param j: column
         /// @return MapChunk element
         MapChunk& get(int i, int j);
+
+        /// @brief Adds
+        /// @param entity 
+        void locate_at(Entity entity);
+    private:
+        /// @brief Loads all boundaries(connections) between graph nodes for traversing between chunks
+        void load_boundaries();
+
+        /// @brief Gets a relative weight for the chunk to connect to other nodes
+        /// @param chunk: chunk to evaluate
+        /// @return Value of the weight
+        int chunk_output(MapChunk chunk);
 };
 
 #endif // MAP_H

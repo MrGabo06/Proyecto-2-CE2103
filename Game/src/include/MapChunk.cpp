@@ -2,6 +2,7 @@
 
 MapChunk::MapChunk(){
     this->size[0] = 0.f, this->size[1] = 0.f;
+    this->coordinates[0] = 0, this->coordinates[1] = 0;
     this->position.x = 0.f;
     this->position.y = 0.f;
     this->chunk_type = ChunkType::obstacle;
@@ -36,4 +37,14 @@ Vector2 MapChunk::center(){
         result.x = this->position.x + (this->size[0]/2);
         result.y = this->position.y + (this->size[1]/2);
     return result;
+}
+
+bool MapChunk::contains(Entity entity){
+    Vector2 coords = entity.getPosition();
+    float start_point[] = {this->position.x , this->position.y};
+    float end_point[] = {this->position.x + this->size[0], this->position.y + this->size[1]};
+    if ( (coords.x > start_point[0] && coords.x < end_point[0]) && ( coords.y > start_point[1] && coords.y < end_point[1])){
+        return true;
+    }
+    return false;
 }
