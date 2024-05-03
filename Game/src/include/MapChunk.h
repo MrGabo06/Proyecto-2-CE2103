@@ -5,6 +5,8 @@
 #include <raylib.h>
 #include <string>
 
+class Entity;
+
 using namespace std;
 
 enum ChunkType{

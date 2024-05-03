@@ -1,5 +1,8 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <iostream>
-#include "raylib.h"
+#include <raylib.h>
 #include "entity.h"
 using namespace std;
 
@@ -9,7 +12,6 @@ using namespace std;
 class Player : public Entity {
 private:
     //Attributes
-    
 
 public:
     //Attributes
@@ -61,3 +63,5 @@ public:
     }
 
 };
+
+#endif // PLAYER_H

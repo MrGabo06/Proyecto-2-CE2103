@@ -58,7 +58,7 @@ void Map2D::generate(){
         this->height *= grid_size[1];
     // [ GENERATE CHUNKS ]
     float positions[2] = {0.f, 0.f};
-    float chunk_dimensions[2] = { this->width/this->grid_size[0], this->height/this->grid_size[0]};
+    float chunk_dimensions[2] = { this->width/this->grid_size[1], this->height/this->grid_size[1]};
     for ( int i = 0; i<layout.size(); i++){
         for (int j = 0; j<layout[i].size(); j++){
             int coords[2] = {i,j};
@@ -108,7 +108,8 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
 void Map2D::load_boundaries(){
     // [ CREATE GRAPH <CHUNKS> CONNECTIONS ]
     int row_gap = this->grid.size()/this->grid_size[0];
-    for (int j = 0; int i = 0; j<this->grid.size(); j++){
+    int i = 0;
+    for (int j = 0; j<this->grid.size(); j++){
         MapChunk chunk = this->grid.getNode(j)->data;
         int weight = this->chunk_output(chunk);
         if ( j > 0 && j < this->grid.size()){

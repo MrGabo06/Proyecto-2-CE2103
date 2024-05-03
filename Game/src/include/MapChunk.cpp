@@ -8,7 +8,7 @@ MapChunk::MapChunk(){
     this->chunk_type = ChunkType::obstacle;
 }
 
-MapChunk::MapChunk(char type, float x, float y, float* _size){
+MapChunk::MapChunk(char type, float x, float y, float* _size, int* coords){
     string assets_path = "Game/src/resources/map_assets";
     if (type == 'x') {
         this->chunk_type = ChunkType::obstacle;
@@ -26,6 +26,7 @@ MapChunk::MapChunk(char type, float x, float y, float* _size){
         Image image = LoadImage(assets_path.c_str());
         this->texture = LoadTextureFromImage(image);
     }
+    this->coordinates[0] = coords[0], this->coordinates[1] = coords[1];
     this->size[0] = _size[0];
     this->size[1] = _size[1];
     this->position.x = x;
