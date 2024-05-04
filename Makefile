@@ -1,14 +1,18 @@
-CC = g++
+CXX = clang++
 
 RAYLIB = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-L = -L/usr/lib -L/usr/lib/x86_64-linux-gnu -L/usr/local/lib
-I = -I/usr/include -I/usr/local/include
+LIBS = -L/usr/lib -L/usr/lib/x86_64-linux-gnu -L/usr/local/lib
+INCS = -I/usr/include -I/usr/local/include -Isrc/include
+SRCS =  src/include/*.cpp src/*.cpp}
+OBJS = ${SRCS:%.c=%.o}
 
 GAME = Game/src/main.cpp
 PROPS = Game/src/include/**.cpp
 
-Selda:
-	${CC} -g ${I} ${PROPS} ${GAME} -o selda ${L} ${RAYLIB}
+all: selda
+
+selda:
+	${CC} -g ${INCS} ${PROPS} ${GAME} -o selda ${L} ${RAYLIB}
 	./selda
 
 clean:
