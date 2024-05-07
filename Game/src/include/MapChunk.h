@@ -35,7 +35,7 @@ public:
     MapChunk(char type , float x, float y, float* _size, int* coords);
 
     /// @brief Gets the x,y central positions of the chunk
-    /// @return 
+    /// @return raylib Vector2 with the position
     Vector2 center();
 
     /// @brief Verifies if an entity is currently inside the chunk
