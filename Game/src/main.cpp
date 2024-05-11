@@ -11,8 +11,8 @@ int main(void) {
     InitWindow(screenWidth, screenHeight, "Selda");
     Player player(500, 100);
 
-    float chunk_sizes[] = {(float)player.currentSpriteSheet.width / 1.5, (float)player.currentSpriteSheet.width / 1.5};
-    Map2D map(Level::second, chunk_sizes);
+    float chunk_sizes[] = {(float)player.currentSpriteSheet.width, (float)player.currentSpriteSheet.width};
+    Map2D map(Level::first, chunk_sizes);
         map.generate();
         map.locate_at(&player, 2, 4); 
 
@@ -20,7 +20,7 @@ int main(void) {
     const int frameSpeed = 8;
     int frameCounter = 0;
 
-    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width/4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = { 0 };
     camera.target = (Vector2){ player.getPosition().x + 20.f, player.getPosition().y + 20.f};

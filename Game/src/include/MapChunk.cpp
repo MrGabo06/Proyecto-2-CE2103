@@ -5,24 +5,44 @@ MapChunk::MapChunk(){
     this->coordinates[0] = 0, this->coordinates[1] = 0;
     this->position.x = 0.f;
     this->position.y = 0.f;
-    this->chunk_type = ChunkType::obstacle;
+    this->chunk_type = ChunkType::wall;
 }
 
 MapChunk::MapChunk(char type, float x, float y, float* _size, int* coords){
     string assets_path = "Game/src/resources/map_assets";
     if (type == 'x') {
-        this->chunk_type = ChunkType::obstacle;
+        this->chunk_type = ChunkType::wall;
         assets_path += "/chunk3.png";
         Image image = LoadImage(assets_path.c_str());
         this->texture = LoadTextureFromImage(image);
+    } else if (type == '_') {
+        this->chunk_type = ChunkType::trap;
+        assets_path += "/chunk4.png";
+        Image image = LoadImage(assets_path.c_str());
+        this->texture = LoadTextureFromImage(image);
     } else if (type == '.'){
-        this->chunk_type = ChunkType::traversable;
+        this->chunk_type = ChunkType::terrain;
         assets_path += "/chunk1.png";
         Image image = LoadImage(assets_path.c_str());
         this->texture = LoadTextureFromImage(image);
-    } else if (type == '_') {
-        this->chunk_type = ChunkType::slow;
+    } else if ( type == 'H') {
+        this->chunk_type = ChunkType::gate;
+        assets_path += "/chunk6.png";
+        Image image = LoadImage(assets_path.c_str());
+        this->texture = LoadTextureFromImage(image);
+    } else if ( type == '~') {
+        this->chunk_type = ChunkType::cloaked;
         assets_path += "/chunk2.png";
+        Image image = LoadImage(assets_path.c_str());
+        this->texture = LoadTextureFromImage(image);
+    } else if ( type == 'o') {
+        this->chunk_type = ChunkType::safe;
+        assets_path += "/chunk5.png";
+        Image image = LoadImage(assets_path.c_str());
+        this->texture = LoadTextureFromImage(image);
+    } else if ( type == '|') {
+        this->chunk_type = ChunkType::fake;
+        assets_path += "/chunk7.png";
         Image image = LoadImage(assets_path.c_str());
         this->texture = LoadTextureFromImage(image);
     }

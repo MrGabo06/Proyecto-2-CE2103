@@ -141,14 +141,26 @@ void Map2D::load_boundaries(){
 int Map2D::chunk_output(MapChunk chunk){
     int travel_time = 0;
     switch (chunk.chunk_type){
-        case traversable:
+        case terrain:
             travel_time = 100;
             break;
-        case obstacle:
+        case wall:
             travel_time = 0;
             break;
-        case slow:
+        case trap:
             travel_time = 50;
+            break;
+        case safe:
+            travel_time = 100;
+            break;
+        case fake:
+            travel_time = 100;
+            break;
+        case cloaked:
+            travel_time = 25;
+            break;
+        case gate:
+            travel_time = 100;
             break;
     }
     return travel_time;
