@@ -3,6 +3,12 @@
 #include "include/player.h"
 #include "include/Map.h"
 #include "include/MapChunk.h"
+#include "include/Entidades/rat.hpp" 
+#include "include/Entidades/ojoespectral.hpp"
+#include "include/Entidades/espectro.hpp"
+#include "include/Entidades/jefe.hpp"
+#include "include/Entidades/chocobo.hpp"
+
 
 int main(void) {
     const int screenWidth = 1500;
@@ -10,6 +16,16 @@ int main(void) {
 
     InitWindow(screenWidth, screenHeight, "Selda");
     Player player(500, 100);
+
+    Rat rat(700, 200);
+
+    ojo ojo(700, 300);
+
+    espectro espectro(700, 400);
+
+    jefe jefe(700, 500);
+
+    chocobo chocobo(700, 600);
 
     float chunk_sizes[] = {(float)player.currentSpriteSheet.width, (float)player.currentSpriteSheet.width};
     Map2D map(Level::first, chunk_sizes);
@@ -46,6 +62,7 @@ int main(void) {
                 }
             }
             DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
+            DrawTextureRec(rat.currentSpriteSheet, frameRec, rat.getPosition(), WHITE); // Dibujamos al ratón
         EndMode2D();
 
         BeginDrawing();

@@ -13,7 +13,7 @@ class MapChunk;
 
 /// @brief Generic class for game objects
 class Entity{
-protected: // Attributes
+private: // Attributes
     Vector2 position;
     int healthPoints = 0;
     G_Node<MapChunk>* location;
