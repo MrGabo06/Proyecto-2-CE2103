@@ -1,0 +1,5 @@
+_ => chunks lentos pero traversibles
+. => chunk normal(de pasto)
+x => paredes
+
+TODO: *Meter otros tipos de chunks y un asset para utilizar*

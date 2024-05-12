@@ -6,6 +6,11 @@ Graph<T>::Graph(){
 };
 
 template<typename T>
+Graph<T>::~Graph(){
+    this->clear();
+}
+
+template<typename T>
 void Graph<T>::add(T data){
     G_Node<T>* new_node = new G_Node<T>(data);
     if (!this->check_existence(new_node)){
@@ -71,6 +76,16 @@ template<typename T>
 int Graph<T>::size(){
     return this->graph_nodes.size();
 };
+
+template<typename T>
+void Graph<T>::clear(){
+    G_Node<T>* node = nullptr;
+    for (int i = 0; i < this->graph_nodes.size(); i++){
+        node = this->graph_nodes[i];
+        delete node;
+    }
+    this->graph_nodes.clear();
+}
 
 template<typename T>
 bool Graph<T>::check_existence(G_Node<T>* node){

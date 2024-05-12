@@ -1,0 +1,1 @@
+sudo apt install libboost1.74-all-dev

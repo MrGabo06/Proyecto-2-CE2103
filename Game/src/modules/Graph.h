@@ -22,6 +22,9 @@ class Graph{
         /// @brief Default constructor method for Graph
         Graph();
 
+        /// @brief Destructor method
+        ~Graph();
+
         /// @brief Add a new element to the graph
         /// @param data: value to insert in a new graph node
         void add(T data);
@@ -51,6 +54,8 @@ class Graph{
         /// @return Value of the size
         int size();
 
+        /// @brief Clears all nodes from the graph
+        void clear();
     private:
         /// @brief Verifies if a node already exists in the graph
         /// @param node: node reference to verify if its exists

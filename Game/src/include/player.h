@@ -1,5 +1,8 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <iostream>
-#include "raylib.h"
+#include <raylib.h>
 #include "entity.h"
 using namespace std;
 
@@ -9,55 +12,40 @@ using namespace std;
 class Player : public Entity {
 private:
     //Attributes
-    
+    int cellSize = 0;
+    int upLimit = 0;
+    int downLimit = 0;
+    int leftLimit = 0;
+    int rightLimit = 0; 
 
 public:
     //Attributes
-    const Texture2D movingUpSprite = LoadTexture("gameAssets/playerSprites/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("gameAssets/playerSprites/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("gameAssets/playerSprites/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("gameAssets/playerSprites/playerRight.png");   
+    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
+    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
 
     Texture2D currentSpriteSheet = movingDownSprite;
 
-    //Constructor
-    Player(float xCord, float yCord)
-    {
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-    }
+    /// @brief Create an instance of Player class
+    /// @param xCord: The starting horizontal coords of the player
+    /// @param yCord: The starting vertical coords of the player 
+    /// @param currentMapCellSize: The size of each cell of the map
+    Player(float xCord, float yCord, int currentMapCellSize);
 
-    //Methods
-    void movePlayer(float frameTime)
-    {
-        if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
-        {
-            // Stop movement
-        }
+    /// @brief Moves the player and checks it doesnt overpass the limits of the map
+    /// @param frameTime: Raylib window frame time
+    /// @param mapSize: Map width and height
+    void movePlayer(float frameTime, int mapSize[2]);
 
-        if (IsKeyDown(KEY_UP))
-        {
-            this->move(frameTime, Entity::mvUp);
-            this->currentSpriteSheet = movingUpSprite;
-        }
+    /// @brief Set the size of each map cell to the given value
+    /// @param currentMapCellSize: The new cell size to be established
+    void setMapCellSize(int currentMapCellSize);
 
-        if (IsKeyDown(KEY_DOWN))
-        {
-            this->move(frameTime, Entity::mvDown);
-            this->currentSpriteSheet = movingDownSprite;
-        }
-
-        if (IsKeyDown(KEY_LEFT))
-        {
-            this->move(frameTime, Entity::mvLeft);
-            this->currentSpriteSheet = movingLeftSprite;
-        }
-
-        if (IsKeyDown(KEY_RIGHT))
-        {
-            this->move(frameTime, Entity::mvRight);
-            this->currentSpriteSheet = movingRightSprite;
-        }
-    }
+    /// @brief Sets the limits of the map so the player doesnt move out of it
+    /// @param limits: Maximum X and Y limits
+    void setMapLimits(int limits[2]);
 
 };
+
+#endif // PLAYER_H
