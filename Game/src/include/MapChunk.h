@@ -10,9 +10,13 @@ class Entity;
 using namespace std;
 
 enum ChunkType{
-    traversable,
-    obstacle,
-    slow
+    terrain,
+    wall,
+    trap,
+    safe,
+    fake,
+    cloaked,
+    gate
 };
 
 /// @brief Class for building world map chunks

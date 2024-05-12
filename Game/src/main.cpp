@@ -28,7 +28,7 @@ int main(void) {
     const int frameSpeed = 8;
     int frameCounter = 0;
 
-    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width/4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = { 0 };
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
