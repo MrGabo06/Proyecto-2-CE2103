@@ -9,27 +9,29 @@ using namespace std;
 #define PLAYER_JUMP_SPD 200.0f
 #define PLAYER_HOR_SPD 200.0f
 
-class Player : public Entity {
+class Player : public Entity
+{
 private:
-    //Attributes
+    // Attributes
     int cellSize = 0;
     int upLimit = 0;
     int downLimit = 0;
     int leftLimit = 0;
-    int rightLimit = 0; 
+    int rightLimit = 0;
 
 public:
-    //Attributes
+    // Attributes
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
+    bool light = false;
 
     Texture2D currentSpriteSheet = movingDownSprite;
 
     /// @brief Create an instance of Player class
     /// @param xCord: The starting horizontal coords of the player
-    /// @param yCord: The starting vertical coords of the player 
+    /// @param yCord: The starting vertical coords of the player
     /// @param currentMapCellSize: The size of each cell of the map
     Player(float xCord, float yCord, int currentMapCellSize);
 
@@ -45,7 +47,6 @@ public:
     /// @brief Sets the limits of the map so the player doesnt move out of it
     /// @param limits: Maximum X and Y limits
     void setMapLimits(int limits[2]);
-
 };
 
 #endif // PLAYER_H
