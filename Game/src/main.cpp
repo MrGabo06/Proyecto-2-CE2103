@@ -9,12 +9,20 @@ int main(void) {
     const int screenHeight = 750;
 
     InitWindow(screenWidth, screenHeight, "Selda");
-    Player player(500, 100);
 
-    float chunk_sizes[] = {(float)player.currentSpriteSheet.width / 1.5, (float)player.currentSpriteSheet.width / 1.5};
+    int graphX = 2;
+    int graphY = 4;
+
+    float chunk_sizes[] = {(float)48, (float)48};
+
+    Player player(500, 100, chunk_sizes[0]);
+
     Map2D map(Level::second, chunk_sizes);
         map.generate();
-        map.locate_at(&player, 2, 4); 
+        map.locate_at(&player, graphX, graphY, true);
+
+    player.setMapLimits(map.grid_size);
+         
 
     int currentFrame = 0;
     const int frameSpeed = 8;
@@ -23,19 +31,24 @@ int main(void) {
     Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = { 0 };
-    camera.target = (Vector2){ player.getPosition().x + 20.f, player.getPosition().y + 20.f};
-    camera.offset = (Vector2){ screenWidth/4, screenHeight/4};
+    camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
+    camera.offset = (Vector2){screenWidth/4, screenHeight/4};
     camera.rotation = 0.0f;
-    camera.zoom = 1.5f;
+    camera.zoom = 4.5f;
 
-    SetTargetFPS(60);
+    SetTargetFPS(120);
     while (!WindowShouldClose()){
         ClearBackground(RAYWHITE);
 
         float frameTime = GetFrameTime();
-        player.movePlayer(frameTime);
+        player.movePlayer(frameTime, map.grid_size);
 
-        camera.target = (Vector2){ player.getPosition().x + 40.f, player.getPosition().y + 20.f};
+        graphX = player.getPosition().x/chunk_sizes[0];
+        graphY = player.getPosition().y/chunk_sizes[0];
+
+        camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
+
+        map.locate_at(&player,graphY, graphX, false);
 
         BeginMode2D(camera);
             for (int i = 0; i<map.grid_size[0]; i++){
@@ -49,7 +62,6 @@ int main(void) {
         EndMode2D();
 
         BeginDrawing();
-            
         EndDrawing();
     }
 
