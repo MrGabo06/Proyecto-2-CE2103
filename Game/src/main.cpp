@@ -15,15 +15,28 @@ int main(void) {
     const int screenHeight = 750;
 
     InitWindow(screenWidth, screenHeight, "Selda");
+    Rat rat(700, 200);
 
-    float chunk_sizes[] = {(float)48, (float)48};
-    Map2D map(Level::first, chunk_sizes);
+    ojo ojo(700, 300);
+
+    espectro espectro(700, 400);
+
+    jefe jefe(700, 500);
+
+    chocobo chocobo(700, 600);
+
     int graphX = 2;
     int graphY = 4;
 
+    float chunk_sizes[] = {(float)48, (float)48};
+
     Player player(500, 100, chunk_sizes[0]);
 
-    player.setMapLimits(map.grid_size);
+    Map2D map(Level::second, chunk_sizes);
+        map.generate();
+        map.locate_at(&player, graphX, graphY, true);
+
+    player.setMapLimits(map.grid_size);   
 
     int currentFrame = 0;
     const int frameSpeed = 8;

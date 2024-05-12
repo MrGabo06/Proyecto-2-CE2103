@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <raylib.h>
-#include "entity.h"
+#include "../entity.h"
 using namespace std;
 
 #define PLAYER_JUMP_SPD 200.0f
@@ -23,15 +23,10 @@ public:
     Texture2D currentSpriteSheet = movingDownSprite;
 
     //Constructor
-    espectro(float xCord, float yCord)
-   {
+    espectro(float xCord, float yCord) {
         this->setHealthPoints(5);
         this->setPosition(xCord, yCord);
     }
-    Vector2 getPosition() {
-        return this->position;
-    }
-
 };
 
 #endif // ESPECTRO_H
