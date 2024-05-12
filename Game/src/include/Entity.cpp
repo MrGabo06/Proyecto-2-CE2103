@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 #include "Map.h"
 
 void Entity::move(float frameTime, const char dir){

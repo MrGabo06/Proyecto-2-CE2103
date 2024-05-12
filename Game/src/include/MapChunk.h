@@ -1,7 +1,7 @@
 #ifndef MAP_CHUNK_H
 #define MAP_CHUNK_H
 
-#include "entity.h"
+#include "Entity.h"
 #include <raylib.h>
 #include <string>
 

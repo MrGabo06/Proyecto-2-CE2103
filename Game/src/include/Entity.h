@@ -13,17 +13,20 @@ class MapChunk;
 
 /// @brief Generic class for game objects
 class Entity{
-private:
+private: // Attributes
     Vector2 position;
     int healthPoints = 0;
     G_Node<MapChunk>* location;
 
 public:
+    Texture2D currentSpriteSheet;
+
     const char mvUp = 'U';
     const char mvDown = 'D';
     const char mvLeft = 'L';
     const char mvRight = 'R';
 
+public: // Methods
     /// @brief Moves the entity to the given direction
     /// @param frameTime: Raylib window frame time
     /// @param dir: Direction the entity will move to

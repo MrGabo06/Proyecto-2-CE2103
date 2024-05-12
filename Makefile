@@ -5,7 +5,7 @@ L = -L/usr/lib -L/usr/lib/x86_64-linux-gnu -L/usr/local/lib
 I = -I/usr/include -I/usr/local/include
 
 GAME = Game/src/main.cpp
-PROPS = Game/src/include/**.cpp
+PROPS = Game/src/include/**.cpp Game/src/include/Entities/**.cpp
 
 Selda:
 	${CC} -g ${I} ${PROPS} ${GAME} -o selda ${L} ${RAYLIB}

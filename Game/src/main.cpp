@@ -1,13 +1,8 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "include/player.h"
+#include "include/Player.h"
 #include "include/Map.h"
 #include "include/MapChunk.h"
-#include "include/Entidades/rat.hpp" 
-#include "include/Entidades/ojoespectral.hpp"
-#include "include/Entidades/espectro.hpp"
-#include "include/Entidades/jefe.hpp"
-#include "include/Entidades/chocobo.hpp"
 
 
 int main(void) {
@@ -15,31 +10,17 @@ int main(void) {
     const int screenHeight = 750;
 
     InitWindow(screenWidth, screenHeight, "Selda");
-    Rat rat(700, 200);
 
-    ojo ojo(700, 300);
-
-    espectro espectro(700, 400);
-
-    jefe jefe(700, 500);
-
-    chocobo chocobo(700, 600);
-
-    float chunk_sizes[] = {(float)player.currentSpriteSheet.width, (float)player.currentSpriteSheet.width};
+    float chunk_sizes[] = {(float)48, (float)48};
     Map2D map(Level::first, chunk_sizes);
+        map.generate();
+
     int graphX = 2;
     int graphY = 4;
 
-    float chunk_sizes[] = {(float)48, (float)48};
-
     Player player(500, 100, chunk_sizes[0]);
 
-    Map2D map(Level::second, chunk_sizes);
-        map.generate();
-        map.locate_at(&player, graphX, graphY, true);
-
     player.setMapLimits(map.grid_size);
-         
 
     int currentFrame = 0;
     const int frameSpeed = 8;
@@ -76,7 +57,6 @@ int main(void) {
                 }
             }
             DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
-            DrawTextureRec(rat.currentSpriteSheet, frameRec, rat.getPosition(), WHITE); // Dibujamos al ratón
         EndMode2D();
 
         BeginDrawing();

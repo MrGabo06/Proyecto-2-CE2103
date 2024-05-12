@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include <raylib.h>
-#include "entity.h"
+#include "../Entity.h"
 using namespace std;
 
 #define PLAYER_JUMP_SPD 200.0f
 #define PLAYER_HOR_SPD 200.0f
 
+/// @brief Class for player entity that can be controlled by user
 class Player : public Entity {
-private:
-    //Attributes
+private: //Attributes
     int cellSize = 0;
     int upLimit = 0;
     int downLimit = 0;
@@ -19,13 +19,12 @@ private:
     int rightLimit = 0; 
 
 public:
-    //Attributes
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
 
-    Texture2D currentSpriteSheet = movingDownSprite;
+public: // Methods
 
     /// @brief Create an instance of Player class
     /// @param xCord: The starting horizontal coords of the player

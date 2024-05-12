@@ -60,5 +60,6 @@ Player::Player(float xCord, float yCord, int currentMapCellSize) {
     this->setMapCellSize(currentMapCellSize);   
     this->setHealthPoints(5);
     this->setPosition(xCord, yCord);
+    this->currentSpriteSheet = movingDownSprite;
 }
 

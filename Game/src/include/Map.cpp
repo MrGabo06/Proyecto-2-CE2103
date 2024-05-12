@@ -132,7 +132,7 @@ void Map2D::load_boundaries(){
             // { Vertical connections }
             this->grid.makeConnection(j, j + (i-1)*row_gap, false, make_tuple(weight, 0));
         }
-        if ((j+1)%4 == 0){
+        if ((j+1)%row_gap == 0){
             i++;
         }
     }
