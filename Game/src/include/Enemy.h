@@ -16,6 +16,8 @@ protected: // Atributes
 public: // Methods
     Enemy(){};
     virtual void shift(){};
+
+    void moveTo(MapChunk &newMapChunk, float frameTime);
 };
 
 #endif // ENEMY_H
