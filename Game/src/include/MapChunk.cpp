@@ -9,6 +9,9 @@ MapChunk::MapChunk()
     this->chunk_type = ChunkType::wall;
     this->type = 'x';
     this->notLightImage = LoadImage("Game/src/resources/map_assets/Light_chunk.png");
+    this->notLightImageTexture = LoadTextureFromImage(notLightImage);
+    this->lightImage = LoadImage("Game/src/resources/map_assets/Light_chunk.png");
+    this->lightImageTexture = LoadTextureFromImage(lightImage);
     this->light = false;
 }
 
@@ -94,11 +97,10 @@ bool MapChunk::contains(Entity entity)
 void MapChunk::lightChunk()
 {
     this->light = true;
-    Image light_image = LoadImage("Game/src/resources/map_assets/Light_chunk.png");
-    this->texture = LoadTextureFromImage(light_image);
+    this->texture = lightImageTexture;
 }
 void MapChunk::unLightChunk()
 {
     this->light = false;
-    this->texture = LoadTextureFromImage(notLightImage);
+    this->texture = notLightImageTexture;
 }

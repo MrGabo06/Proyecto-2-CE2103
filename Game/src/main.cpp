@@ -91,6 +91,18 @@ int main(void)
                     {
                         map.get(i, j).unLightChunk();
                     }
+                    else if (i < graphX + 2 && map.get(i, j).light)
+                    {
+                        map.get(i, j).unLightChunk();
+                    }
+                    else if (j > graphY + 2 && map.get(i, j).light)
+                    {
+                        map.get(i, j).unLightChunk();
+                    }
+                    else if (j < graphY - 2 && map.get(i, j).light)
+                    {
+                        map.get(i, j).unLightChunk();
+                    }
                 }
             }
         }

@@ -32,7 +32,10 @@ public:
     Texture2D texture;
     char type;
     Image notLightImage;
+    Image lightImage;
     bool light;
+    Texture2D notLightImageTexture;
+    Texture2D lightImageTexture;
 
 public:
     /// @brief Default constructor
