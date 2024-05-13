@@ -32,6 +32,8 @@ public: // Methods
         this->currentSpriteSheet = movingDownSprite;
     };
 
+    void update() override {};
+
 };
 
 #endif // SPECTER_H

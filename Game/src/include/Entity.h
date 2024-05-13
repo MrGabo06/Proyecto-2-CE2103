@@ -27,6 +27,9 @@ public:
     const char mvRight = 'R';
 
 public: // Methods
+
+    Entity(){};
+    
     /// @brief Moves the entity to the given direction
     /// @param frameTime: Raylib window frame time
     /// @param dir: Direction the entity will move to

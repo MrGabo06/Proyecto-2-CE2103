@@ -1,8 +1,9 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "include/Player.h"
+#include "include/Entities/player.h"
 #include "include/Map.h"
 #include "include/MapChunk.h"
+#include "include/Manager.h"
 
 
 int main(void) {
@@ -17,6 +18,8 @@ int main(void) {
 
     int graphX = 2;
     int graphY = 4;
+
+    Manager computer(&map, 2,0,1,1,0,1,2);
 
     Player player(500, 100, chunk_sizes[0]);
 
@@ -55,6 +58,16 @@ int main(void) {
                     Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
                     DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
                 }
+            }
+
+            for (int i = 0; i < computer.size(EntGroup::enemies); i++){
+                Entity* enemy = computer.getEntity(EntGroup::enemies, i);
+                DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
+            }
+
+            for (int i = 0; i < computer.size(EntGroup::statical); i++){
+                Entity* ent = computer.getEntity(EntGroup::statical, i);
+                DrawTextureRec(ent->currentSpriteSheet, frameRec, ent->getPosition(), RAYWHITE);
             }
             DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
         EndMode2D();

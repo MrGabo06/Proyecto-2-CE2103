@@ -60,7 +60,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
 
 }
 
-Entity* Manager::getEntity(Collection group, int index){
+Entity* Manager::getEntity(EntGroup group, int index){
     switch (group){
     case enemies:
         return this->mob_entities[index];
@@ -70,8 +70,8 @@ Entity* Manager::getEntity(Collection group, int index){
     return nullptr;
 }
 
-int Manager::size(Collection group){
-    switch (expression){
+int Manager::size(EntGroup group){
+    switch (group){
     case enemies:
         return this->mob_entities.size();
     case statical:

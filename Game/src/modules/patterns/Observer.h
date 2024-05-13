@@ -10,7 +10,7 @@ class Observer{
     public: // Methods
         Observer(){};
 
-        virtual void update();
+        virtual void update(){};
 
         bool operator==(Observer* other){
             return this == other;
@@ -33,10 +33,10 @@ class Observable{
         };
 
         void notify(){
-            B_Node<Observer*> node = this->observers.find(0);
-            while (node == nullptr){
-                node.data->update();
-                node = node.getNext();
+            B_Node<Observer*>* node = this->observers.find(0);
+            while (node != nullptr){
+                node->data->update();
+                node = node->getNext();
             }
         }
 };

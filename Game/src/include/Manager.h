@@ -12,10 +12,10 @@
 
 using namespace std;
 
-enum Collection {
+enum EntGroup {
     enemies,
     statical
-}
+};
 
 enum EntityType {
     CHOCOBO,
@@ -25,7 +25,7 @@ enum EntityType {
     SUPER,
     TREASURE,
     VASE
-}
+};
 
 /// @brief Class that takes care of generating the required entities for the game levels
 class Manager {
@@ -66,11 +66,11 @@ class Manager {
         /// @param group: name of group to access
         /// @param index: position
         /// @return Pointer to an Entity; can be casted to requested type using 'dynamic_cast<...>' or 'static_cast<...>'
-        Entity* getEntity(Collection group, int index);
+        Entity* getEntity(EntGroup group, int index);
 
         /// @brief Gets the size of the group of entities
         /// @param group: name of group
-        int size(Collection group);
+        int size(EntGroup group);
 
         /// @brief Analyzes the results of the enemies and generates new behaviors/attributes
         void evolve();
