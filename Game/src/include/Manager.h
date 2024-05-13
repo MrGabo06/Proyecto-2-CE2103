@@ -5,10 +5,15 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "wrapper.hpp"
+#include "Entities/player.h"
+#include "../modules/RandGenerator.h"
 
+#include <ctime>
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include <math.h>
+
 
 using namespace std;
 
@@ -27,16 +32,32 @@ enum EntityType {
     VASE
 };
 
+enum Performance {
+    veryPoor,
+    Poor,
+    Average,
+    Good,
+    veryGood
+};
+
 /// @brief Class that takes care of generating the required entities for the game levels
 class Manager {
     private: // Attributes
+        Generator randomizer;
     // ---- [Collections of entities]
         std::vector<Enemy*> mob_entities;
         std::vector<Entity*> static_entities;
 
-        std::mutex entities_guard;
+        std::mutex entities_lock;
+
+        bool active_status;
+        std::mutex status_lock;
     // ---- [Parameters for entity creation]
         Map2D* origin;
+
+        Performance machine_st = Performance::Average;
+        int stats[6] =  { 0 };
+
     public: // Methods
 
         /// @brief Default constructor
@@ -72,8 +93,19 @@ class Manager {
         /// @param group: name of group
         int size(EntGroup group);
 
+        /// @brief Toggles ON & OFF the status of the control thread
+        void toggle();
+
+        /// @brief Gets the current status of the manager unit
+        /// @return True or false
+        bool getStatus();
+
         /// @brief Analyzes the results of the enemies and generates new behaviors/attributes
         void evolve();
+
+        /// @brief Determine the performance of the player to level the experience of the bots
+        /// @param players: vector of players
+        void determine_performance(vector<Player*> players);
     private:
         void control();
 };

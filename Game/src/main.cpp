@@ -19,7 +19,7 @@ int main(void) {
     int graphX = 2;
     int graphY = 4;
 
-    Manager computer(&map, 2,0,1,1,0,1,2);
+    Manager computer(&map,2,0,0,0,0,0,0);
 
     Player player(500, 100, chunk_sizes[0]);
 
@@ -35,7 +35,7 @@ int main(void) {
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth/4, screenHeight/4};
     camera.rotation = 0.0f;
-    camera.zoom = 4.5f;
+    camera.zoom = 0.5f;
 
     SetTargetFPS(120);
     while (!WindowShouldClose()){
