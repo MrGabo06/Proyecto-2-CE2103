@@ -14,20 +14,12 @@ public: // Attributes
 public: // Methods
 
     /// @brief Default constructor
-    Vase(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Vase();
 
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Vase(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Vase(float xCord, float yCord);
 };
 
 #endif // VASE_H

@@ -15,20 +15,12 @@ public: //Attributes
 public: // Methods
 
     /// @brief Default constructor
-    Super(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Super();
 
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Super(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Super(float xCord, float yCord);
 };
 
 #endif // SUPER_H

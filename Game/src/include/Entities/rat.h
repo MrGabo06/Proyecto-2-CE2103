@@ -15,20 +15,12 @@ public: //Attributes
 public: // Methods
     
     /// @brief Default constructor for the class
-    Rat(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Rat();
 
     /// @brief Constructor for the class
     /// @param xCord 
     /// @param yCord 
-    Rat(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Rat(float xCord, float yCord);
 
 };
 
