@@ -14,20 +14,12 @@ public: // Attributes
 public: // Methods
 
     /// @brief Default constructor
-    Treasure(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Treasure();
 
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Treasure(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Treasure(float xCord, float yCord);
 };
 
 #endif // TREASURE_H

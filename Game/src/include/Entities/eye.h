@@ -16,20 +16,12 @@ public: // Attributes
 public: // Methods
 
     /// @brief Default constructor
-    Eye(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Eye();
 
     /// @brief Constructor class
     /// @param xCord 
     /// @param yCord 
-    Eye(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Eye(float xCord, float yCord);
 };
 
 #endif // EYE_H

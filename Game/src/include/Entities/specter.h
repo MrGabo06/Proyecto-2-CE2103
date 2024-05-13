@@ -17,20 +17,12 @@ public:
 public: // Methods
 
     /// @brief Default constructor
-    Specter(){
-        this->setHealthPoints(1);
-        this->setPosition(0, 0);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Specter();
 
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Specter(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    };
+    Specter(float xCord, float yCord);
 
 };
 

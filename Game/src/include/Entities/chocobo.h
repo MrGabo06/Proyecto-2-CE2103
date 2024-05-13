@@ -15,20 +15,12 @@ public: // Attributes
 public: // Methods
     
     /// @brief Default constructor method
-    Chocobo(){
-        this->setHealthPoints(1);
-        this->setPosition(0,0);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Chocobo();
 
     /// @brief Constructor method
     /// @param xCord 
     /// @param yCord 
-    Chocobo(float xCord, float yCord){
-        this->setHealthPoints(5);
-        this->setPosition(xCord, yCord);
-        this->currentSpriteSheet = movingDownSprite;
-    }
+    Chocobo(float xCord, float yCord);
 
 };
 
