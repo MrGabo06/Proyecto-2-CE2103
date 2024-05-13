@@ -23,7 +23,7 @@ public:
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
-
+    const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
 public: // Methods
 
     /// @brief Create an instance of Player class

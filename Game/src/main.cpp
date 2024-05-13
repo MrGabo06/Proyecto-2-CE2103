@@ -22,6 +22,7 @@ int main(void) {
     Manager computer(&map,2,0,0,0,0,0,0);
 
     Player player(500, 100, chunk_sizes[0]);
+    map.locate_at(&player, graphY, graphX, true);
 
     player.setMapLimits(map.grid_size);
 
@@ -51,6 +52,8 @@ int main(void) {
 
         map.locate_at(&player,graphY, graphX, false);
 
+        Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
+        testEnemy->moveTo(map.get(graphY, graphX), frameTime);
         BeginMode2D(camera);
             for (int i = 0; i<map.grid_size[0]; i++){
                 for (int j = 0; j<map.grid_size[1]; j++){
@@ -73,6 +76,9 @@ int main(void) {
         EndMode2D();
 
         BeginDrawing();
+        for(int i=1; i<player.getHealth()+1; i++){
+            DrawTexture(player.idleSprite, 40*i, 10, WHITE);
+        }
         EndDrawing();
     }
 
