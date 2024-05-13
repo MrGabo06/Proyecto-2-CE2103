@@ -76,6 +76,9 @@ int main(void) {
         EndMode2D();
 
         BeginDrawing();
+        for(int i=1; i<player.getHealth()+1; i++){
+            DrawTexture(player.idleSprite, 40*i, 10, WHITE);
+        }
         EndDrawing();
     }
 

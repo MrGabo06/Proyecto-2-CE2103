@@ -46,4 +46,8 @@ void Entity::setLocation(G_Node<MapChunk>* map_chunk, bool changePosition){
     if (changePosition) {
         this->position = location->data.center();    
     }
+
+}
+int Entity::getHealth(){
+    return healthPoints;
 }

@@ -52,6 +52,7 @@ public: // Methods
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
     void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+    int getHealth();
 };
 
 #endif // ENTITY_H
