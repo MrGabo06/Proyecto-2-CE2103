@@ -44,6 +44,9 @@ public: // Methods
     /// @brief Asks the entity generate a random route nearby its initial postion;
     void randomRoute();
 
+    /// @brief Move the enemy to a certain mapchunk
+    /// @param newMapChunk: The mapchunk the enemy will go to 
+    /// @param frameTime: Raylib window frame time
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
     // void tracedBack() {
