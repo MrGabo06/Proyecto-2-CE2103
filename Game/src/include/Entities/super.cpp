@@ -1,5 +1,5 @@
 #include "super.h"
-
+#include <iostream>
 Super::Super()
 {
     this->setHealthPoints(1);
@@ -12,4 +12,8 @@ Super::Super(float xCord, float yCord)
     this->setHealthPoints(5);
     this->setPosition(xCord, yCord);
     this->currentSpriteSheet = movingDownSprite;
+}
+void Super::hola()
+{
+    cout << "Hola" << endl;
 }

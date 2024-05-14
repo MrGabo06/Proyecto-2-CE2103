@@ -39,7 +39,7 @@ Manager::Manager(Map2D *source, int specters, int eyes, int rats, int chocobos, 
         if (i <= supers)
         {
             Enemy *super = new Super(0.f, 0.f);
-            source->locate_at(super, 1, 1, true);
+            source->locate_at(super, 2, 2, true);
             this->mob_entities.push_back(super);
         }
     }

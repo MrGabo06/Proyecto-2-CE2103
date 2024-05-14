@@ -21,6 +21,8 @@ public: // Methods
     /// @param xCord
     /// @param yCord
     Super(float xCord, float yCord);
+
+    void hola();
 };
 
 #endif // SUPER_H

@@ -19,11 +19,11 @@ int main(void)
     int graphX = 2;
     int graphY = 4;
 
-    Manager computer(&map, 2, 0, 1, 1, 1, 1, 2);
+    Manager computer(&map, 0, 0, 0, 0, 1, 0, 0);
 
     Player player(500, 100, chunk_sizes[0]);
     map.locate_at(&player, graphY, graphX, true);
-
+    Super *boss = static_cast<Super *>(computer.getEntity(enemies, 0));
     player.setMapLimits(map.grid_size);
 
     int currentFrame = 0;
@@ -31,6 +31,7 @@ int main(void)
     int frameCounter = 0;
 
     Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle frameRec2 = {0.0f, 0.0f, (float)boss->currentSpriteSheet.width, (float)boss->currentSpriteSheet.height};
 
     Camera2D camera = {0};
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
@@ -52,12 +53,9 @@ int main(void)
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
         map.locate_at(&player, graphY, graphX, false);
-
+        DrawTextureRec(boss->currentSpriteSheet, frameRec2, boss->getPosition(), RAYWHITE);
         // Enemy *testEnemy = static_cast<Enemy *>(computer.getEntity(enemies, 0));
         // testEnemy->moveTo(map.get(graphY, graphX), frameTime);
-
-        Super *testBoss = static_cast<Super *>(computer.getEntity(enemies, 0));
-        testBoss->moveTo(map.get(graphY + 1, graphX + 1), frameTime);
 
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)
@@ -72,8 +70,9 @@ int main(void)
 
         for (int i = 0; i < computer.size(EntGroup::enemies); i++)
         {
-            Entity *enemy = computer.getEntity(EntGroup::enemies, i);
-            DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
+            // Entity *enemy = computer.getEntity(EntGroup::enemies, i);
+            // Rectangle frameRec2 = {0.0f, 0.0f, (float)enemy->currentSpriteSheet.width, (float)enemy->currentSpriteSheet.height};
+            // DrawTextureRec(enemy->currentSpriteSheet, frameRec2, enemy->getPosition(), RAYWHITE);
         }
 
         for (int i = 0; i < computer.size(EntGroup::statical); i++)
