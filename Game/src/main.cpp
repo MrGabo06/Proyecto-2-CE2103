@@ -5,8 +5,7 @@
 #include "include/MapChunk.h"
 #include "include/Manager.h"
 
-
-int main(void) {
+int main() {
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
