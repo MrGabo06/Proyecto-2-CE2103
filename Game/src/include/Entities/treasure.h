@@ -7,10 +7,7 @@
 /// @brief Class for creating treasure entities that contain gold(points)
 class Treasure : public Entity{
 public: // Attributes
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
+    const Texture2D treasureTexture = LoadTexture("Game/src/resources/entitys_assets/chest.png");
 public: // Methods
 
     /// @brief Default constructor

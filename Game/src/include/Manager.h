@@ -106,6 +106,9 @@ class Manager {
         /// @brief Determine the performance of the player to level the experience of the bots
         /// @param players: vector of players
         void determine_performance(vector<Player*> players);
+
+
+
     private:
         void control();
 };

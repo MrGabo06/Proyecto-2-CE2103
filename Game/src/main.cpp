@@ -5,8 +5,7 @@
 #include "include/MapChunk.h"
 #include "include/Manager.h"
 
-
-int main(void) {
+int main() {
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
@@ -19,7 +18,7 @@ int main(void) {
     int graphX = 2;
     int graphY = 4;
 
-    Manager computer(&map,2,0,0,0,0,0,0);
+    Manager computer(&map,1,0,0,0,0,1,0);
 
     Player player(500, 100, chunk_sizes[0]);
     map.locate_at(&player, graphY, graphX, true);
