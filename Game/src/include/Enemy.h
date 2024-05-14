@@ -16,7 +16,9 @@ protected: // Atributes
     G_Node<MapChunk>* LastPosition = nullptr; 
 public: // Methods
     Enemy(){};
-    virtual void shift(){};
+    virtual void shift(){
+        this->setPosition(this->getPosition().x+0.5f, this->getPosition().y+0.5f);
+    };
 
     void moveTo(MapChunk &newMapChunk, float frameTime);
 

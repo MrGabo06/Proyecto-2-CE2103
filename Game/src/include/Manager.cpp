@@ -10,33 +10,33 @@ Manager::Manager(Map2D *source, int specters, int eyes, int rats, int chocobos, 
     // [ LOAD ENEMIES ]
     this->origin = source;
     int max_enemies = specters + eyes + rats + chocobos + supers;
-    for (int i = 0; i < max_enemies; ++i)
+    for (int i = 0; i < max_enemies; i++)
     {
-        if (i <= specters)
+        if (i < specters)
         {
             Enemy *specter = new Specter(0.f, 0.f);
             source->locate_at(specter, 1, 1, true);
             this->mob_entities.push_back(specter);
         }
-        if (i <= eyes)
+        if (i < eyes)
         {
             Enemy *eye = new Eye(0.f, 0.f);
             source->locate_at(eye, 1, 1, true);
             this->mob_entities.push_back(eye);
         }
-        if (i <= rats)
+        if (i < rats)
         {
             Enemy *rat = new Rat(0.f, 0.f);
             source->locate_at(rat, 1, 1, true);
             this->mob_entities.push_back(rat);
         }
-        if (i <= chocobos)
+        if (i < chocobos)
         {
             Enemy *bird = new Chocobo(0.f, 0.f);
             source->locate_at(bird, 1, 1, true);
             this->mob_entities.push_back(bird);
         }
-        if (i <= supers)
+        if (i < supers)
         {
             Enemy *super = new Super(0.f, 0.f);
             source->locate_at(super, 2, 2, true);
@@ -46,15 +46,15 @@ Manager::Manager(Map2D *source, int specters, int eyes, int rats, int chocobos, 
 
     // [ LOAD OTHER ENTITIES ]
     int max_statics = treasures + vases;
-    for (int i = 0; i < max_statics; ++i)
+    for (int i = 0; i < max_statics; i++)
     {
-        if (i <= treasures)
+        if (i < treasures)
         {
             Entity *treasure = new Treasure(0.f, 0.f);
             source->locate_at(treasure, 4, 4, true);
             this->static_entities.push_back(treasure);
         }
-        if (i <= vases)
+        if (i < vases)
         {
             Entity *vase = new Vase(0.f, 0.f);
             source->locate_at(vase, 7, 3, true);

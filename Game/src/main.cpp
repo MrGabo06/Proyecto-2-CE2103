@@ -37,7 +37,7 @@ int main(void)
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
-    camera.zoom = 4.5f;
+    camera.zoom = 0.5f;
 
     SetTargetFPS(120);
     while (!WindowShouldClose())
@@ -53,9 +53,9 @@ int main(void)
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
         map.locate_at(&player, graphY, graphX, false);
-        DrawTextureRec(boss->currentSpriteSheet, frameRec2, boss->getPosition(), RAYWHITE);
-        // Enemy *testEnemy = static_cast<Enemy *>(computer.getEntity(enemies, 0));
-        // testEnemy->moveTo(map.get(graphY, graphX), frameTime);
+
+        // TODO: @MrGabo06 por aqui pongo lo que quiera que haga la entidad que enemiga que esta usando :)
+        boss->shift(); // Esto puede borrarlo
 
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)
@@ -67,20 +67,23 @@ int main(void)
                 DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
             }
         }
+        // for (int i = 0; i < computer.size(EntGroup::enemies); i++)
+        // {   
+        //     Enemy *enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
+        //         enemy->shift();
+        //     Rectangle frameRec2 = {0.0f, 0.0f, (float)enemy->currentSpriteSheet.width, (float)enemy->currentSpriteSheet.height};
+        //     DrawTextureRec(enemy->currentSpriteSheet, frameRec2, enemy->getPosition(), RAYWHITE);
+        // }
 
-        for (int i = 0; i < computer.size(EntGroup::enemies); i++)
-        {
-            // Entity *enemy = computer.getEntity(EntGroup::enemies, i);
-            // Rectangle frameRec2 = {0.0f, 0.0f, (float)enemy->currentSpriteSheet.width, (float)enemy->currentSpriteSheet.height};
-            // DrawTextureRec(enemy->currentSpriteSheet, frameRec2, enemy->getPosition(), RAYWHITE);
-        }
+        // for (int i = 0; i < computer.size(EntGroup::statical); i++)
+        // {
+        //     Entity *ent = computer.getEntity(EntGroup::statical, i);
+        //     DrawTextureRec(ent->currentSpriteSheet, frameRec, ent->getPosition(), RAYWHITE);
+        // }
 
-        for (int i = 0; i < computer.size(EntGroup::statical); i++)
-        {
-            Entity *ent = computer.getEntity(EntGroup::statical, i);
-            DrawTextureRec(ent->currentSpriteSheet, frameRec, ent->getPosition(), RAYWHITE);
-        }
         DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
+        DrawTextureRec(boss->currentSpriteSheet, frameRec2, boss->getPosition(), WHITE);
+
         EndMode2D();
 
         BeginDrawing();
