@@ -16,7 +16,7 @@ struct Property{
 const Property<int> MAX_DETECTION = { 5, 5, 5, 5, 5};
 const Property<int> MAX_ROUTE = {1, 2, 3, 4, 5};
 const Property<int> MAX_MOVEMENT = { 3, 3, 3, 3, 3};
-const Property<float> MAX_SPEED = { 0.3f, 0.3f, 0.3f, 0.3f, 0.3f};
+const Property<float> MAX_SPEED = { 0.3, 0.3, 0.3, 0.3, 0.3};
 const Property<int> MAX_DECISIONS = { 2, 2, 2, 2, 2};
 const Property<int> MAX_ATTACK = {2, 2, 2 ,2, 2};
 

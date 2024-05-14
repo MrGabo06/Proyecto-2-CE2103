@@ -13,7 +13,7 @@
 
 struct Cooldown{
     double action;
-    double mov;
+    double movement;
 };
 
 using namespace std;
@@ -21,15 +21,24 @@ using namespace std;
 class Enemy : public Entity{
 protected: // Atributes
     Generator random_generator;
-    Queue< std::tuple<int , int> > route;
-    G_Node<MapChunk>* LastPosition = nullptr;
+
+    // { Pathfinding variables }
+    Queue< MapChunk > route;
+    G_Node< MapChunk >* LastPosition;
+    Entity* target;
     
+    // { Enemy properties }
     int detection_range;
     int route_size;
     int mov_range;
     float speed_multiplier;
     int decision_chances;
     int attack_damage;
+
+    // { Enemy operational states }
+    bool routing;
+    bool engaging;
+    bool returning;
 
 public:
     Cooldown cooldown;
@@ -42,39 +51,39 @@ public: // Methods
     /// @brief In this context, the 'shifting' method make the enemy entity do 'something'(which varies on the context of the entity)
     void shift(Map2D* ref);
 
-    /// @brief Asks the entity generate a random route nearby its initial postion;
-    void randomRoute();
+    /// @brief Sets an entity as the target of this enemy
+    /// @param entity: reference to the entity
+    void setTarget(Entity* entity);
 
+    /// @brief Asks the entity to attack its current target
+    virtual void attack();
+
+    /// @brief Asks the entity to follow its current target
+    void follow();
+
+    /// @brief Moves the entity to the specified chunk
+    /// @param newMapChunk 
+    /// @param frameTime 
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
-    // void tracedBack() {
-    //     vector< G_Node<MapChunk>* > path;
-    //     path = backtrack(path, location, LastPosition);
-    //     for(int i=0; i<path.size(); i++){
-    //         route.push(make_tuple(path[i]->data->coordinates[0], path[i]->data->coordinates[1]));
-    //     }
-    // }
-    // vector <G_Node<MapChunk>*>backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition){
-    //     int CurX = CurrentPosition->data->coordinates[0];
-    //     int finalX = LastPosition->data->coordinates[0];
-    //     int CurY = CurrentPosition->data->coordinates[0]; 
-    //     int finalY = LastPosition->data->coordinates[0];
+    /// @brief Goes to back to previous position and returns to normal behavior
+    void traceback();
+    
+protected:
+    /// @brief Asks the entity to generate a random route nearby its initial postion;
+    void generateRoute();
 
-    //     if (CurX == finalX && CurY == finalY){
-    //         return path;
-    //     }
-    //     else{
-    //         for (int i = 0; i < CurrentPosition.total_connected(); i++){
-    //             G_Node<MapChunk>* next = CurrentPosition->getNode(i);
-    //             path.push_back(next);
-    //             backtrack(path, next, LastPosition);
-    //             }
+    /// @brief Sets the enemy properties based on a rating (1-10) 
+    /// @param scaling: array(6) of ratings
+    virtual void setProperties(int scaling[]){};
 
-    //         }
-        
-            
-    //     }
-
-    };
+private:
+    /// @brief Backtracks to previous position before engaging
+    /// @param path 
+    /// @param CurrentPosition 
+    /// @param LastPosition 
+    /// @return 
+    vector< G_Node<MapChunk>* > backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition);
+};
 
 #endif // ENEMY_H

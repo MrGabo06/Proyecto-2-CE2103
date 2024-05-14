@@ -15,7 +15,7 @@ int main() {
     Map2D map(Level::first, chunk_sizes);
         map.generate();
 
-    Manager computer(&map,2,0,0,0,0,0,0);
+    Manager computer(&map,5,2,2,3,1,5,5);
 
     Player player(4, 2);
     map.locate_at(&player, player.graphY, player.graphX, true);
@@ -32,7 +32,7 @@ int main() {
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth/4, screenHeight/4};
     camera.rotation = 0.0f;
-    camera.zoom = 0.5f;
+    camera.zoom = 2.5f;
 
     SetTargetFPS(120);
     while (!WindowShouldClose()){
@@ -45,8 +45,8 @@ int main() {
 
         map.locate_at(&player, player.graphY, player.graphY, false);
 
-        Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
-        testEnemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
+        // Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
+        // testEnemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
 
         BeginMode2D(camera);
             for (int i = 0; i<map.grid_size[0]; i++){
@@ -58,7 +58,8 @@ int main() {
             }
 
             for (int i = 0; i < computer.size(EntGroup::enemies); i++){
-                Entity* enemy = computer.getEntity(EntGroup::enemies, i);
+                Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
+                    enemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
                 DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
             }
 

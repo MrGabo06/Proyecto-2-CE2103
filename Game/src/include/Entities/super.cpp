@@ -3,49 +3,65 @@
 Super::Super(){
     // [ INITIALIZE THE ENTITY ]
     this->setHealthPoints(1);
-    this->setPosition(0,0);
+    this->setPosition(0.f,0.f);
     this->currentSpriteSheet = movingDownSprite;
 
-    this->cooldown.action = 4.5;
-    this->cooldown.mov = 2.5;
+    this->cooldown = {1.5 , 1.5};
 
-    this->detection_range = 1;
-    this->route_size = 2;
-    this->mov_range = 2;
-    this->speed_multiplier = 0.15f;
-    this->decision_chances = 1;
-    this->attack_damage = 1;
+    this->target = nullptr;
+    this->location = nullptr;
+    this->LastPosition = nullptr;
+
+    this->routing = true;
+    this->engaging = false;
+    this->returning = false;
+
+    int default_properties[] = { 3, 3, 3, 3, 3, 3};
+    this->setProperties(default_properties);
 }
 
 Super::Super(float xCord, float yCord, int skill_rates[]){
+    // [ INITIALIZE THE ENTITY ]
     this->setHealthPoints(5);
     this->setPosition(xCord, yCord);
     this->currentSpriteSheet = movingDownSprite;
 
-    this->detection_range = (skill_rates[0]*MAX_DET_RANGE)/10;
+    this->cooldown = { 1.5 , 1.5};
+
+    this->target = nullptr;
+    this->location = nullptr;
+    this->LastPosition = nullptr;
+
+    this->routing = true;
+    this->engaging = false;
+    this->returning = false;
+
+    this->setProperties(skill_rates);
+ }
+
+void Super::setProperties(int scaling[]) {
+    this->detection_range = (scaling[0]*MAX_DETECTION.super)/10;
     if (this->detection_range == 0){
         this->detection_range = 1;
     }
 
-    this->route_size = (skill_rates[1]*MAX_ROUTE_SIZE)/10;
+    this->route_size = (scaling[1]*MAX_ROUTE.super)/10;
     if (this->route_size == 0){
         this->route_size = 1;
     }
 
-    this->mov_range = (skill_rates[2]*MAX_MOV_RANGE)/10;
+    this->mov_range = (scaling[2]*MAX_MOVEMENT.super)/10;
     if (this->mov_range == 0){
         this->mov_range = 1;
     }
+    this->speed_multiplier = (float(scaling[3])*MAX_SPEED.super)/10.f;
 
-    this->speed_multiplier = (float(skill_rates[3])*MAX_SPEED_MULT)/10.f;
-
-    this->decision_chances = (skill_rates[4]*MAX_DECISIONS)/10;
+    this->decision_chances = (scaling[4]*MAX_DECISIONS.super)/10;
     if (this->decision_chances == 0){
         this->decision_chances = 1;
     }
-
-    this->attack_damage = (skill_rates[5]*MAX_ATTACK_DMG)/10;
+    this->attack_damage = (scaling[5]*MAX_ATTACK.super)/10;
     if (this->attack_damage == 0){
         this->attack_damage = 1;
     }
-} 
+ }

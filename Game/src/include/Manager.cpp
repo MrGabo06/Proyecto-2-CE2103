@@ -9,58 +9,19 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
     for (int x = 0; x < 6; x++){
         this->stats[x] = 5;
     }
-    // [ LOAD ENEMIES ]
+    // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
-    int max_enemies = specters+eyes+rats+chocobos+supers;
-    for (int i = 0; i<max_enemies; i++){
-        if ( i < specters){
-            Enemy* specter = new Specter(0.f, 0.f,this->stats);
-            source->locate_at(specter, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            specter->randomRoute();
-            this->mob_entities.push_back(specter);
-        }
-        if ( i < eyes){
-            Enemy* eye = new Eye(0.f,0.f,this->stats);
-            source->locate_at(eye, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            eye->randomRoute();
-            this->mob_entities.push_back(eye);
-        }
-        if ( i < rats){
-            Enemy* rat = new Rat(0.f, 0.f, this->stats);
-            source->locate_at(rat, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            rat->randomRoute();
-            this->mob_entities.push_back(rat);
-        }
-        if ( i < chocobos){
-            Enemy* bird = new Chocobo(0.f, 0.f, this->stats);
-            source->locate_at(bird, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            bird->randomRoute();
-            this->mob_entities.push_back(bird);
-        }
-        if ( i < supers){
-            Enemy* super = new Super(0.f, 0.f, this->stats);
-            source->locate_at(super, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            super->randomRoute();
-            this->mob_entities.push_back(super);
-        }
-    }
-    // [ LOAD OTHER ENTITIES ]
-    int max_statics = treasures+vases;
-    for (int i = 0; i < max_statics; i++){
-        if (i < treasures){
-            Entity* treasure = new Treasure(0.f, 0.f);
-            source->locate_at(treasure, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            this->static_entities.push_back(treasure);
-        }
-        if (i < vases){
-            Entity* vase = new Vase(0.f, 0.f);
-            source->locate_at(vase, randomizer.generateInt(0, source->grid_size[0]), randomizer.generateInt(0, source->grid_size[1]) , true);
-            this->static_entities.push_back(vase);
-        }
-    }
+    this->addEntities(EntityType::SPECTER, specters);
+    this->addEntities(EntityType::EYE, eyes);
+    this->addEntities(EntityType::RAT, rats);
+    this->addEntities(EntityType::CHOCOBO, chocobos);
+    this->addEntities(EntityType::SUPER, supers);
+    this->addEntities(EntityType::TREASURE, treasures);
+    this->addEntities(EntityType::VASE, vases);
+
     // [ START THE CONTROLLER THREAD ]
     this->active_status = true;
-    thread(&Manager::control, this).detach();
+    //thread(&Manager::control, this).detach();
 }
 
 void Manager::addMapRef(Map2D* source){
@@ -68,7 +29,59 @@ void Manager::addMapRef(Map2D* source){
 }
 
 void Manager::addEntities(EntityType entity_t, int quantity){
-
+    this->entities_lock.lock();
+    switch (entity_t){
+    case (CHOCOBO):
+        for ( int i = 0; i < quantity; i++){
+            Enemy* chocobo = new Chocobo(0.f, 0.f, this->stats);
+            this->origin->locate_at(chocobo,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->mob_entities.push_back(chocobo);
+        }
+        break;
+    case (EYE):
+        for ( int i = 0; i < quantity; i++){
+            Enemy* eye = new Eye(0.f, 0.f, this->stats);
+            this->origin->locate_at(eye,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->mob_entities.push_back(eye);
+        }
+        break;
+    case (RAT):
+        for ( int i = 0; i < quantity; i++){
+            Enemy* rat = new Rat(0.f, 0.f, this->stats);
+            this->origin->locate_at(rat,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->mob_entities.push_back(rat);
+        }
+        break;
+    case (SPECTER):
+        for ( int i = 0; i < quantity; i++){
+            Enemy* specter = new Specter(0.f, 0.f, this->stats);
+            this->origin->locate_at(specter,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->mob_entities.push_back(specter);
+        }
+        break;
+    case (SUPER):
+        for ( int i = 0; i < quantity; i++){
+            Enemy* boss = new Super(0.f, 0.f, this->stats);
+            this->origin->locate_at(boss,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->mob_entities.push_back(boss);
+        }
+        break;
+    case (TREASURE):
+        for ( int i = 0; i < quantity; i++){
+            Entity* chest = new Treasure(0.f, 0.f);
+            this->origin->locate_at(chest,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->static_entities.push_back(chest);
+        }
+        break;
+    case (VASE):
+        for ( int i = 0; i < quantity; i++){
+            Entity* vase = new Vase(0.f, 0.f);
+            this->origin->locate_at(vase,randomizer.generateInt(0, this->origin->grid_size[0]-1),randomizer.generateInt(0, this->origin->grid_size[1]-1), true);
+            this->static_entities.push_back(vase);
+        }
+        break;
+    }
+    this->entities_lock.unlock();
 }
 
 Entity* Manager::getEntity(EntGroup group, int index){

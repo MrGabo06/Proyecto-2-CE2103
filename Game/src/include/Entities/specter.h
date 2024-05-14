@@ -13,14 +13,6 @@ public:
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
-private:
-    // Enemy subclass limit for attribute scaling
-    const int MAX_DET_RANGE = 6;
-    const int MAX_ROUTE_SIZE = 4;
-    const int MAX_MOV_RANGE = 3;
-    const float MAX_SPEED_MULT = 1.f;
-    const int MAX_DECISIONS = 3;
-    const int MAX_ATTACK_DMG = 2;
     
 public: // Methods
 
@@ -34,7 +26,11 @@ public: // Methods
     Specter(float xCord, float yCord, int skill_rates[]);
 
     void update() override {};
-
+    
+private:
+    /// @brief Sets the enemy properties based on a rating (1-10) 
+    /// @param scaling: array(6) of ratings
+    void setProperties(int scaling[]) override;
 };
 
 #endif // SPECTER_H
