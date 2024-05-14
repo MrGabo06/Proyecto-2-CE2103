@@ -15,13 +15,10 @@ int main() {
     Map2D map(Level::first, chunk_sizes);
         map.generate();
 
-    int graphX = 2;
-    int graphY = 4;
+    Manager computer(&map,2,0,0,0,0,0,0);
 
-    Manager computer(&map,1,0,0,0,0,1,0);
-
-    Player player(500, 100, chunk_sizes[0]);
-    map.locate_at(&player, graphY, graphX, true);
+    Player player(4, 2);
+    map.locate_at(&player, player.graphY, player.graphX, true);
 
     player.setMapLimits(map.grid_size);
 
@@ -42,17 +39,15 @@ int main() {
         ClearBackground(RAYWHITE);
 
         float frameTime = GetFrameTime();
-        player.movePlayer(frameTime, map.grid_size);
-
-        graphX = player.getPosition().x/chunk_sizes[0];
-        graphY = player.getPosition().y/chunk_sizes[0];
+        player.movePlayer(frameTime);
 
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
-        map.locate_at(&player,graphY, graphX, false);
+        map.locate_at(&player, player.graphY, player.graphY, false);
 
         Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
-        testEnemy->moveTo(map.get(graphY, graphX), frameTime);
+        testEnemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
+
         BeginMode2D(camera);
             for (int i = 0; i<map.grid_size[0]; i++){
                 for (int j = 0; j<map.grid_size[1]; j++){

@@ -1,6 +1,6 @@
 #include "player.h"
 
-void Player::movePlayer(float frameTime, int mapSize[2]) {
+void Player::movePlayer(float frameTime) {
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
         // Stop movement
@@ -47,19 +47,16 @@ void Player::movePlayer(float frameTime, int mapSize[2]) {
     }
 }
 
-void Player::setMapCellSize(int currentMapCellSize) {
-    this->cellSize = currentMapCellSize;
-}
-
 void Player::setMapLimits(int limits[2]) {
     this->rightLimit = limits[1] * this->cellSize;
     this->downLimit = limits[0] * this->cellSize;
 }
 
-Player::Player(float xCord, float yCord, int currentMapCellSize) {
-    this->setMapCellSize(currentMapCellSize);   
+Player::Player(int startGraphX, int startGraphY) {   
     this->setHealthPoints(5);
-    this->setPosition(xCord, yCord);
+    this->graphX = startGraphX;
+    this->graphY = startGraphY;
+    this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
     this->currentSpriteSheet = movingDownSprite;
 }
 
