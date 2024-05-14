@@ -4,6 +4,7 @@
 #include "../modules/Queue.h"
 #include "Entity.h"
 #include "../modules/RandGenerator.h"
+#include "enemy_properties.hpp"
 #include "Map.h"
 
 #include <vector>
@@ -21,7 +22,7 @@ class Enemy : public Entity{
 protected: // Atributes
     Generator random_generator;
     Queue< std::tuple<int , int> > route;
-    G_Node<MapChunk>* LastPosition = nullptr; 
+    G_Node<MapChunk>* LastPosition = nullptr;
     
     int detection_range;
     int route_size;

@@ -7,7 +7,7 @@
 /// @brief Class for creating vase entities that contain loot
 class Vase : public Entity{
 public: // Attributes
-    const Texture2D vaseTexture = LoadTexture("Game/src/resources/entitys_assets/jarron.png");
+    const Texture2D vaseTexture = LoadTexture("Game/src/resources/entity_assets/vase.png");
 public: // Methods
 
     /// @brief Default constructor

@@ -12,7 +12,7 @@ void Enemy::moveTo(MapChunk &newMapChunk, float frameTime){
     if (this->getPosition().y < newMapChunk.center().y - 20.0f){
         this->move(frameTime ,Entity::mvDown);
     }
-
+    
     if (this->getPosition().y > newMapChunk.center().y + 20.0f){
         this->move(frameTime, Entity::mvUp);
     }
