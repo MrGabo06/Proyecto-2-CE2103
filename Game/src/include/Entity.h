@@ -19,6 +19,9 @@ protected: // Attributes
     G_Node<MapChunk>* location;
 
 public:
+    int cellSize = 48;
+    int graphX = 0;
+    int graphY = 0;
     Texture2D currentSpriteSheet;
 
     const char mvUp = 'U';
@@ -52,6 +55,9 @@ public: // Methods
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
     void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+
+    /// @brief Get the entity health points
+    /// @return Entity health points
     int getHealth();
 };
 
