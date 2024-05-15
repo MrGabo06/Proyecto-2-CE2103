@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 #include "../Enemy.h"
+#include <iostream>
+#include <ctime>
 
 /// @brief Class for creating a super enemy type that works as a special enemy of the temple
 class Super : public Enemy
@@ -22,7 +24,9 @@ public: // Methods
     /// @param yCord
     Super(float xCord, float yCord);
 
-    void hola();
+    void movePattern(int mov);
+
+    void attackPattern(int atk);
 };
 
 #endif // SUPER_H

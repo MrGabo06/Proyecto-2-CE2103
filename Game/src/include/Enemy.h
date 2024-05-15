@@ -10,14 +10,17 @@
 
 using namespace std;
 /// @brief Class for creating 'enemy' type entities for the game
-class Enemy : public Entity{
+class Enemy : public Entity
+{
 protected: // Atributes
-    Queue< std::tuple<int , int> > route;
-    G_Node<MapChunk>* LastPosition = nullptr; 
+    Queue<std::tuple<int, int>> route;
+    G_Node<MapChunk> *LastPosition = nullptr;
+
 public: // Methods
     Enemy(){};
-    virtual void shift(){
-        this->setPosition(this->getPosition().x+0.5f, this->getPosition().y+0.5f);
+    virtual void shift()
+    {
+        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y + 0.5f);
     };
 
     void moveTo(MapChunk &newMapChunk, float frameTime);
@@ -32,7 +35,7 @@ public: // Methods
     // vector <G_Node<MapChunk>*>backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition){
     //     int CurX = CurrentPosition->data->coordinates[0];
     //     int finalX = LastPosition->data->coordinates[0];
-    //     int CurY = CurrentPosition->data->coordinates[0]; 
+    //     int CurY = CurrentPosition->data->coordinates[0];
     //     int finalY = LastPosition->data->coordinates[0];
 
     //     if (CurX == finalX && CurY == finalY){
@@ -46,10 +49,8 @@ public: // Methods
     //             }
 
     //         }
-        
-            
-    //     }
 
-    };
+    //     }
+};
 
 #endif // ENEMY_H
