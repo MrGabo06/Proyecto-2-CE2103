@@ -46,6 +46,10 @@ public:
     /// @param entity: asking entity
     /// @return (true) if entity's x,y position is inside bounds, (false) if entity's x,y position is out of bounds
     bool contains(Entity entity);
+
+    /// @brief Intern method to create a default map chunk
+    /// @return A new mapchunk object
+    static MapChunk defaultMapChunk();
 };
 
 #endif // MAP_CHUNK_H

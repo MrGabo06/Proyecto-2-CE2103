@@ -17,6 +17,7 @@ public: // Attributes
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemies_assets/boss.png");
     MapChunk &playerPosition;
     float frameTime;
+    static MapChunk defaultChunk;
 
 public: // Methods
     /// @brief Default constructor

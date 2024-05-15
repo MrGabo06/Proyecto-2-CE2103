@@ -52,10 +52,10 @@ int main(void)
 
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
-        map.locate_at(&player, graphY, graphX, false);
+        map.locate_at(&player, player.graphY, player.graphX, false);
 
         boss->movePattern(6);
-        boss->getPlayerPosition(map.get(graphY, graphX), frameTime); // Esto puede borrarlo
+        boss->getPlayerPosition(map.get(player.graphY, player.graphX), frameTime); // Esto puede borrarlo
 
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)

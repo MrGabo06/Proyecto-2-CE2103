@@ -69,3 +69,7 @@ bool MapChunk::contains(Entity entity){
     }
     return false;
 }
+
+MapChunk MapChunk::defaultMapChunk(){
+    return MapChunk();
+}
