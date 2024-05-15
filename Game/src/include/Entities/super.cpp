@@ -5,6 +5,7 @@ Super::Super()
     this->setHealthPoints(1);
     this->setPosition(0, 0);
     this->currentSpriteSheet = movingDownSprite;
+    MapChunk &playerPosition = MapChunk temp(1, 1);
 }
 
 Super::Super(float xCord, float yCord)
@@ -12,6 +13,7 @@ Super::Super(float xCord, float yCord)
     this->setHealthPoints(5);
     this->setPosition(xCord, yCord);
     this->currentSpriteSheet = movingDownSprite;
+    MapChunk &playerPosition = MapChunk temp(terrain, 0.0f, 0.0f, &this->cellSize, [ 0, 0 ]);
 }
 
 void Super::movePattern(int mov)
@@ -46,7 +48,13 @@ void Super::attackPattern(int atk)
 {
     if (atk == 1)
     {
-        // Bullet bullet(this->getPosition().x, this->getPosition().y);
-        // bullet.shoot(shot(map.get(player->graphY, player->grapX));
+        Bullet bullet(this->getPosition().x, this->getPosition().y);
+        bullet.shoot(this->playerPosition, this->frameTime);
     }
+}
+
+void Super::getPlayerPosition(MapChunk &actualPosition, float frameTime)
+{
+    this->playerPosition = actualPosition;
+    this->frameTime = frameTime;
 }

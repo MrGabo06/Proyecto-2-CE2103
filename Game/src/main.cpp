@@ -54,7 +54,8 @@ int main(void)
 
         map.locate_at(&player, graphY, graphX, false);
 
-        boss->movePattern(6); // Esto puede borrarlo
+        boss->movePattern(6);
+        boss->getPlayerPosition(map.get(graphY, graphX), frameTime); // Esto puede borrarlo
 
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)

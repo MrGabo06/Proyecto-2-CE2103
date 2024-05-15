@@ -5,6 +5,7 @@
 #include "../Enemy.h"
 #include <iostream>
 #include <ctime>
+#include "bullet.h"
 
 /// @brief Class for creating a super enemy type that works as a special enemy of the temple
 class Super : public Enemy
@@ -14,6 +15,8 @@ public: // Attributes
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/enemies_assets/boss.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/enemies_assets/boss.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemies_assets/boss.png");
+    MapChunk &playerPosition;
+    float frameTime;
 
 public: // Methods
     /// @brief Default constructor
@@ -27,6 +30,8 @@ public: // Methods
     void movePattern(int mov);
 
     void attackPattern(int atk);
+
+    void getPlayerPosition(MapChunk &actualPosition, float frameTime);
 };
 
 #endif // SUPER_H
