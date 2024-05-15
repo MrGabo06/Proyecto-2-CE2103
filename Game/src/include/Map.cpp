@@ -141,14 +141,26 @@ void Map2D::load_boundaries(){
 int Map2D::chunk_output(MapChunk chunk){
     int travel_time = 0;
     switch (chunk.chunk_type){
-        case traversable:
+        case terrain:
             travel_time = 100;
             break;
-        case obstacle:
+        case wall:
             travel_time = 0;
             break;
-        case slow:
+        case trap:
             travel_time = 50;
+            break;
+        case safe:
+            travel_time = 100;
+            break;
+        case fake:
+            travel_time = 100;
+            break;
+        case cloaked:
+            travel_time = 25;
+            break;
+        case gate:
+            travel_time = 100;
             break;
     }
     return travel_time;
@@ -167,7 +179,7 @@ MapChunk& Map2D::get(int i, int j){
     return node->data;
 }
 
-void Map2D::locate_at(Entity* entity, int i, int j){
+void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     // [ NODE <CHUNK> RETRIEVAL ]
     if (i > this->grid_size[0] || i < 0){
         throw std::out_of_range("i value is out of range");
@@ -179,5 +191,5 @@ void Map2D::locate_at(Entity* entity, int i, int j){
     int selection = j + i*row_gap;
     G_Node<MapChunk>* node = this->grid.getNode(selection);
     // [ SET THE LOCATION FOR THE ENTITY]
-    entity->setLocation(node);
+    entity->setLocation(node, change_position);
 }
