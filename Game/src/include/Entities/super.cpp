@@ -46,6 +46,7 @@ void Super::attackPattern(int atk)
 {
     if (atk == 1)
     {
-        Bullet bullet(this->getPosition().x, this->getPosition().y);
+        // Bullet bullet(this->getPosition().x, this->getPosition().y);
+        // bullet.shoot(shot(map.get(player->graphY, player->grapX));
     }
 }

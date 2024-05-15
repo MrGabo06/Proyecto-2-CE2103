@@ -19,7 +19,7 @@ public: // Methods
     /// @param xCord
     /// @param yCord
     Bullet(float xCord, float yCord);
-    void shoot();
+    void shoot(MapChunk &playerPosition, float frameTime);
 };
 
 #endif // BULLET_H

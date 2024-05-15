@@ -11,7 +11,7 @@ Bullet::Bullet(float xCord, float yCord)
     this->currentSpriteSheet = movingLeftSprite;
 }
 
-void Bullet::shoot()
+void Bullet::shoot(MapChunk &playerPosition, float frameTime)
 {
-    moveTo(map.get(graphY, graphX), frameTime);
+    moveTo(playerPosition, frameTime);
 }
