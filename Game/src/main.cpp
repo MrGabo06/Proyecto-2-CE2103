@@ -19,7 +19,7 @@ int main()
     map.generate();
 
     Manager computer(&map, 5, 2, 2, 3, 1, 5, 5);
-    LinkedList<int> breadcrumbList;
+    LinkedList<MapChunk> breadcrumbList;
 
     Player player(4, 2);
     map.locate_at(&player, player.graphY, player.graphX, true);
@@ -50,11 +50,22 @@ int main()
 
         map.locate_at(&player, player.graphY, player.graphY, false);
 
-        int breadcrumb = 1;
+        MapChunk breadcrumb = map.get(player.graphY, player.graphX);
 
-        breadcrumbList.insert(breadcrumb);
+        if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 20)
+        {
+            breadcrumbList.insert(breadcrumb);
+            map.get(player.graphY, player.graphX).breadcrumb = 1;
+        }
 
-        cout << breadcrumbList.getSize() << endl;
+        else if (player.isMoving && breadcrumbList.getSize() > 20)
+        {
+            breadcrumbList.insert(breadcrumb);
+            breadcrumbList.remove(0);
+        }
+
+        cout
+            << breadcrumbList.getSize() << endl;
 
         // Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
         // testEnemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
