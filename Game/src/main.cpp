@@ -5,6 +5,9 @@
 #include "include/MapChunk.h"
 #include "include/Manager.h"
 
+#include <chrono>
+#include <iostream>
+
 int main() {
     const int screenWidth = 1500;
     const int screenHeight = 750;
@@ -15,9 +18,9 @@ int main() {
     Map2D map(Level::first, chunk_sizes);
         map.generate();
 
-    Manager computer(&map,5,2,2,3,1,5,5);
+    Manager computer(&map,6,0,0,0,0,0,0);
 
-    Player player(4, 2);
+    Player player(0, 0);
     map.locate_at(&player, player.graphY, player.graphX, true);
 
     player.setMapLimits(map.grid_size);
@@ -32,9 +35,10 @@ int main() {
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth/4, screenHeight/4};
     camera.rotation = 0.0f;
-    camera.zoom = 2.5f;
+    camera.zoom = 0.5f;
 
     SetTargetFPS(120);
+    auto startTime = std::chrono::steady_clock::now();
     while (!WindowShouldClose()){
         ClearBackground(RAYWHITE);
 
@@ -43,11 +47,13 @@ int main() {
 
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
-        map.locate_at(&player, player.graphY, player.graphY, false);
+        map.locate_at(&player, player.graphY, player.graphX, false);
+        if (player.getHealth() <= 0){
+            break;
+        }
 
-        // Enemy* testEnemy = static_cast<Enemy*>(computer.getEntity(enemies, 0));
-        // testEnemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
-
+        auto currentTime = std::chrono::steady_clock::now();
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
         BeginMode2D(camera);
             for (int i = 0; i<map.grid_size[0]; i++){
                 for (int j = 0; j<map.grid_size[1]; j++){
@@ -59,7 +65,14 @@ int main() {
 
             for (int i = 0; i < computer.size(EntGroup::enemies); i++){
                 Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
-                    enemy->moveTo(map.get(player.graphY, player.graphX), frameTime);
+                if (elapsedTime % enemy->cooldown.action == 0 || elapsedTime % enemy->cooldown.movement == 0){
+                    if(enemy->rangeToEntity(&player, false)){
+                        enemy->setTarget(&player);
+                        enemy->engage();
+                    }
+                    enemy->shift(&map, frameTime);
+                }
+                map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
                 DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
             }
 

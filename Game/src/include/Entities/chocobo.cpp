@@ -2,11 +2,11 @@
 
 Chocobo::Chocobo(){
     // [ INITIALIZE THE ENTITY ]
-    this->setHealthPoints(1);
+    this->healthPoints = 1;
     this->setPosition(0.f,0.f);
     this->currentSpriteSheet = movingDownSprite;
 
-    this->cooldown = {1.5 , 1.5};
+    this->cooldown = { 2, 1};
 
     this->target = nullptr;
     this->location = nullptr;
@@ -20,13 +20,15 @@ Chocobo::Chocobo(){
     this->setProperties(default_properties);
 }
 
-Chocobo::Chocobo(float xCord, float yCord, int skill_rates[]){
+Chocobo::Chocobo(int xCord, int yCord, int skill_rates[]){
     // [ INITIALIZE THE ENTITY ]
-    this->setHealthPoints(5);
-    this->setPosition(xCord, yCord);
+    this->healthPoints = 3;
+    this->setPosition(0.f, 0.f);
+    this->graphX = xCord;
+    this->graphY = yCord;
     this->currentSpriteSheet = movingDownSprite;
 
-    this->cooldown = { 1.5 , 1.5};
+    this->cooldown = { 2, 1};
 
     this->target = nullptr;
     this->location = nullptr;

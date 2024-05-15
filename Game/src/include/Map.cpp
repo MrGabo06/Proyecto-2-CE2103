@@ -167,10 +167,10 @@ int Map2D::chunk_output(MapChunk chunk){
 }
 
 MapChunk& Map2D::get(int i, int j){
-    if (i > this->grid_size[0] || i < 0){
+    if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("i value is out of range");
     }
-    if (j > this->grid_size[1] || j < 0){
+    if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];
@@ -181,10 +181,10 @@ MapChunk& Map2D::get(int i, int j){
 
 void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     // [ NODE <CHUNK> RETRIEVAL ]
-    if (i > this->grid_size[0] || i < 0){
+    if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("i value is out of range");
     }
-    if (j > this->grid_size[1] || j < 0){
+    if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];
@@ -192,4 +192,27 @@ void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     G_Node<MapChunk>* node = this->grid.getNode(selection);
     // [ SET THE LOCATION FOR THE ENTITY]
     entity->setLocation(node, change_position);
+}
+
+void Map2D::generateRoute(Enemy* enemy){
+    if (enemy->route.size() == 0){
+        enemy->route.enqueue(enemy->getLocation()->data);
+    }
+    int* coords = enemy->getLocation()->data.coordinates;
+
+    int move[] = {coords[0]+5, coords[1]-3};
+    if (move[0] >= this->grid_size[0]){
+        move[0] = this->grid_size[0]-1;
+    } else if ( move[0] < 0){
+        move[0] = 0;
+    }
+
+    if (move[1] >= this->grid_size[1]){
+        move[1] = this->grid_size[1]-1;
+    } else if ( move[1] < 0){
+        move[1] = 0;
+    }
+
+    enemy->route.enqueue(this->get(move[0], coords[1]));
+    enemy->route.enqueue(this->get(coords[0], move[1]));
 }

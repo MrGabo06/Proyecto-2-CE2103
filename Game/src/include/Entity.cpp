@@ -31,7 +31,7 @@ Vector2 Entity::getPosition(){
 }
 
 void Entity::setHealthPoints(int newHp){
-    healthPoints = newHp;
+    healthPoints += newHp;
 }
 
 void Entity::setPosition(float xCords, float yCords){
@@ -46,10 +46,16 @@ void Entity::setPosition(float xCords, float yCords){
 
 void Entity::setLocation(G_Node<MapChunk>* map_chunk, bool changePosition){
     this->location = map_chunk;
+    this->graphX = map_chunk->data.coordinates[1];
+    this->graphY = map_chunk->data.coordinates[0];
     if (changePosition) {
         this->position = location->data.center();    
     }
 
+}
+
+G_Node<MapChunk>* Entity::getLocation(){
+    return this->location;
 }
 
 int Entity::getHealth(){

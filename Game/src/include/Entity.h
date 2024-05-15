@@ -38,9 +38,6 @@ public: // Methods
     /// @param dir: Direction the entity will move to
     void move(float frameTime, const char dir);
 
-    /// @brief Get entity's position
-    /// @return Vector2 object
-    Vector2 getPosition();
 
     /// @brief Modify (add or take) health points 
     /// @param newHp: Health points to be added to the current ones
@@ -51,10 +48,18 @@ public: // Methods
     /// @param yCords: New Y position (-1.0f wont change the current)
     void setPosition(float xCords, float yCords);
 
+    /// @brief Get entity's position
+    /// @return Vector2 object
+    Vector2 getPosition();
+
     /// @brief Changes the location in the graph and the position
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
     void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+
+    /// @brief Gets the pointer to map graph node where the entity is standing
+    /// @return Pointer to node
+    G_Node<MapChunk>* getLocation();
 
     /// @brief Get the entity health points
     /// @return Entity health points

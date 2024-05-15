@@ -2,12 +2,14 @@
 
 Treasure::Treasure(){
     this->setHealthPoints(1);
-    this->setPosition(0, 0);
+    this->setPosition(0.f, 0.f);
     this->currentSpriteSheet = treasureTexture;
 }
 
-Treasure::Treasure(float xCord, float yCord){
-    this->setHealthPoints(5);
-    this->setPosition(xCord, yCord);
+Treasure::Treasure(int xCord, int yCord){
+    this->setHealthPoints(1);
+    this->setPosition(0.f, 0.f);
+    this->graphX = xCord;
+    this->graphY = yCord;
     this->currentSpriteSheet = treasureTexture;
 }

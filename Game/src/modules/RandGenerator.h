@@ -8,7 +8,7 @@ class Generator {
 public:
     Generator(){};
 
-    int generateInt(int lower_bound, int upper_bound){
+    int gen(int lower_bound, int upper_bound){
         int result  = 0;
 
         // Number generation

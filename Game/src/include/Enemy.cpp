@@ -19,14 +19,28 @@ void Enemy::moveTo(MapChunk &newMapChunk, float frameTime){
 }
 
 
-void Enemy::shift(Map2D* ref){
-
+void Enemy::shift(Map2D* ref, float frameTime){
+    if (this->routing){
+        this->patrol(frameTime);
+    }
+    if (this->returning){
+        this->returning = false;
+        this->routing = true;
+    }
+    if (this->engaging){
+        if(this->target != nullptr){
+            if (this->target->getLocation()->data.chunk_type != ChunkType::safe){
+                if (this->rangeToEntity(this->target, true)){
+                    this->attack();
+                } else {
+                    this->moveTo(this->target->getLocation()->data, frameTime);
+                }
+            } else {
+                this->disengage();
+            }
+        }
+    }
 }
-
-void Enemy::generateRoute(){
-    // this->route.enqueue(make_tuple(random_generator.generateInt(0,4), random_generator.generateInt(0,7)));
-    // this->route.enqueue(make_tuple(random_generator.generateInt(0,7), random_generator.generateInt(0,4)));
-};
 
 void Enemy::traceback(){
     // vector< G_Node<MapChunk>* > path;
@@ -56,13 +70,32 @@ vector< G_Node<MapChunk>* > Enemy::backtrack(vector<G_Node<MapChunk>*> path, G_N
 };
 
 void Enemy::setTarget(Entity* entity){
-
+    this->target = entity;
 };
 
 void Enemy::attack(){
-
+    this->target->setHealthPoints(0);
 };
 
-void Enemy::follow(){
+void Enemy::patrol(float frameTime){
+    MapChunk chunk = this->route.peek();
+    this->moveTo(chunk, frameTime);
+    if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
+        this->route.enqueue(this->route.dequeue().data);
+    }
+};
 
+bool Enemy::rangeToEntity(Entity* entity, bool attacking){
+    int range = this->detection_range;
+    if (attacking){
+        range = 15;
+    }
+    Vector2 other = entity->getPosition();
+    Vector2 current = this->getPosition();
+    // [ VALIDATION IN X ]
+    bool conditionX = (other.x < current.x + range) && (other.x > current.x - range);
+    // [ VALIDATION IN Y ]
+    bool conditionY = (other.y < current.y + range) && (other.y > current.y - range);
+
+    return conditionX && conditionY;
 };

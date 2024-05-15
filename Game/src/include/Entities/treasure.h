@@ -16,7 +16,7 @@ public: // Methods
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Treasure(float xCord, float yCord);
+    Treasure(int xCord, int yCord);
 };
 
 #endif // TREASURE_H

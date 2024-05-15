@@ -20,10 +20,10 @@ public: // Methods
     Specter();
 
     /// @brief Constructor method
-    /// @param xCord: x position of entity in Engine
-    /// @param yCord: y position of entity in Engine
+    /// @param xCord: x coordinate of entity
+    /// @param yCord: y coordinate of entity
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
-    Specter(float xCord, float yCord, int skill_rates[]);
+    Specter(int xCord, int yCord, int skill_rates[]);
 
     void update() override {};
     

@@ -16,7 +16,7 @@ public: // Methods
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Vase(float xCord, float yCord);
+    Vase(int xCord, int yCord);
 };
 
 #endif // VASE_H

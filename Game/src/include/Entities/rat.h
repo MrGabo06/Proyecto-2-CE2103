@@ -18,10 +18,10 @@ public: // Methods
     Rat();
 
     /// @brief Constructor method
-    /// @param xCord: x position of entity in Engine
-    /// @param yCord: y position of entity in Engine
+    /// @param xCord: x coordinate of entity
+    /// @param yCord: y coordinate of entity
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
-    Rat(float xCord, float yCord, int skill_rates[]);
+    Rat(int xCord, int yCord, int skill_rates[]);
     
 private:
     /// @brief Sets the enemy properties based on a rating (1-10) 
