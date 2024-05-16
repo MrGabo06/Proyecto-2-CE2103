@@ -102,7 +102,7 @@ int main()
         for (int i = 0; i < computer.size(EntGroup::statical); i++)
         {
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-            DrawTextureRec(ent->currentSpriteSheet, frameRec, ent->getPosition(), RAYWHITE);
+            DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
         }
         DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
         EndMode2D();
