@@ -24,7 +24,8 @@ int main()
     Manager computer(&map, 5, 2, 2, 3, 1, 5, 5);
     LinkedList<MapChunk> breadcrumbList;
 
-    Player player(0, 0);
+    Player player(1, 1);
+    player.currentMap = &map;
     map.locate_at(&player, player.graphY, player.graphX, true);
 
     player.setMapLimits(map.grid_size);
@@ -36,22 +37,42 @@ int main()
     Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = {0};
-    camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
-    camera.zoom = 0.5f;
+
+    // Camera limits are set for 3.5f zoom
+    camera.zoom = 3.5f;
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
     while (!WindowShouldClose()){
         ClearBackground(RAYWHITE);
 
+        // *****************************************
+        // Behind logic
+        // *****************************************
+
         float frameTime = GetFrameTime();
         player.movePlayer(frameTime);
 
-        camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
+        if (player.getPosition().x < 207.0f){
+            camera.target.x = 107.0f;
+        } else if (player.getPosition().x > 1843.0f){
+            camera.target.x = 1740.0f;
+        } else{
+            camera.target.x = player.getPosition().x - 100.0f;
+        }
+        
+        if (player.getPosition().y < 85.0f){
+            camera.target.y = 55.0f;
+        } else if (player.getPosition().y > 732.0f){
+            camera.target.y = 702.0f;
+        } else{
+            camera.target.y = player.getPosition().y - 30.0f;
+        }
 
         map.locate_at(&player, player.graphY, player.graphX, false);
+
         if (player.getHealth() <= 0){
             break;
         }
@@ -70,11 +91,14 @@ int main()
             breadcrumbList.remove(0);
         }
 
-        cout
-            << breadcrumbList.getSize() << endl;
 
         auto currentTime = std::chrono::steady_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+
+        // *******************************************
+        // Drawing Section
+        // *******************************************
+
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)
         {
