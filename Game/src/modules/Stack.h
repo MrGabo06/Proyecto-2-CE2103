@@ -22,6 +22,10 @@ class Stack{
         /// @return Removed node
         B_Node<T> pop();
 
+        /// @brief Gets the of the element at the top of the stack without removing
+        /// @return Data of the node
+        T& peek();
+
         /// @brief Get the current size of the Stack
         int size();
 };

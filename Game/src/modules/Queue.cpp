@@ -18,6 +18,11 @@ B_Node<T>* Queue<T>::find(int index){
 }
 
 template<typename T>
+T& Queue<T>::peek(){
+    return this->elements.get(0);
+}
+
+template<typename T>
 T& Queue<T>::get(int index){
     return this->elements.find(index)->data;
 }

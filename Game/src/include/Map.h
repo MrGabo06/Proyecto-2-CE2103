@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include "MapChunk.h"
+#include "Enemy.h"
 #include "../modules/Graph.h"
 
 #include <stdexcept>
@@ -10,6 +11,8 @@
 #include <iostream>
 
 using namespace std;
+
+class Enemy;
 
 enum Level {
     first,
@@ -24,6 +27,7 @@ class Map2D{
 private: // Atributes
     Graph<MapChunk> grid;
     string file_asset = "Game/src/resources/map_assets";
+    bool dark_map = false;
 public:
     float width;
     float height;
@@ -65,7 +69,7 @@ private:
     /// @brief Gets a relative weight for the chunk to connect to other nodes
     /// @param chunk: chunk to evaluate
     /// @return Value of the weight
-    int chunk_output(MapChunk chunk);
+    int chunk_output(MapChunk& chunk);
 };
 
 #endif // MAP_H

@@ -1,8 +1,17 @@
-#include "Astar.h"
-#include <queue>
+#include "WayFinder.h"
+
+#include <math.h>
+#include <iostream>
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
+
+
+// [ Helper methods for algorithm ]
+
+float heuristic(const MapChunk& a, const MapChunk& b){
+    return std::sqrt(std::pow(a.position.x - b.position.x,2)+ std::pow(a.position.y-b.position.y,2));
+}
 
 // Comparator for priority queue
 struct Compare {
@@ -22,8 +31,13 @@ std::stack<G_Node<MapChunk>*> reconstruct_path(std::unordered_map<G_Node<MapChun
     return total_path;
 }
 
-// A* search function
-std::stack<G_Node<MapChunk>*> a_star(Graph<MapChunk>& graph, G_Node<MapChunk>* start, G_Node<MapChunk>* goal) {
+// [ Class methods ]
+
+WayFinder::WayFinder(){
+
+}
+
+stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal){
     std::priority_queue<std::pair<float, G_Node<MapChunk>*>, std::vector<std::pair<float, G_Node<MapChunk>*>>, Compare> openSet;
     std::unordered_map<G_Node<MapChunk>*, float> gScore;
     std::unordered_map<G_Node<MapChunk>*, float> fScore;
@@ -40,13 +54,13 @@ std::stack<G_Node<MapChunk>*> a_star(Graph<MapChunk>& graph, G_Node<MapChunk>* s
         openSet.pop();
         openSetNodes.erase(current);
 
-        if (current == goal) {
+        if (current->data == goal->data) {
             return reconstruct_path(cameFrom, current);
         }
 
         for (auto& neighborData : current->connections) {
-            auto& neighbor = neighborData.first;
-            float weight = neighborData.second;
+            auto& neighbor = get<0>(neighborData);
+            float weight = (float)get<1>(neighborData);
             float tentative_gScore = gScore[current] + weight;
 
             if (tentative_gScore < gScore[neighbor]) {
@@ -63,4 +77,31 @@ std::stack<G_Node<MapChunk>*> a_star(Graph<MapChunk>& graph, G_Node<MapChunk>* s
     }
 
     return {}; // Return empty stack if no path is found
+}
+
+vector<G_Node<MapChunk>*> WayFinder::backtrack(G_Node<MapChunk>* pointA, G_Node<MapChunk>* pointB, vector<G_Node<MapChunk>*> route){
+    if (pointA->data == pointB->data){
+        return route; // Return the current saved route to point
+    } else {
+        for ( auto neighbor : pointA->connections){
+            auto node = get<0>(neighbor);
+            std::cout << node->data.coordinates[0] << "+" << node->data.coordinates[1] << std::endl;
+            bool repeated = false;
+            for ( auto known : route){
+                if (known->data == node->data){
+                    repeated = true;
+                    break;
+                }
+            }
+            if (!repeated && node->data.chunk_type != ChunkType::wall && node->data.chunk_type != ChunkType::fake){
+                if ( node->data == pointB->data){
+                    route.push_back(node);
+                    return route;
+                } else {
+                    route.push_back(node);
+                    return backtrack(node, pointB, route);
+                }
+            }
+        }
+    }
 }

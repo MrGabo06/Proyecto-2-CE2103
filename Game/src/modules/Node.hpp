@@ -146,8 +146,8 @@ template<typename T>
 class G_Node {
     public: // Attributes
         T data;
-    private:
-        std::vector< std::tuple< G_Node<T>*, int> > nodes; 
+        std::vector< std::tuple< G_Node<T>*, int> > connections;
+        
     public: // Methods
 
         /// @brief Default constructor for a graph node
@@ -167,29 +167,29 @@ class G_Node {
         /// @param _weight: value of the weight of the connection of the two nodes
         void addNode(G_Node<T>* _other, int weight){
             std::tuple< G_Node<T>*, int > connection = std::make_tuple(_other, weight);
-            this->nodes.push_back(connection);
+            this->connections.push_back(connection);
         }
 
         /// @brief Remove a node connection
         /// @param index: position of a node connection
         void removeNode(int index){
-            if (index < 0 || index >= this->nodes.size() ){
+            if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
             }
             if (index == 0){
-                std::tuple< G_Node<T>*, int> connection = this->nodes.operator[](index);
+                std::tuple< G_Node<T>*, int> connection = this->connections.operator[](index);
                 G_Node<T>* ref = std::get<0>(connection);
-                this->nodes.pop_back();
+                this->connections.pop_back();
                 delete ref;
             } else if (index > 0){
                 // Swapped the specified element with the last 
-                std::tuple< G_Node<T>*, int> connection = this->nodes.operator[](index);
+                std::tuple< G_Node<T>*, int> connection = this->connections.operator[](index);
                 G_Node<T>* ref = std::get<0>(connection);
-                this->nodes.operator[](index) = this->nodes.operator[](this->nodes.size()-1);
-                this->nodes.operator[](this->nodes.size()-1) = connection;
+                this->connections.operator[](index) = this->connections.operator[](this->connections.size()-1);
+                this->connections.operator[](this->connections.size()-1) = connection;
 
                 // Remove the 'changed' last element and deallocate the node pointer
-                this->nodes.pop_back();
+                this->connections.pop_back();
                 delete ref;
             }
         }
@@ -198,26 +198,26 @@ class G_Node {
         /// @param index: position of a node connection
         /// @return pointer to connected node
         G_Node<T>* getNode(int index){
-            if (index < 0 || index >= this->nodes.size() ){
+            if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
             }
-            std::tuple< G_Node<T>*, int > connection = this->nodes.operator[](index);
+            std::tuple< G_Node<T>*, int > connection = this->connections.operator[](index);
             return std::get<0>(connection);
         }
         /// @brief Retrieves the reference of a node connection and its weight
         /// @param index: position of a node connection
         /// @return tuple with pointer to connected node and integer value of weight
         std::tuple< G_Node<T>*, int > getNode_W(int index){
-            if (index < 0 || index >= this->nodes.size() ){
+            if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
             }
-            return this->nodes.operator[](index);
+            return this->connections.operator[](index);
         }
 
         /// @brief Get the number of current connections
         /// @return integer value of the amount of connections
         const int total_connected(){
-            return this->nodes.size();
+            return this->connections.size();
         }
 
         /// @brief Destructor method

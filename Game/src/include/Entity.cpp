@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 #include "Map.h"
 
 void Entity::move(float frameTime, const char dir){
@@ -21,6 +21,9 @@ void Entity::move(float frameTime, const char dir){
     {
         this->position.x += entityHorizontalSpeed * frameTime;
     }
+
+    this->graphX = this->getPosition().x / this->cellSize;
+    this->graphY = this->getPosition().y / this->cellSize;
 }
 
 Vector2 Entity::getPosition(){
@@ -28,7 +31,7 @@ Vector2 Entity::getPosition(){
 }
 
 void Entity::setHealthPoints(int newHp){
-    healthPoints = newHp;
+    healthPoints += newHp;
 }
 
 void Entity::setPosition(float xCords, float yCords){
@@ -43,7 +46,18 @@ void Entity::setPosition(float xCords, float yCords){
 
 void Entity::setLocation(G_Node<MapChunk>* map_chunk, bool changePosition){
     this->location = map_chunk;
+    this->graphX = map_chunk->data.coordinates[1];
+    this->graphY = map_chunk->data.coordinates[0];
     if (changePosition) {
         this->position = location->data.center();    
     }
+
+}
+
+G_Node<MapChunk>* Entity::getLocation(){
+    return this->location;
+}
+
+int Entity::getHealth(){
+    return healthPoints;
 }

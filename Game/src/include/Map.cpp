@@ -1,6 +1,7 @@
 #include "Map.h"
 
 #include <vector>
+#include <iostream>
 
 Map2D::Map2D(){
     this->height = 0.f, this->width = 0.f;
@@ -15,6 +16,7 @@ Map2D::Map2D(Level level_to_load, float* chunk_size){
 
         case second:
             this->file_asset += "/level2.txt";
+            this->dark_map = true;
             break;
 
         case third:
@@ -62,7 +64,7 @@ void Map2D::generate(){
     for ( int i = 0; i<layout.size(); i++){
         for (int j = 0; j<layout[i].size(); j++){
             int coords[2] = {i,j};
-            MapChunk chunk(layout[i][j], positions[0], positions[1], chunk_dimensions, coords);
+            MapChunk chunk(layout[i][j], positions[0], positions[1], chunk_dimensions, coords, this->dark_map);
             this->grid.add(chunk);
             positions[0] += chunk_dimensions[0];
         }
@@ -78,6 +80,7 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
     this->grid.clear();
     // [ SET THE NEW FILE TO LOAD]
     this->file_asset = "Game/src/resources/map_assets";
+    this->dark_map = false;
     switch (new_level){
         case first:
             this->file_asset += "/level1.txt";
@@ -85,6 +88,7 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
 
         case second:
             this->file_asset += "/level2.txt";
+            this->dark_map = true;
             break;
 
         case third:
@@ -108,37 +112,23 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
 void Map2D::load_boundaries(){
     // [ CREATE GRAPH <CHUNKS> CONNECTIONS ]
     int row_gap = this->grid.size()/this->grid_size[0];
-    int i = 0;
-    for (int j = 0; j<this->grid.size(); j++){
-        MapChunk chunk = this->grid.getNode(j)->data;
-        int weight = this->chunk_output(chunk);
-        if ( j > 0 && j < this->grid.size()){
-            // { Horizontal connections }
-            this->grid.makeConnection(j, j+1, false, make_tuple(weight, 0));
-            this->grid.makeConnection(j, j-1, false, make_tuple(weight, 0));
-            // { Vertical connections }
-            this->grid.makeConnection(j, j + (i+1)*row_gap, false , make_tuple(weight, 0));
-            if ( i > 0){
-                this->grid.makeConnection(j, j + (i-1)*row_gap, false , make_tuple(weight, 0));
+    for (int i = 0; i < this->grid_size[0]; i++){
+        for (int j= 0; j < this->grid_size[1]; j++){
+            MapChunk& chunk = this->get(i,j);
+            int current = j + i*row_gap;
+            int neighbors[][2] = {{j, (i-1)}, {j, (i+1)}, {(j+1), i}, {(j-1), i}};
+            for (auto neighbor: neighbors){
+                if ( (neighbor[0] < this->grid_size[1] && neighbor[0] >= 0) && (neighbor[1] < this->grid_size[0] && neighbor[1] >= 0)){
+                    MapChunk& chunk = this->get(neighbor[1], neighbor[0]);
+                    this->grid.makeConnection(current, neighbor[0]+neighbor[1]*row_gap, false, make_tuple(this->chunk_output(chunk),0));
+                    std::cout << i << "," << j << " => " << neighbor[1] << "," << neighbor[0] << std::endl; 
+                }
             }
-        } else if ( j == 0){
-            // { Horizontal connections }
-            this->grid.makeConnection(j, j+1, false, make_tuple(weight, weight));
-            // { Vertical connections }
-            this->grid.makeConnection(j, j + (i+1)*row_gap, false, make_tuple(weight, 0));
-        } else if ( j == this->grid.size()-1){
-            // { Horizontal connections }
-            this->grid.makeConnection(j, j-1, false, make_tuple(weight, weight));
-            // { Vertical connections }
-            this->grid.makeConnection(j, j + (i-1)*row_gap, false, make_tuple(weight, 0));
-        }
-        if ((j+1)%4 == 0){
-            i++;
         }
     }
 }
 
-int Map2D::chunk_output(MapChunk chunk){
+int Map2D::chunk_output(MapChunk& chunk){
     int travel_time = 0;
     switch (chunk.chunk_type){
         case terrain:
@@ -167,10 +157,10 @@ int Map2D::chunk_output(MapChunk chunk){
 }
 
 MapChunk& Map2D::get(int i, int j){
-    if (i > this->grid_size[0] || i < 0){
+    if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("i value is out of range");
     }
-    if (j > this->grid_size[1] || j < 0){
+    if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];
@@ -181,10 +171,10 @@ MapChunk& Map2D::get(int i, int j){
 
 void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     // [ NODE <CHUNK> RETRIEVAL ]
-    if (i > this->grid_size[0] || i < 0){
+    if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("i value is out of range");
     }
-    if (j > this->grid_size[1] || j < 0){
+    if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];

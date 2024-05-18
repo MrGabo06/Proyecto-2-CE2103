@@ -1,40 +1,30 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "include/player.h"
+#include "include/Entities/player.h"
 #include "include/Map.h"
 #include "include/MapChunk.h"
-#include "include/Entidades/rat.hpp"
-#include "include/Entidades/ojoespectral.hpp"
-#include "include/Entidades/espectro.hpp"
-#include "include/Entidades/jefe.hpp"
-#include "include/Entidades/chocobo.hpp"
+#include "include/Manager.h"
 
-int main(void)
-{
+#include <chrono>
+#include <iostream>
+#include "modules/LinkedList.h"
+#include "modules/Node.hpp"
+
+int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
     InitWindow(screenWidth, screenHeight, "Selda");
-    Rat rat(700, 200);
-
-    ojo ojo(700, 300);
-
-    espectro espectro(700, 400);
-
-    jefe jefe(700, 500);
-
-    chocobo chocobo(700, 600);
-
-    int graphX = 2;
-    int graphY = 4;
 
     float chunk_sizes[] = {(float)48, (float)48};
-
-    Player player(500, 100, chunk_sizes[0]);
-
-    Map2D map(Level::second, chunk_sizes);
+    Map2D map(Level::first, chunk_sizes);
     map.generate();
-    map.locate_at(&player, graphX, graphY, true);
+
+    Manager computer(&map, 1, 0, 0, 0, 0, 0, 0);
+    LinkedList<MapChunk> breadcrumbList;
+
+    Player player(3, 3);
+    map.locate_at(&player, player.graphY, player.graphX, true);
 
     player.setMapLimits(map.grid_size);
 
@@ -48,78 +38,111 @@ int main(void)
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
-    camera.zoom = 4.5f;
+    camera.zoom = 0.5f;
 
     SetTargetFPS(120);
-    while (!WindowShouldClose())
-    {
+    auto startTime = std::chrono::steady_clock::now();
+    while (!WindowShouldClose()){
         ClearBackground(RAYWHITE);
 
         float frameTime = GetFrameTime();
-        player.movePlayer(frameTime, map.grid_size);
-
-        graphX = player.getPosition().x / chunk_sizes[0];
-        graphY = player.getPosition().y / chunk_sizes[0];
+        player.movePlayer(frameTime);
 
         camera.target = (Vector2){player.getPosition().x - 75.0f, player.getPosition().y - 30.0f};
 
-        map.locate_at(&player, graphY, graphX, false);
+        map.locate_at(&player, player.graphY, player.graphX, false);
+        if (player.getHealth() <= 0){
+            break;
+        }
 
+        // MapChunk breadcrumb = map.get(player.graphY, player.graphX);
+
+        // if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 20)
+        // {
+        //     breadcrumbList.insert(breadcrumb);
+        //     map.get(player.graphY, player.graphX).breadcrumb = 1;
+        // }
+
+        // else if (player.isMoving && breadcrumbList.getSize() > 20)
+        // {
+        //     breadcrumbList.insert(breadcrumb);
+        //     breadcrumbList.remove(0);
+        // }
+
+        // cout << breadcrumbList.getSize() << endl;
+
+        auto currentTime = std::chrono::steady_clock::now();
+        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
         BeginMode2D(camera);
-        for (int i = 0; i < map.grid_size[0]; i++)
-        {
-            for (int j = 0; j < map.grid_size[1]; j++)
-            {
-                MapChunk chunk = map.get(i, j);
+        for (int i = 0; i < map.grid_size[0]; i++){
+            for (int j = 0; j < map.grid_size[1]; j++){
+                MapChunk& chunk = map.get(i, j);
                 Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
                 DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
             }
         }
 
-        if (player.light && map.get(graphY + 1, graphX).light == false && map.get(graphY - 1, graphX).light == false && map.get(graphY, graphX - 1).light == false && map.get(graphY, graphX + 1).light == false)
-        {
-            map.get(graphY + 1, graphX).lightChunk();
-            map.get(graphY - 1, graphX).lightChunk();
-            map.get(graphY, graphX - 1).lightChunk();
-            map.get(graphY, graphX + 1).lightChunk();
-            map.get(graphY, graphX).lightChunk();
-            for (int i = 0; i < map.grid_size[0]; i++)
-            {
-                for (int j = 0; j < map.grid_size[1]; j++)
-                {
-                    if (i > graphX - 2 && map.get(i, j).light)
-                    {
-                        map.get(i, j).unLightChunk();
-                    }
-                    else if (i < graphX + 2 && map.get(i, j).light)
-                    {
-                        map.get(i, j).unLightChunk();
-                    }
-                    else if (j > graphY + 2 && map.get(i, j).light)
-                    {
-                        map.get(i, j).unLightChunk();
-                    }
-                    else if (j < graphY - 2 && map.get(i, j).light)
-                    {
-                        map.get(i, j).unLightChunk();
-                    }
-                }
+        // if (player.light && map.get(player.graphY + 1, player.graphX).light == false && map.get(player.graphY - 1, player.graphX).light == false && map.get(player.graphY, player.graphX - 1).light == false && map.get(player.graphY, player.graphX + 1).light == false){
+        //     map.get(player.graphY + 1, player.graphX).lightChunk();
+        //     map.get(player.graphY - 1, player.graphX).lightChunk();
+        //     map.get(player.graphY, player.graphX - 1).lightChunk();
+        //     map.get(player.graphY, player.graphX + 1).lightChunk();
+        //     map.get(player.graphY, player.graphX).lightChunk();
+        //     for (int i = 0; i < map.grid_size[0]; i++)
+        //     {
+        //         for (int j = 0; j < map.grid_size[1]; j++)
+        //         {
+        //             if (i > player.graphX - 2 && map.get(i, j).light)
+        //             {
+        //                 map.get(i, j).unLightChunk();
+        //             }
+        //             else if (i < player.graphX + 2 && map.get(i, j).light)
+        //             {
+        //                 map.get(i, j).unLightChunk();
+        //             }
+        //             else if (j > player.graphY + 2 && map.get(i, j).light)
+        //             {
+        //                 map.get(i, j).unLightChunk();
+        //             }
+        //             else if (j < player.graphY - 2 && map.get(i, j).light)
+        //             {
+        //                 map.get(i, j).unLightChunk();
+        //             }
+        //         }
+        //     }
+        // }
+        // else if (map.get(player.graphY + 1, player.graphX).light && map.get(player.graphY - 1, player.graphX).light && map.get(player.graphY, player.graphX - 1).light && map.get(player.graphY, player.graphX + 1).light)
+        // {
+        //     map.get(player.graphY + 1, player.graphX).unLightChunk();
+        //     map.get(player.graphY - 1, player.graphX).unLightChunk();
+        //     map.get(player.graphY, player.graphX - 1).unLightChunk();
+        //     map.get(player.graphY, player.graphX + 1).unLightChunk();
+        //     map.get(player.graphY, player.graphX).unLightChunk();
+        // }
+
+        for (int i = 0; i < computer.size(EntGroup::enemies); i++){
+            Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
+            if(enemy->rangeToEntity(&player, false)){
+                enemy->setTarget(&player);
+                enemy->engage();
             }
-        }
-        else if (map.get(graphY + 1, graphX).light && map.get(graphY - 1, graphX).light && map.get(graphY, graphX - 1).light && map.get(graphY, graphX + 1).light)
-        {
-            map.get(graphY + 1, graphX).unLightChunk();
-            map.get(graphY - 1, graphX).unLightChunk();
-            map.get(graphY, graphX - 1).unLightChunk();
-            map.get(graphY, graphX + 1).unLightChunk();
-            map.get(graphY, graphX).unLightChunk();
+            enemy->shift(frameTime, elapsedTime);
+            map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
+            DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
         }
 
+        for (int i = 0; i < computer.size(EntGroup::statical); i++){
+            Entity *ent = computer.getEntity(EntGroup::statical, i);
+            DrawTextureRec(ent->currentSpriteSheet, frameRec, ent->getPosition(), RAYWHITE);
+        }
         DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
-        DrawTextureRec(rat.currentSpriteSheet, frameRec, rat.getPosition(), WHITE); // Dibujamos al ratón
+
         EndMode2D();
 
         BeginDrawing();
+        for (int i = 1; i < player.getHealth() + 1; i++){
+            DrawTexture(player.idleSprite, 40 * i, 10, WHITE);
+        }
         EndDrawing();
     }
 
