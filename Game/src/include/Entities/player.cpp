@@ -1,38 +1,37 @@
 #include "player.h"
 
-void Player::movePlayer(float frameTime)
-{
+void Player::movePlayer(float frameTime){
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
-        this->isMoving = false;
+        // Stop movement
     }
 
     if (IsKeyDown(KEY_UP))
     {
         this->move(frameTime, Entity::mvUp);
         this->currentSpriteSheet = movingUpSprite;
-        this->isMoving = true;
     }
 
     if (IsKeyDown(KEY_DOWN))
     {
         this->move(frameTime, Entity::mvDown);
         this->currentSpriteSheet = movingDownSprite;
-        this->isMoving = true;
     }
 
     if (IsKeyDown(KEY_LEFT))
     {
         this->move(frameTime, Entity::mvLeft);
         this->currentSpriteSheet = movingLeftSprite;
-        this->isMoving = true;
     }
 
     if (IsKeyDown(KEY_RIGHT))
     {
         this->move(frameTime, Entity::mvRight);
         this->currentSpriteSheet = movingRightSprite;
-        this->isMoving = true;
+    }
+    if (IsKeyDown(KEY_Q))
+    {
+        this->light = !light;
     }
 
     if (this->getPosition().x < this->leftLimit)
@@ -62,9 +61,8 @@ void Player::setMapLimits(int limits[2])
     this->downLimit = limits[0] * this->cellSize;
 }
 
-Player::Player(int startGraphX, int startGraphY)
-{
-    this->setHealthPoints(5);
+Player::Player(int startGraphX, int startGraphY){
+    this->healthPoints = 5;
     this->graphX = startGraphX;
     this->graphY = startGraphY;
     this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);

@@ -10,8 +10,7 @@ using namespace std;
 #define PLAYER_HOR_SPD 200.0f
 
 /// @brief Class for player entity that can be controlled by user
-class Player : public Entity
-{
+class Player : public Entity{
 private: // Attributes
     int upLimit = 0;
     int downLimit = 0;
@@ -24,6 +23,7 @@ public:
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
+    bool light = false;
     bool isMoving;
 
 public: // Methods
@@ -34,7 +34,6 @@ public: // Methods
 
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
-    /// @param mapSize: Map width and height
     void movePlayer(float frameTime);
 
     /// @brief Sets the limits of the map so the player doesnt move out of it

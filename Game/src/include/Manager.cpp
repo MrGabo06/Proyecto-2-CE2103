@@ -7,7 +7,7 @@ Manager::Manager(){
 Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases){
     // [ SET THE ATTRIBUTE SCALING FOR ENEMIES ]
     for (int x = 0; x < 6; x++){
-        this->stats[x] = 10;
+        this->stats[x] = 4;
     }
     // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
@@ -35,7 +35,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for ( int i = 0; i < quantity; i++){
             Enemy* chocobo = new Chocobo(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
             this->origin->locate_at(chocobo,chocobo->graphY,chocobo->graphX, true);
-            this->origin->generateRoute(chocobo);
+            chocobo->generateRoute(this->origin);
             this->mob_entities.push_back(chocobo);
         }
         break;
@@ -43,7 +43,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for ( int i = 0; i < quantity; i++){
             Enemy* eye = new Eye(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
             this->origin->locate_at(eye,eye->graphY,eye->graphX, true);
-            this->origin->generateRoute(eye);
+            eye->generateRoute(this->origin);
             this->mob_entities.push_back(eye);
         }
         break;
@@ -51,7 +51,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for ( int i = 0; i < quantity; i++){
             Enemy* rat = new Rat(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
             this->origin->locate_at(rat,rat->graphY, rat->graphX, true);
-            this->origin->generateRoute(rat);
+            rat->generateRoute(this->origin);
             this->mob_entities.push_back(rat);
         }
         break;
@@ -59,7 +59,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for ( int i = 0; i < quantity; i++){
             Enemy* specter = new Specter(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
             this->origin->locate_at(specter,specter->graphY, specter->graphX,true);
-            this->origin->generateRoute(specter);
+            specter->generateRoute(this->origin);
             this->mob_entities.push_back(specter);
         }
         break;
@@ -67,7 +67,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for ( int i = 0; i < quantity; i++){
             Enemy* boss = new Super(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
             this->origin->locate_at(boss,boss->graphY,boss->graphX, true);
-            this->origin->generateRoute(boss);
+            boss->generateRoute(this->origin);
             this->mob_entities.push_back(boss);
         }
         break;

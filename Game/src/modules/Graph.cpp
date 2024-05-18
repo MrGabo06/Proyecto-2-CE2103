@@ -42,7 +42,7 @@ void Graph<T>::remove(int _pos){
             G_Node<T>* node = this->graph_nodes[i];
 
             for (int j = 0; j<node->total_connected; i++){
-                if (get<0>(node->nodes[j]) == rm_node){
+                if (get<0>(node->connections[j]) == rm_node){
                     node->removeNode(j);
                     break;
                 }

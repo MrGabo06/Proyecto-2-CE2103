@@ -6,9 +6,8 @@
 #include "../modules/RandGenerator.h"
 #include "enemy_properties.hpp"
 #include "Map.h"
+#include "WayFinder.h"
 
-#include <vector>
-#include <tuple>
 #include <raylib.h>
 
 class Map2D;
@@ -23,8 +22,11 @@ using namespace std;
 class Enemy : public Entity{
 protected: // Atributes
     Generator random;
+    WayFinder device;
 
     // { Pathfinding variables }
+    Queue< MapChunk > route;
+    Queue< MapChunk > sub_route;
     G_Node< MapChunk >* LastPosition;
     Entity* target;
     
@@ -36,16 +38,13 @@ protected: // Atributes
     int decision_chances;
     int attack_damage;
 
+    Cooldown cooldown;
+
     // { Enemy operational states }
     bool routing;
     bool engaging;
     bool returning;
 
-public:
-    // { Pathfinding variables }
-    Queue< MapChunk > route;
-
-    Cooldown cooldown;
 public: // Methods
 
     Enemy(){};
@@ -53,7 +52,9 @@ public: // Methods
     ~Enemy(){};
 
     /// @brief In this context, the 'shifting' method make the enemy entity do 'something'(which varies on the context of the entity)
-    void shift(Map2D* ref, float frameTime);
+    /// @param frame_time
+    /// @param time_stamp
+    void shift(float frame_time, int64_t time_stamp);
 
     /// @brief Sets an entity as the target of this enemy
     /// @param entity: reference to the entity
@@ -65,18 +66,34 @@ public: // Methods
     /// @brief Asks the entity to continue its patrol route
     void patrol(float frameTime);
 
+    void traceback(float frameTime);
+
+    /// @brief Engages the entity into offensive state
     void engage(){
+        // Clear the sub route if there was any queued chunks to visit
+        while (this->sub_route.size() > 0){
+            this->sub_route.dequeue();
+        }
+        // Change the pointer to the location of entity before engaging
+        this->LastPosition = this->location;
+        // Change conditions
         this->engaging = true;
         this->returning = false;
         this->routing = false;
     };
 
+    /// @brief Disengages the entity into its normal state
     void disengage(){
+        this->setTarget(nullptr);
         this->engaging = false;
         this->returning = true;
         this->routing = false;
     };
 
+    /// @brief Determines if another entity is in range to this instance
+    /// @param entity: reference to other entity
+    /// @param attacking: changes the range from [VISION] to [ATTACK]
+    /// @return True or False
     bool rangeToEntity(Entity* entity, bool attacking);
 
     /// @brief Moves the entity to the specified chunk
@@ -84,22 +101,15 @@ public: // Methods
     /// @param frameTime 
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
-    /// @brief Goes to back to previous position and returns to normal behavior
-    void traceback();
+    /// @brief Generates a random patrol route for entity
+    /// @param map 
+    void generateRoute(Map2D* map);
     
 protected:
 
     /// @brief Sets the enemy properties based on a rating (1-10) 
     /// @param scaling: array(6) of ratings
     virtual void setProperties(int scaling[]){};
-
-private:
-    /// @brief Backtracks to previous position before engaging
-    /// @param path 
-    /// @param CurrentPosition 
-    /// @param LastPosition 
-    /// @return 
-    vector< G_Node<MapChunk>* > backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition);
 
 };
 
