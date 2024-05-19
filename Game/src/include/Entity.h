@@ -36,7 +36,7 @@ public: // Methods
     /// @brief Moves the entity to the given direction
     /// @param frameTime: Raylib window frame time
     /// @param dir: Direction the entity will move to
-    void move(float frameTime, const char dir);
+    virtual void move(float frameTime, const char dir);
 
 
     /// @brief Modify (add or take) health points 
