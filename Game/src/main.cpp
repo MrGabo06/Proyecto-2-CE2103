@@ -31,10 +31,10 @@ int main()
     player.setMapLimits(map.grid_size);
 
     int currentFrame = 0;
-    const int frameSpeed = 8;
+    const int frameSpeed = 5;
     int frameCounter = 0;
 
-    Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle playerFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = {0};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
@@ -96,6 +96,22 @@ int main()
         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
 
         // *******************************************
+        // Animation Logic
+        // *******************************************
+
+        frameCounter++;
+
+        if (frameCounter >= (60/frameSpeed) && player.isMoving)
+        {
+            frameCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            playerFrameRect.x = (float)currentFrame*(float)player.currentSpriteSheet.width/4;
+        }
+        
+        // *******************************************
         // Drawing Section
         // *******************************************
 
@@ -120,7 +136,7 @@ int main()
                     enemy->shift(&map, frameTime);
                 }
                 map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-                DrawTextureRec(enemy->currentSpriteSheet, frameRec, enemy->getPosition(), RAYWHITE);
+                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
             }
 
         for (int i = 0; i < computer.size(EntGroup::statical); i++)
@@ -128,7 +144,7 @@ int main()
             Entity *ent = computer.getEntity(EntGroup::statical, i);
             DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
         }
-        DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
+        DrawTextureRec(player.currentSpriteSheet, playerFrameRect, player.getPosition(), WHITE);
         EndMode2D();
 
         BeginDrawing();
