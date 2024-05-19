@@ -37,7 +37,11 @@ WayFinder::WayFinder(){
 
 }
 
-stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal){
+void WayFinder::search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal){
+    while (this->obt.size() > 0 ){
+        this->obt.pop_back();
+    }
+
     std::priority_queue<std::pair<float, G_Node<MapChunk>*>, std::vector<std::pair<float, G_Node<MapChunk>*>>, Compare> openSet;
     std::unordered_map<G_Node<MapChunk>*, float> gScore;
     std::unordered_map<G_Node<MapChunk>*, float> fScore;
@@ -55,11 +59,16 @@ stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapCh
         openSetNodes.erase(current);
 
         if (current->data == goal->data) {
-            return reconstruct_path(cameFrom, current);
+            auto route = reconstruct_path(cameFrom, current);
+            while (route.size() > 0){
+                this->obt.push_back(route.top());
+                route.pop();
+            }
+            break;
         }
 
-        for (auto& neighborData : current->connections) {
-            auto& neighbor = get<0>(neighborData);
+        for (auto neighborData : current->connections) {
+            auto neighbor = get<0>(neighborData);
             float weight = (float)get<1>(neighborData);
             float tentative_gScore = gScore[current] + weight;
 
@@ -67,7 +76,6 @@ stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapCh
                 cameFrom[neighbor] = current;
                 gScore[neighbor] = tentative_gScore;
                 fScore[neighbor] = tentative_gScore + heuristic(neighbor->data, goal->data);
-
                 if (openSetNodes.find(neighbor) == openSetNodes.end()) {
                     openSet.emplace(fScore[neighbor], neighbor);
                     openSetNodes.insert(neighbor);
@@ -75,8 +83,6 @@ stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapCh
             }
         }
     }
-
-    return {}; // Return empty stack if no path is found
 }
 
 

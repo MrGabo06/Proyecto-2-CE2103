@@ -73,9 +73,7 @@ void Enemy::generateRoute(Map2D *map){
         // Add point to route
         this->route.enqueue(chunk_to_add);
     }
-    if (this->route_size > 0){
-        this->route.enqueue(this->location->data);
-    }
+    this->route.enqueue(this->location->data);
 }
 
 void Enemy::shift(float frame_time, int64_t time_stamp){
@@ -100,9 +98,7 @@ void Enemy::shift(float frame_time, int64_t time_stamp){
                         this->attack();
                     }
                 } else {
-                    if (time_stamp % this->cooldown.movement){
-                        this->moveTo(this->target->getLocation()->data, frame_time);
-                    }
+                    this->moveTo(this->target->getLocation()->data, frame_time);
                 }
             } else { // If the target has entered the safe spot then disengage the offensiveness
                 this->disengage();
@@ -123,11 +119,10 @@ void Enemy::patrol(float frameTime){
     if (sub_route.size() == 0){
         G_Node<MapChunk> fictional_point(this->route.peek());
 
-        this->device.non_weight_search(this->location, &fictional_point);
+        this->device.search(this->location, &fictional_point);
         for (auto point : this->device.obt){
             this->sub_route.enqueue(point->data);
         }
-        std::cout << this->sub_route.size() << std::endl;
     } else if (sub_route.size() > 0){
         auto chunk = this->sub_route.peek();
         this->moveTo(chunk, frameTime);
@@ -141,18 +136,18 @@ void Enemy::patrol(float frameTime){
 }
 
 void Enemy::traceback(float frameTime){
-    // if (sub_route.size() == 0){
-    //     auto _route = this->device.backtrack(this->location, this->LastPosition, vector<G_Node<MapChunk>*>());
-    //     for ( auto point : _route){
-    //         this->sub_route.enqueue(point->data);
-    //     }
-    // } else {
-    //     auto chunk = this->sub_route.peek();
-    //     this->moveTo(chunk, frameTime);
-    //     if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
-    //         this->sub_route.dequeue();
-    //     }
-    // }
+    if (sub_route.size() == 0){
+        this->device.non_weight_search(this->location, this->LastPosition);
+        for ( auto point : this->device.obt){
+            this->sub_route.enqueue(point->data);
+        }
+    } else {
+        auto chunk = this->sub_route.peek();
+        this->moveTo(chunk, frameTime);
+        if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
+            this->sub_route.dequeue();
+        }
+    }
 };
 
 bool Enemy::rangeToEntity(Entity* entity, bool attacking){

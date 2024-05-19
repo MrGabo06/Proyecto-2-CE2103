@@ -20,7 +20,7 @@ class WayFinder{
         /// @param start: reference to start location
         /// @param goal: reference to finishing location
         /// @return Stack collection of the nodes to follow
-        stack<G_Node<MapChunk>*> search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal);
+        void search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal);
 
         /// @brief Backtrack algorithm for tracing back from A to B, saves the route in the vector of the instance
         /// @param pointA: reference to current location
