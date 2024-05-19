@@ -27,12 +27,15 @@ public:
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
     bool isMoving;
     int graphAbove = 0, graphBelow = 0, graphLeft = 0, graphRight = 0;
-    float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f;
+    float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
     Map2D *currentMap = nullptr;
     MapChunk *above = nullptr;
     MapChunk *below = nullptr;
     MapChunk *left = nullptr;
     MapChunk *right = nullptr;
+    MapChunk *belowRight = nullptr;
+    MapChunk *aboveRight = nullptr;
+    MapChunk *belowLeft = nullptr;
 
 public: // Methods
     /// @brief Create an instance of Player class

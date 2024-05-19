@@ -6,10 +6,13 @@ void Player::move(float frameTime, const char dir)
     below = &this->currentMap->get(graphBelow, graphX);
     left = &this->currentMap->get(graphY, graphLeft);
     right = &this->currentMap->get(graphY, graphRight);
+    belowRight = &this->currentMap->get(graphBelow, graphRight);
+    aboveRight = &this->currentMap->get(graphAbove, graphRight);
+    belowLeft = &this->currentMap->get(graphBelow, graphLeft);
     
     if (dir == mvUp)
     {
-        if(above->chunk_type == wall && this->getPosition().y < this->aboveLimit + 3.0f)
+        if((above->chunk_type == wall && this->getPosition().y < this->aboveLimit + 2.0f) || (aboveRight->chunk_type == wall && this->getPosition().x > this->rightLimit && this->getPosition().y < this->aboveLimit + 2.0f))
         {
             this->setPosition(-1.0f, aboveLimit);
         } else 
@@ -20,7 +23,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvDown) 
     {
-        if(below->chunk_type == wall && this->getPosition().y > this->belowLimit - 3.0f)
+        if((below->chunk_type == wall && this->getPosition().y > this->belowLimit - 2.0f) || (belowRight->chunk_type == wall && this->getPosition().x > this->rightLimit && this->getPosition().y > this->belowLimit - 2.0f))
         {
             this->setPosition(-1.0f, belowLimit);
         } else 
@@ -31,7 +34,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvLeft)
     {
-        if(left->chunk_type == wall && this->getPosition().x < this->leftLimit + 3.0f)
+        if((left->chunk_type == wall && this->getPosition().x < this->leftLimit + 2.0f) || (belowLeft->chunk_type == wall && this->getPosition().y > this->belowLimit && this->getPosition().x < this->leftLimit + 2.0f))
         {
             this->setPosition(leftLimit, -1.0f);
         } else 
@@ -42,7 +45,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvRight)
     {
-        if(right->chunk_type == wall && this->getPosition().x > this->rightLimit - 3.0f)
+        if((right->chunk_type == wall && this->getPosition().x > this->rightLimit - 2.0f) || (belowRight->chunk_type == wall && this->getPosition().y > this->belowLimit && this->getPosition().x > this->rightLimit - 2.0f))
         {
             this->setPosition(rightLimit, -1.0f);
         } else 
