@@ -28,6 +28,8 @@ public:
     const char mvDown = 'D';
     const char mvLeft = 'L';
     const char mvRight = 'R';
+    int direction = 0;
+    bool isAtacking = false;
 
 public: // Methods
 

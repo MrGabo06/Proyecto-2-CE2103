@@ -25,6 +25,10 @@ public:
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
+    const Texture2D attackDownSprite = LoadTexture("Game/src/resources/player_assets/playAttackDown.png");
+    const Texture2D attackUpSprite = LoadTexture("Game/src/resources/player_assets/playAttackUp.png");
+    const Texture2D attackLeftSprite = LoadTexture("Game/src/resources/player_assets/playAttackLeft.png");
+    const Texture2D attackRightSprite = LoadTexture("Game/src/resources/player_assets/playAttackRight.png");
     bool isMoving;
     int graphAbove = 0, graphBelow = 0, graphLeft = 0, graphRight = 0;
     float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
@@ -38,6 +42,11 @@ public:
     MapChunk *belowLeft = nullptr;
 
 public: // Methods
+
+    /// @brief Make the player attack
+    /// @param frameTime: Raylib window frame time
+    void attack();
+
     /// @brief Create an instance of Player class
     /// @param startingGraphX: The starting horizontal graph coords of the player
     /// @param startingGraphY: The starting vertical graph coords of the player
@@ -56,6 +65,8 @@ public: // Methods
     /// @brief Sets the limits of the map so the player doesnt move out of it
     /// @param limits: Maximum X and Y limits
     void setMapLimits(int limits[2]);
+
+
 };
 
 #endif // PLAYER_H

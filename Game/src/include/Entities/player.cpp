@@ -1,5 +1,22 @@
 #include "player.h"
 
+void Player::attack()
+{
+    this->isAtacking = true;
+    if (direction == 1)
+    {
+    }
+    if (direction == 2)
+    {
+    }
+    if (direction == 3)
+    {
+    }
+    if (direction == 4)
+    {
+    }
+}
+
 void Player::move(float frameTime, const char dir)
 {
     above = &this->currentMap->get(graphAbove, graphX);
@@ -12,6 +29,7 @@ void Player::move(float frameTime, const char dir)
     
     if (dir == mvUp)
     {
+        direction = 1;
         if((above->chunk_type == wall && this->getPosition().y < this->aboveLimit + 2.0f) || (aboveRight->chunk_type == wall && this->getPosition().x > this->rightLimit && this->getPosition().y < this->aboveLimit + 2.0f))
         {
             this->setPosition(-1.0f, aboveLimit);
@@ -23,6 +41,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvDown) 
     {
+        direction = 3;
         if((below->chunk_type == wall && this->getPosition().y > this->belowLimit - 2.0f) || (belowRight->chunk_type == wall && this->getPosition().x > this->rightLimit && this->getPosition().y > this->belowLimit - 2.0f))
         {
             this->setPosition(-1.0f, belowLimit);
@@ -34,6 +53,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvLeft)
     {
+        direction = 4;
         if((left->chunk_type == wall && this->getPosition().x < this->leftLimit + 2.0f) || (belowLeft->chunk_type == wall && this->getPosition().y > this->belowLimit && this->getPosition().x < this->leftLimit + 2.0f))
         {
             this->setPosition(leftLimit, -1.0f);
@@ -45,6 +65,7 @@ void Player::move(float frameTime, const char dir)
 
     if (dir == mvRight)
     {
+        direction = 2;
         if((right->chunk_type == wall && this->getPosition().x > this->rightLimit - 2.0f) || (belowRight->chunk_type == wall && this->getPosition().y > this->belowLimit && this->getPosition().x > this->rightLimit - 2.0f))
         {
             this->setPosition(rightLimit, -1.0f);
@@ -57,6 +78,14 @@ void Player::move(float frameTime, const char dir)
 
 void Player::movePlayer(float frameTime)
 {
+    if (IsKeyDown(KEY_SPACE))
+    {
+        this->attack();
+    }
+    if (!IsKeyDown(KEY_SPACE))
+    {
+        this->isAtacking = false;   
+    }
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
         this->isMoving = false;
@@ -65,29 +94,45 @@ void Player::movePlayer(float frameTime)
     if (IsKeyDown(KEY_UP))
     {
         this->move(frameTime, Entity::mvUp);
-        this->currentSpriteSheet = movingUpSprite;
         this->isMoving = true;
+        if (isAtacking){
+            this->currentSpriteSheet = attackUpSprite;
+        }else{
+            this->currentSpriteSheet = movingUpSprite;
+        }
     }
 
     if (IsKeyDown(KEY_DOWN))
     {
         this->move(frameTime, Entity::mvDown);
-        this->currentSpriteSheet = movingDownSprite;
         this->isMoving = true;
+        if (isAtacking){
+            this->currentSpriteSheet = attackDownSprite;
+        }else{
+            this->currentSpriteSheet = movingDownSprite;
+        }
     }
 
     if (IsKeyDown(KEY_LEFT))
     {
         this->move(frameTime, Entity::mvLeft);
-        this->currentSpriteSheet = movingLeftSprite;
         this->isMoving = true;
+        if (isAtacking){
+            this->currentSpriteSheet = attackLeftSprite;
+        }else{
+            this->currentSpriteSheet = movingLeftSprite;
+        }
     }
 
     if (IsKeyDown(KEY_RIGHT))
     {
         this->move(frameTime, Entity::mvRight);
-        this->currentSpriteSheet = movingRightSprite;
         this->isMoving = true;
+        if (isAtacking){
+            this->currentSpriteSheet = attackRightSprite;
+        }else{
+            this->currentSpriteSheet = movingRightSprite;
+        }
     }
 
     if (this->getPosition().x < this->worldLeftLimit)
@@ -138,3 +183,7 @@ Player::Player(int startGraphX, int startGraphY)
     this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
     this->currentSpriteSheet = movingDownSprite;
 }
+
+
+
+
