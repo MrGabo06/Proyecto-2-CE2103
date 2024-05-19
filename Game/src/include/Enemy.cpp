@@ -122,24 +122,13 @@ void Enemy::attack(){
 void Enemy::patrol(float frameTime){
     if (sub_route.size() == 0){
         G_Node<MapChunk> fictional_point(this->route.peek());
-        auto _route = this->device.search(this->location, &fictional_point);
-        std::cout << _route.size() << std::endl;
-        while (_route.size() > 0){
-            this->sub_route.enqueue(_route.top()->data);
-            _route.pop();
+
+        this->device.non_weight_search(this->location, &fictional_point);
+        for (auto point : this->device.obt){
+            this->sub_route.enqueue(point->data);
         }
-
-        // auto _route = this->device.backtrack(this->location, &fictional_point, vector<G_Node<MapChunk>*>());
-        // for (auto point : _route){
-        //     this->sub_route.enqueue(point->data);
-        // }
-
-        // auto chunk = this->route.peek();
-        // this->moveTo(chunk, frameTime);
-        // if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
-        //     this->route.enqueue(this->route.dequeue().data);
-        // }
-    } else {
+        std::cout << this->sub_route.size() << std::endl;
+    } else if (sub_route.size() > 0){
         auto chunk = this->sub_route.peek();
         this->moveTo(chunk, frameTime);
         if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
@@ -152,19 +141,18 @@ void Enemy::patrol(float frameTime){
 }
 
 void Enemy::traceback(float frameTime){
-    if (sub_route.size() == 0){
-        auto _route = this->device.backtrack(this->location, this->LastPosition, vector<G_Node<MapChunk>*>());
-        for ( auto point : _route){
-            this->sub_route.enqueue(point->data);
-        }
-    } else {
-        auto chunk = this->sub_route.peek();
-        this->moveTo(chunk, frameTime);
-        if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
-            this->sub_route.dequeue();
-        }
-    }
-
+    // if (sub_route.size() == 0){
+    //     auto _route = this->device.backtrack(this->location, this->LastPosition, vector<G_Node<MapChunk>*>());
+    //     for ( auto point : _route){
+    //         this->sub_route.enqueue(point->data);
+    //     }
+    // } else {
+    //     auto chunk = this->sub_route.peek();
+    //     this->moveTo(chunk, frameTime);
+    //     if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
+    //         this->sub_route.dequeue();
+    //     }
+    // }
 };
 
 bool Enemy::rangeToEntity(Entity* entity, bool attacking){

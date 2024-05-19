@@ -79,29 +79,27 @@ stack<G_Node<MapChunk>*> WayFinder::search(G_Node<MapChunk>* start, G_Node<MapCh
     return {}; // Return empty stack if no path is found
 }
 
-vector<G_Node<MapChunk>*> WayFinder::backtrack(G_Node<MapChunk>* pointA, G_Node<MapChunk>* pointB, vector<G_Node<MapChunk>*> route){
-    if (pointA->data == pointB->data){
-        return route; // Return the current saved route to point
-    } else {
-        for ( auto neighbor : pointA->connections){
-            auto node = get<0>(neighbor);
-            std::cout << node->data.coordinates[0] << "+" << node->data.coordinates[1] << std::endl;
-            bool repeated = false;
-            for ( auto known : route){
-                if (known->data == node->data){
-                    repeated = true;
-                    break;
-                }
-            }
-            if (!repeated && node->data.chunk_type != ChunkType::wall && node->data.chunk_type != ChunkType::fake){
-                if ( node->data == pointB->data){
-                    route.push_back(node);
-                    return route;
-                } else {
-                    route.push_back(node);
-                    return backtrack(node, pointB, route);
-                }
+
+void back_track(vector<G_Node<MapChunk>*>* output,G_Node<MapChunk> *pointA, G_Node<MapChunk> *pointB,vector<G_Node<MapChunk>*> route, unordered_set<G_Node<MapChunk>*>& visited){
+    if (pointA->data == pointB->data){ // Base case: update the route
+        *output = route;
+    } else { // Recursive case
+        for (auto connection : pointA->connections){
+            auto node = get<0>(connection);
+            if (visited.count(node) == 0 && node->data.chunk_type == ChunkType::terrain ){
+                visited.insert(node);
+                route.push_back(node);
+                back_track(output, node, pointB, route, visited);
             }
         }
     }
+}
+
+void WayFinder::non_weight_search(G_Node<MapChunk> *pointA, G_Node<MapChunk> *pointB){
+    vector<G_Node<MapChunk>*> route;
+    unordered_set<G_Node<MapChunk>*> visited;
+    while (this->obt.size() > 0){
+        this->obt.pop_back();
+    }
+    back_track(&this->obt, pointA,pointB,route,visited);
 }

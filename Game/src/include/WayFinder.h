@@ -11,6 +11,8 @@ using namespace std;
 /// @brief Class for path finding algorithms between graph points
 class WayFinder{
     public:
+        vector<G_Node<MapChunk>*> obt;
+    public:
         /// @brief Default constructor
         WayFinder();
 
@@ -20,12 +22,10 @@ class WayFinder{
         /// @return Stack collection of the nodes to follow
         stack<G_Node<MapChunk>*> search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal);
 
-        /// @brief Backtrack algorithm for tracing back from A to B
+        /// @brief Backtrack algorithm for tracing back from A to B, saves the route in the vector of the instance
         /// @param pointA: reference to current location
         /// @param pointB: reference to desired end location
-        /// @param route: current order of nodes
-        /// @return Vector of the route that leads A to B
-        vector<G_Node<MapChunk>*> backtrack(G_Node<MapChunk>* pointA, G_Node<MapChunk>* pointB, vector<G_Node<MapChunk>*> route);
+        void non_weight_search(G_Node<MapChunk>* pointA, G_Node<MapChunk>* pointB);
         
 };
 
