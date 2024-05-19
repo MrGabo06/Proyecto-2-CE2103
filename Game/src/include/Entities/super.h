@@ -18,6 +18,8 @@ public: // Attributes
     MapChunk &playerPosition;
     float frameTime;
     static MapChunk defaultChunk;
+    static Bullet bullet;
+    Rectangle frameRec;
 
 public: // Methods
     /// @brief Default constructor

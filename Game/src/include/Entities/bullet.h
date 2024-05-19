@@ -8,8 +8,8 @@
 class Bullet : public Enemy
 {
 public: // Attributes
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/enemy_assets/Firebal.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemy_assets/Firebal.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/enemies_assets/Firebal.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemies_assets/Firebal.png");
 
 public: // Methods
     /// @brief Default constructor method
@@ -19,7 +19,7 @@ public: // Methods
     /// @param xCord
     /// @param yCord
     Bullet(float xCord, float yCord);
-    void shoot(MapChunk &playerPosition, float frameTime);
+    void shoot(int X, int Y, int dir);
 };
 
 #endif // BULLET_H

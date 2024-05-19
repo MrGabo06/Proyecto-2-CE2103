@@ -25,6 +25,8 @@ int main(void)
     map.locate_at(&player, graphY, graphX, true);
     Super *boss = static_cast<Super *>(computer.getEntity(enemies, 0));
     player.setMapLimits(map.grid_size);
+    Bullet bullet(boss->getPosition().x, boss->getPosition().y);
+    // Queue bulletQueue;
 
     int currentFrame = 0;
     const int frameSpeed = 8;
@@ -32,6 +34,7 @@ int main(void)
 
     Rectangle frameRec = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
     Rectangle frameRec2 = {0.0f, 0.0f, (float)boss->currentSpriteSheet.width, (float)boss->currentSpriteSheet.height};
+    Rectangle frameRec3 = {0.0f, 0.0f, (float)bullet.movingLeftSprite.width, (float)bullet.movingLeftSprite.height};
 
     Camera2D camera = {0};
     camera.target = (Vector2){player.getPosition().x, player.getPosition().y};
@@ -55,7 +58,8 @@ int main(void)
         map.locate_at(&player, player.graphY, player.graphX, false);
 
         boss->movePattern(6);
-        boss->getPlayerPosition(map.get(player.graphY, player.graphX), frameTime); // Esto puede borrarlo
+
+        bullet.shoot(graphY, graphX, 1);
 
         BeginMode2D(camera);
         for (int i = 0; i < map.grid_size[0]; i++)
@@ -83,6 +87,7 @@ int main(void)
 
         DrawTextureRec(player.currentSpriteSheet, frameRec, player.getPosition(), WHITE);
         DrawTextureRec(boss->currentSpriteSheet, frameRec2, boss->getPosition(), WHITE);
+        DrawTextureRec(bullet.movingLeftSprite, frameRec3, bullet.getPosition(), WHITE);
 
         EndMode2D();
 
