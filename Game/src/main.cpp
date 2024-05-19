@@ -101,10 +101,14 @@ int main()
 
         frameCounter++;
 
-        if (frameCounter >= (60/frameSpeed) && player.isMoving)
+        if (frameCounter >= (60/frameSpeed))
         {
-            frameCounter = 0;
-            currentFrame++;
+            if(!player.isMoving){
+                currentFrame = 0;
+            }else{
+                frameCounter = 0;
+                currentFrame++;
+            }
 
             if (currentFrame > 3) currentFrame = 0;
 
