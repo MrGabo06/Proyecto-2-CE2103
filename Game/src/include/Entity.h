@@ -16,6 +16,7 @@ class Entity{
 protected: // Attributes
     Vector2 position;
     int healthPoints = 0;
+    int ShieldPoints = 0;
     G_Node<MapChunk>* location;
 
 public:
@@ -45,6 +46,10 @@ public: // Methods
     /// @param newHp: Health points to be added to the current ones
     void setHealthPoints(int newHp);
 
+    /// @brief Give the extra health points to the entity 
+    /// @param newHp: Health points to be added to the current ones
+    void setShieldPoints(int Hp);
+
     /// @brief Change the position to a new one
     /// @param xCords: New X position (-1.0f wont change the current)
     /// @param yCords: New Y position (-1.0f wont change the current)
@@ -66,6 +71,9 @@ public: // Methods
     /// @brief Get the entity health points
     /// @return Entity health points
     int getHealth();
+
+    /// @brief Get the entity shield points
+    int getShield();
 };
 
 #endif // ENTITY_H

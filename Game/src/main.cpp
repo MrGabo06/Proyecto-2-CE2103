@@ -152,10 +152,15 @@ int main()
         EndMode2D();
 
         BeginDrawing();
-        for (int i = 1; i < player.getHealth() + 1; i++)
-        {
+
+        for (int i = 1; i < player.getHealth() + 1; i++) {
             DrawTexture(player.idleSprite, 40 * i, 10, WHITE);
         }
+
+        for (int i = 1; i < player.getShield() + 1; i++) {
+            DrawTexture(player.idleSprite2, 40 * (i + 4), 10, WHITE); 
+        }
+
         EndDrawing();
     }
 

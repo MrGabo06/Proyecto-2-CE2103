@@ -5,15 +5,19 @@ void Player::attack()
     this->isAtacking = true;
     if (direction == 1)
     {
+
     }
     if (direction == 2)
     {
+
     }
     if (direction == 3)
     {
+
     }
     if (direction == 4)
     {
+
     }
 }
 
@@ -177,7 +181,8 @@ void Player::setMapLimits(int limits[2])
 
 Player::Player(int startGraphX, int startGraphY)
 {
-    this->setHealthPoints(5);
+    this->setHealthPoints(4);
+    this->setShieldPoints(2);
     this->graphX = startGraphX;
     this->graphY = startGraphY;
     this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
