@@ -1,5 +1,7 @@
 #include "Enemy.h"
 
+#include "iostream"
+
 void Enemy::moveTo(MapChunk &newMapChunk, float frameTime){
     if (this->getPosition().x < newMapChunk.center().x -20.0f){
         this->move(frameTime,Entity::mvRight);
@@ -25,17 +27,16 @@ void Enemy::generateRoute(Map2D *map){
         // Horizontal verifications
         if (displacement[0] >= map->grid_size[0]-1){
             displacement[0] = map->grid_size[0]-2;
-        } else if ( displacement[0] < 0){
+        } else if ( displacement[0] < 1){
             displacement[0] = 1;
         }
         // Vertical verifications
         if (displacement[1] >= map->grid_size[1]-1){
             displacement[1] = map->grid_size[1]-2;
-        } else if ( displacement[1] < 0){
+        } else if ( displacement[1] < 1){
             displacement[1] = 1;
         }
         // Verify route is not wall
-        std::cout << displacement[0] << "   " << displacement[1] << std::endl;
         MapChunk chunk_to_add = map->get(displacement[0], displacement[1]);
         int variation[] = {displacement[0], displacement[1]};
         while (chunk_to_add.chunk_type == ChunkType::wall || chunk_to_add.chunk_type == ChunkType::fake){
@@ -104,7 +105,6 @@ void Enemy::shift(float frame_time, int64_t time_stamp){
             }
         }
     }
-
 }
 
 void Enemy::setTarget(Entity* entity){
@@ -116,10 +116,37 @@ void Enemy::attack(){
 };
 
 void Enemy::patrol(float frameTime){
-    MapChunk chunk = this->route.peek();
-    this->moveTo(chunk, frameTime);
-    if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
-        this->route.enqueue(this->route.dequeue().data);
+    if (sub_route.size() == 0){
+        G_Node<MapChunk> fictional_point(this->route.peek());
+
+        this->device.search(this->location, &fictional_point);
+        for (auto point : this->device.obt){
+            this->sub_route.enqueue(point->data);
+        }
+    } else if (sub_route.size() > 0){
+        auto chunk = this->sub_route.peek();
+        this->moveTo(chunk, frameTime);
+        if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
+            this->sub_route.dequeue();
+        }
+        if (this->graphY == this->route.peek().coordinates[0] && this->graphX == this->route.peek().coordinates[1]){
+            this->route.enqueue(this->route.dequeue().data);
+        }
+    }
+}
+
+void Enemy::traceback(float frameTime){
+    if (sub_route.size() == 0){
+        this->device.non_weight_search(this->location, this->LastPosition);
+        for ( auto point : this->device.obt){
+            this->sub_route.enqueue(point->data);
+        }
+    } else {
+        auto chunk = this->sub_route.peek();
+        this->moveTo(chunk, frameTime);
+        if ( graphY == chunk.coordinates[0] && graphX == chunk.coordinates[1]){
+            this->sub_route.dequeue();
+        }
     }
 }
 

@@ -1,7 +1,16 @@
 #include "player.h"
 
-void Player::attack()
-{
+Player::Player(int startGraphX, int startGraphY){
+    this->healthPoints = 5;
+    this->setShieldPoints(2);
+
+    this->graphX = startGraphX;
+    this->graphY = startGraphY;
+    this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
+    this->currentSpriteSheet = movingDownSprite;
+}
+
+void Player::attack(){
     this->isAtacking = true;
     if (direction == 1)
     {
@@ -21,8 +30,7 @@ void Player::attack()
     }
 }
 
-void Player::move(float frameTime, const char dir)
-{
+void Player::move(float frameTime, const char dir){
     above = &this->currentMap->get(graphAbove, graphX);
     below = &this->currentMap->get(graphBelow, graphX);
     left = &this->currentMap->get(graphY, graphLeft);
@@ -80,8 +88,7 @@ void Player::move(float frameTime, const char dir)
     }
 }
 
-void Player::movePlayer(float frameTime)
-{
+void Player::movePlayer(float frameTime){
     if (IsKeyDown(KEY_SPACE))
     {
         this->attack();
@@ -92,7 +99,7 @@ void Player::movePlayer(float frameTime)
     }
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
-        this->isMoving = false;
+        // Stop movement
     }
 
     if (IsKeyDown(KEY_UP))
@@ -138,6 +145,11 @@ void Player::movePlayer(float frameTime)
             this->currentSpriteSheet = movingRightSprite;
         }
     }
+  
+    if (IsKeyDown(KEY_Q))
+    {
+        this->light = !light;
+    }
 
     if (this->getPosition().x < this->worldLeftLimit)
     {
@@ -177,16 +189,6 @@ void Player::setMapLimits(int limits[2])
 {
     this->worldRightLimit = limits[1] * this->cellSize;
     this->worldDownLimit = limits[0] * this->cellSize;
-}
-
-Player::Player(int startGraphX, int startGraphY)
-{
-    this->setHealthPoints(4);
-    this->setShieldPoints(2);
-    this->graphX = startGraphX;
-    this->graphY = startGraphY;
-    this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
-    this->currentSpriteSheet = movingDownSprite;
 }
 
 

@@ -6,9 +6,8 @@
 #include "../modules/RandGenerator.h"
 #include "enemy_properties.hpp"
 #include "Map.h"
+#include "WayFinder.h"
 
-#include <vector>
-#include <tuple>
 #include <raylib.h>
 
 class Map2D;
@@ -23,6 +22,7 @@ using namespace std;
 class Enemy : public Entity{
 protected: // Atributes
     Generator random;
+    WayFinder device;
 
     // { Pathfinding variables }
     Queue< MapChunk > route;
@@ -40,9 +40,8 @@ protected: // Atributes
     int attack_damage;
 
     Cooldown cooldown;
-
     int lifetime;
-
+  
     // { Enemy operational states }
     bool routing;
     bool engaging;
@@ -55,7 +54,9 @@ public: // Methods
     ~Enemy(){};
 
     /// @brief In this context, the 'shifting' method make the enemy entity do 'something'(which varies on the context of the entity)
-    void shift(float frameTime, int64_t time_stamp);
+    /// @param frame_time
+    /// @param time_stamp
+    void shift(float frame_time, int64_t time_stamp);
 
     /// @brief Sets an entity as the target of this enemy
     /// @param entity: reference to the entity

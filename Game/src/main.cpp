@@ -76,23 +76,37 @@ int main(){
             break;
         }
 
-        MapChunk breadcrumb = map.get(player.graphY, player.graphX);
+        // MapChunk breadcrumb = map.get(player.graphY, player.graphX);
 
-        if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 20)
-        {
-            breadcrumbList.insert(breadcrumb);
-            map.get(player.graphY, player.graphX).breadcrumb = 1;
-        }
+        // if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 20)
+        // {
+        //     breadcrumbList.insert(breadcrumb);
+        //     map.get(player.graphY, player.graphX).breadcrumb = 1;
+        // }
 
-        else if (player.isMoving && breadcrumbList.getSize() > 20)
-        {
-            breadcrumbList.insert(breadcrumb);
-            breadcrumbList.remove(0);
-        }
+        // else if (player.isMoving && breadcrumbList.getSize() > 20)
+        // {
+        //     breadcrumbList.insert(breadcrumb);
+        //     breadcrumbList.remove(0);
+        // }
+        // cout << breadcrumbList.getSize() << endl;
 
-
+// ------------------------------------------------------------------------------------------------
+        BeginMode2D(camera);
+      
+        // *******************************************
+        // Drawing Section
+        // *******************************************
         auto currentTime = std::chrono::steady_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+        BeginMode2D(camera);
+        for (int i = 0; i < map.grid_size[0]; i++){
+            for (int j = 0; j < map.grid_size[1]; j++){
+                MapChunk& chunk = map.get(i, j);
+                Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
+                DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
+            }
+        }
 
         // *******************************************
         // Animation Logic
@@ -100,8 +114,7 @@ int main(){
 
         frameCounter++;
 
-        if (frameCounter >= (60/frameSpeed))
-        {
+        if (frameCounter >= (60/frameSpeed)){
             if(!player.isMoving){
                 currentFrame = 0;
             }else{
@@ -113,20 +126,11 @@ int main(){
 
             playerFrameRect.x = (float)currentFrame*(float)player.currentSpriteSheet.width/4;
         }
-        
+      
         // *******************************************
-        // Drawing Section
+        // Enemy drawing and behavior
         // *******************************************
-
-        BeginMode2D(camera);
-        for (int i = 0; i < map.grid_size[0]; i++){
-            for (int j = 0; j < map.grid_size[1]; j++){
-                MapChunk chunk = map.get(i, j);
-                Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
-                DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
-            }
-        }
-
+  
         for (int i = 0; i < computer.size(EntGroup::enemies); i++){
             Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
             if(enemy->rangeToEntity(&player, false)){
@@ -134,19 +138,26 @@ int main(){
                 enemy->engage();
             }
             enemy->shift(frameTime, elapsedTime);
-
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
         }
-
+      
+        // *******************************************
+        // Vases and treasures behavior
+        // *******************************************
         for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
             DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
         }
-
+        
+        // *******************************************
+        // Player drawing Logic
+        // *******************************************
         DrawTextureRec(player.currentSpriteSheet, playerFrameRect, player.getPosition(), WHITE);
         EndMode2D();
 
+// ------------------------------------------------------------------------------------------------
+      
         BeginDrawing();
 
         for (int i = 1; i < player.getHealth() + 1; i++) {

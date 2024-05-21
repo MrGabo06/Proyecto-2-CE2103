@@ -11,29 +11,23 @@ using namespace std;
 #define PLAYER_HOR_SPD 200.0f
 
 /// @brief Class for player entity that can be controlled by user
-class Player : public Entity
-{
+class Player : public Entity{
 private: // Attributes
     int worldUpLimit = 0;
     int worldDownLimit = 0;
     int worldLeftLimit = 0;
     int worldRightLimit = 0;
-
-public:
+    
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
     const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
-    const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
+  
     const Texture2D attackDownSprite = LoadTexture("Game/src/resources/player_assets/playAttackDown.png");
     const Texture2D attackUpSprite = LoadTexture("Game/src/resources/player_assets/playAttackUp.png");
     const Texture2D attackLeftSprite = LoadTexture("Game/src/resources/player_assets/playAttackLeft.png");
     const Texture2D attackRightSprite = LoadTexture("Game/src/resources/player_assets/playAttackRight.png");
-    bool isMoving;
-
-    int graphAbove = 0, graphBelow = 0, graphLeft = 0, graphRight = 0;
-    float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
-    Map2D *currentMap = nullptr;
+  
     MapChunk *above = nullptr;
     MapChunk *below = nullptr;
     MapChunk *left = nullptr;
@@ -42,8 +36,16 @@ public:
     MapChunk *aboveRight = nullptr;
     MapChunk *belowLeft = nullptr;
 
-    const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/fullheartShield.png");
+public:
+    bool light = false;
+    bool isMoving;
 
+    int graphAbove = 0, graphBelow = 0, graphLeft = 0, graphRight = 0;
+    float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
+    Map2D *currentMap = nullptr;
+
+    const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/fullheartShield.png");
+    const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
 
 public: // Methods
 
@@ -63,7 +65,6 @@ public: // Methods
 
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
-    /// @param mapSize: Map width and height
     void movePlayer(float frameTime);
 
     /// @brief Sets the limits of the map so the player doesnt move out of it

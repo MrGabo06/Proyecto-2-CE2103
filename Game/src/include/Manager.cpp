@@ -9,7 +9,7 @@ Manager::Manager(){
 Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases){
     // [ SET THE ATTRIBUTE SCALING FOR ENEMIES ]
     for (int x = 0; x < 6; x++){
-        this->stats[x] = 10;
+        this->stats[x] = 4;
     }
     // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
