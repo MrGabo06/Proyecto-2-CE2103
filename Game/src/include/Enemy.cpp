@@ -18,56 +18,94 @@ void Enemy::moveTo(MapChunk &newMapChunk, float frameTime){
     }
 }
 
+void Enemy::generateRoute(Map2D *map){
+    int site[] = {this->graphY, this->graphX};
+    for (int i = 0; i < this->route_size; i++){
+        int displacement[] = {random.gen(site[0]-this->mov_range, site[0]+this->mov_range), random.gen(site[1]-this->mov_range, site[1]+this->mov_range)};
+        // Horizontal verifications
+        if (displacement[0] >= map->grid_size[0]-1){
+            displacement[0] = map->grid_size[0]-2;
+        } else if ( displacement[0] < 0){
+            displacement[0] = 1;
+        }
+        // Vertical verifications
+        if (displacement[1] >= map->grid_size[1]-1){
+            displacement[1] = map->grid_size[1]-2;
+        } else if ( displacement[1] < 0){
+            displacement[1] = 1;
+        }
+        // Verify route is not wall
+        std::cout << displacement[0] << "   " << displacement[1] << std::endl;
+        MapChunk& chunk_to_add = map->get(displacement[0], displacement[1]);
+        int variation[] = {displacement[0], displacement[1]};
+        while (chunk_to_add.chunk_type == ChunkType::wall || chunk_to_add.chunk_type == ChunkType::fake){
+            int move_where = random.gen(0,1);
+            if (move_where == 0){ // Move vertical units
+                if (displacement[0] == 1){
+                    variation[0] += 1;
+                } else if (displacement[0] == map->grid_size[0]-2){
+                    variation[0] -= 1;
+                } else {
+                    int dir = random.gen(0,1);
+                    if (dir == 0){
+                        variation[1] -= 1;
+                    } else {
+                        variation[1] += 1;
+                    }
+                }
+            } else if (move_where == 1){ // Mover horizontal units
+                if (displacement[1] == 1){
+                    variation[1] += 1;
+                } else if (displacement[0] == map->grid_size[1]-2){
+                    variation[1] -= 1;
+                } else {
+                    int dir = random.gen(0,1);
+                    if (dir == 0){
+                        variation[1] -= 1;
+                    } else {
+                        variation[1] += 1;
+                    }
+                }
+            }
+            chunk_to_add = map->get(variation[0], variation[1]);
+        }
+        // Add point to route
+        this->route.enqueue(chunk_to_add);
+    }
+    this->route.enqueue(this->location->data);  
+}
 
-void Enemy::shift(Map2D* ref, float frameTime){
+void Enemy::shift(float frame_time, int64_t time_stamp){
     if (this->routing){
-        this->patrol(frameTime);
+        this->patrol(frame_time);
     }
     if (this->returning){
-        this->returning = false;
-        this->routing = true;
+        if (this->location == this->LastPosition){
+            this->returning = false;
+            this->LastPosition = nullptr;
+            this->routing = true;
+        } else {
+            this->traceback(frame_time);
+        }
     }
     if (this->engaging){
         if(this->target != nullptr){
+            // Always check that player target has not entered a safe spot
             if (this->target->getLocation()->data.chunk_type != ChunkType::safe){
                 if (this->rangeToEntity(this->target, true)){
-                    this->attack();
+                    if (time_stamp % this->cooldown.action == 0){
+                        this->attack();
+                    }
                 } else {
-                    this->moveTo(this->target->getLocation()->data, frameTime);
+                    this->moveTo(this->target->getLocation()->data, frame_time);
                 }
-            } else {
+            } else { // If the target has entered the safe spot then disengage the offensiveness
                 this->disengage();
             }
         }
     }
+
 }
-
-void Enemy::traceback(){
-    // vector< G_Node<MapChunk>* > path;
-    // path = backtrack(path, location, LastPosition);
-    // for(int i=0; i<path.size(); i++){
-    //     route.push(make_tuple(path[i]->data->coordinates[0], path[i]->data->coordinates[1]));
-    // }
-};
-
-vector< G_Node<MapChunk>* > Enemy::backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition){
-    vector <G_Node<MapChunk>*> res;
-    // int CurX = CurrentPosition->data->coordinates[0];
-    // int finalX = LastPosition->data->coordinates[0];
-    // int CurY = CurrentPosition->data->coordinates[0]; 
-    // int finalY = LastPosition->data->coordinates[0];
-
-    // if (CurX == finalX && CurY == finalY){
-    //     return path;
-    // } else {
-    //     for (int i = 0; i < CurrentPosition.total_connected(); i++){
-    //         G_Node<MapChunk>* next = CurrentPosition->getNode(i);
-    //         path.push_back(next);
-    //         backtrack(path, next, LastPosition);
-    //     }
-    // }
-    return res;
-};
 
 void Enemy::setTarget(Entity* entity){
     this->target = entity;
@@ -83,9 +121,33 @@ void Enemy::patrol(float frameTime){
     if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
         this->route.enqueue(this->route.dequeue().data);
     }
+}
+
+void Enemy::traceback(float frameTime){
+
+}
+
+void Enemy::engage(){
+    // Clear the sub route if there was any queued chunks to visit
+    while (this->sub_route.size() > 0){
+        this->sub_route.dequeue();
+    }
+    // Change the pointer to the location of entity before engaging
+    this->LastPosition = this->location;
+    // Change conditions
+    this->engaging = true;
+    this->returning = false;
+    this->routing = false;
 };
 
-bool Enemy::rangeToEntity(Entity* entity, bool attacking){
+void Enemy::disengage(){
+    this->setTarget(nullptr);
+    this->engaging = false;
+    this->returning = true;
+    this->routing = false;
+}
+
+bool Enemy::rangeToEntity(Entity *entity, bool attacking){
     int range = this->detection_range;
     if (attacking){
         range = 15;

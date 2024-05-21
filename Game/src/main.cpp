@@ -10,8 +10,7 @@
 #include "modules/LinkedList.h"
 #include "modules/Node.hpp"
 
-int main()
-{
+int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
@@ -21,7 +20,7 @@ int main()
     Map2D map(Level::first, chunk_sizes);
     map.generate();
 
-    Manager computer(&map, 5, 2, 2, 3, 1, 5, 5);
+    Manager computer(&map,5,0,0,0,0,0,0);
     LinkedList<MapChunk> breadcrumbList;
 
     Player player(1, 1);
@@ -120,34 +119,31 @@ int main()
         // *******************************************
 
         BeginMode2D(camera);
-        for (int i = 0; i < map.grid_size[0]; i++)
-        {
-            for (int j = 0; j < map.grid_size[1]; j++)
-            {
+        for (int i = 0; i < map.grid_size[0]; i++){
+            for (int j = 0; j < map.grid_size[1]; j++){
                 MapChunk chunk = map.get(i, j);
                 Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
                 DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
             }
         }
 
-            for (int i = 0; i < computer.size(EntGroup::enemies); i++){
-                Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
-                if (elapsedTime % enemy->cooldown.action == 0 || elapsedTime % enemy->cooldown.movement == 0){
-                    if(enemy->rangeToEntity(&player, false)){
-                        enemy->setTarget(&player);
-                        enemy->engage();
-                    }
-                    enemy->shift(&map, frameTime);
-                }
-                map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+        for (int i = 0; i < computer.size(EntGroup::enemies); i++){
+            Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
+            if(enemy->rangeToEntity(&player, false)){
+                enemy->setTarget(&player);
+                enemy->engage();
             }
+            enemy->shift(frameTime, elapsedTime);
 
-        for (int i = 0; i < computer.size(EntGroup::statical); i++)
-        {
+            map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
+            DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+        }
+
+        for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
             DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
         }
+
         DrawTextureRec(player.currentSpriteSheet, playerFrameRect, player.getPosition(), WHITE);
         EndMode2D();
 

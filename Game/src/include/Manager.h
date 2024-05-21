@@ -73,10 +73,6 @@ class Manager {
         /// @param treasures: number of treasures to spawn
         /// @param vases: : number of vases to spawn
         Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases);
-        
-        /// @brief Add a reference to a Map2D object in which the manager should spawn enemies
-        /// @param source: pointer to the map instance
-        void addMapRef(Map2D* source);
 
         /// @brief Adds a new group of entities to the management unit
         /// @param type: entity type to add
@@ -93,24 +89,8 @@ class Manager {
         /// @param group: name of group
         int size(EntGroup group);
 
-        /// @brief Toggles ON & OFF the status of the control thread
-        void toggle();
-
-        /// @brief Gets the current status of the manager unit
-        /// @return True or false
-        bool getStatus();
-
         /// @brief Analyzes the results of the enemies and generates new behaviors/attributes
         void evolve();
-
-        /// @brief Determine the performance of the player to level the experience of the bots
-        /// @param players: vector of players
-        void determine_performance(vector<Player*> players);
-
-
-
-    private:
-        void control();
 };
 
 #endif // MANAGER_H
