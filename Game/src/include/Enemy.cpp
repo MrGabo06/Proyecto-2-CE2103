@@ -150,10 +150,6 @@ void Enemy::traceback(float frameTime){
     }
 }
 
-void Enemy::traceback(float frameTime){
-
-}
-
 void Enemy::engage(){
     // Clear the sub route if there was any queued chunks to visit
     while (this->sub_route.size() > 0){
