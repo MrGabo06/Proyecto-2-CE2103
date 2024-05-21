@@ -33,7 +33,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for (int i = 0; i < quantity; i++){
             // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
             int location_coords[2] = {randomizer.gen(1,this->origin->grid_size[0]-2), randomizer.gen(1,this->origin->grid_size[1]-2)};
-            MapChunk& chunk = this->origin->get(location_coords[0], location_coords[1]);
+            MapChunk chunk = this->origin->get(location_coords[0], location_coords[1]);
             while (chunk.chunk_type != ChunkType::terrain){ // { CHECK THE CHUNK IS WALKABLE TERRAIN }
                 int offset[] = {randomizer.gen(-1,1), randomizer.gen(-1,1)};
                 location_coords[0] += offset[0];
@@ -70,7 +70,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
             // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
             int location_coords[2] = {randomizer.gen(1,this->origin->grid_size[0]-2), randomizer.gen(1,this->origin->grid_size[1]-2)};
             std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
-            MapChunk& chunk = this->origin->get(location_coords[0], location_coords[1]);
+            MapChunk chunk = this->origin->get(location_coords[0], location_coords[1]);
             while (chunk.chunk_type != ChunkType::terrain){ // { CHECK THE CHUNK IS WALKABLE TERRAIN }
                 int offset[] = {randomizer.gen(-1,1), randomizer.gen(-1,1)};
                 location_coords[0] += offset[0];

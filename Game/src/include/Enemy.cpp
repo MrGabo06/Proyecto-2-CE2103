@@ -36,7 +36,7 @@ void Enemy::generateRoute(Map2D *map){
         }
         // Verify route is not wall
         std::cout << displacement[0] << "   " << displacement[1] << std::endl;
-        MapChunk& chunk_to_add = map->get(displacement[0], displacement[1]);
+        MapChunk chunk_to_add = map->get(displacement[0], displacement[1]);
         int variation[] = {displacement[0], displacement[1]};
         while (chunk_to_add.chunk_type == ChunkType::wall || chunk_to_add.chunk_type == ChunkType::fake){
             int move_where = random.gen(0,1);
