@@ -21,14 +21,15 @@ struct Compare {
 };
 
 // Function to reconstruct the path
-std::stack<G_Node<MapChunk>*> reconstruct_path(std::unordered_map<G_Node<MapChunk>*, G_Node<MapChunk>*>& cameFrom, G_Node<MapChunk>* current) {
-    std::stack<G_Node<MapChunk>*> total_path;
+std::vector<G_Node<MapChunk>*> reconstruct_path(std::unordered_map<G_Node<MapChunk>*, G_Node<MapChunk>*>& cameFrom, G_Node<MapChunk>* current) {
+    std::vector<G_Node<MapChunk>*> path;
     while (cameFrom.find(current) != cameFrom.end()) {
-        total_path.push(current);
+        path.push_back(current);
         current = cameFrom[current];
     }
-    total_path.push(current); // Add the start node
-    return total_path;
+    path.push_back(current); // Add the start node
+    std::reverse(path.begin(), path.end());
+    return path;
 }
 
 // [ Class methods ]
@@ -42,44 +43,42 @@ void WayFinder::search(G_Node<MapChunk>* start, G_Node<MapChunk>* goal){
         this->obt.pop_back();
     }
 
-    std::priority_queue<std::pair<float, G_Node<MapChunk>*>, std::vector<std::pair<float, G_Node<MapChunk>*>>, Compare> openSet;
-    std::unordered_map<G_Node<MapChunk>*, float> gScore;
-    std::unordered_map<G_Node<MapChunk>*, float> fScore;
+    std::priority_queue<std::pair<float, G_Node<MapChunk>*>, std::vector<std::pair<float, G_Node<MapChunk>*>>, Compare> frontier;
+    std::unordered_map<G_Node<MapChunk>*, float> cost_so_far;
     std::unordered_map<G_Node<MapChunk>*, G_Node<MapChunk>*> cameFrom;
-    std::unordered_set<G_Node<MapChunk>*> openSetNodes;
 
-    openSet.emplace(0.0f, start);
-    openSetNodes.insert(start);
-    gScore[start] = 0.0f;
-    fScore[start] = heuristic(start->data, goal->data);
+    frontier.emplace(0.0f, start);
+    cost_so_far[start] = 0.0f;
 
-    while (!openSet.empty()) {
-        G_Node<MapChunk>* current = openSet.top().second;
-        openSet.pop();
-        openSetNodes.erase(current);
+    while (!frontier.empty()) {
+        G_Node<MapChunk>* current = frontier.top().second;
+        frontier.pop();
 
         if (current->data == goal->data) {
-            auto route = reconstruct_path(cameFrom, current);
-            while (route.size() > 0){
-                this->obt.push_back(route.top());
-                route.pop();
-            }
+            this->obt = reconstruct_path(cameFrom, current);
             break;
         }
 
         for (auto neighborData : current->connections) {
             auto neighbor = get<0>(neighborData);
+			// skip walls
+            if (neighbor->data.chunk_type == ChunkType::wall)
+            	continue;
+            	
             float weight = (float)get<1>(neighborData);
-            float tentative_gScore = gScore[current] + weight;
+            float new_cost = cost_so_far[current] + weight;
+            float priority;
 
-            if (tentative_gScore < gScore[neighbor]) {
+            if ((cost_so_far.find(neighbor) == cost_so_far.end()) || (new_cost < cost_so_far[neighbor])) {
                 cameFrom[neighbor] = current;
-                gScore[neighbor] = tentative_gScore;
-                fScore[neighbor] = tentative_gScore + heuristic(neighbor->data, goal->data);
-                if (openSetNodes.find(neighbor) == openSetNodes.end()) {
-                    openSet.emplace(fScore[neighbor], neighbor);
-                    openSetNodes.insert(neighbor);
-                }
+                cost_so_far[neighbor] = new_cost;
+                priority = new_cost + heuristic(neighbor->data, goal->data);
+                
+                /* como el priority_queue de c++ no tiene reprioritize, si el vecino
+                ya estaba en la cola, se va a agregar otra vez, entonces se va a revisar
+                dos veces. Esto sigue siendo mas barato computacionalmente que reacomodar el
+                priority_queue manualmente para cambiarle la prioridad el vecino. O(n) vs O(4) */
+                frontier.emplace(priority, neighbor);
             }
         }
     }
