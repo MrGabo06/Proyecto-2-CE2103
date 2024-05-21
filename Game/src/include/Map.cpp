@@ -158,10 +158,10 @@ int Map2D::chunk_output(MapChunk& chunk){
 
 MapChunk& Map2D::get(int i, int j){
     if (i >= this->grid_size[0] || i < 0){
-        throw std::out_of_range("i value is out of range");
+        throw std::out_of_range("GET: i value is out of range");
     }
     if (j >= this->grid_size[1] || j < 0){
-        throw std::out_of_range("j value is out of range");
+        throw std::out_of_range("GET: j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];
     int selection = j + i*row_gap;
@@ -172,10 +172,10 @@ MapChunk& Map2D::get(int i, int j){
 void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     // [ NODE <CHUNK> RETRIEVAL ]
     if (i >= this->grid_size[0] || i < 0){
-        throw std::out_of_range("i value is out of range");
+        throw std::out_of_range("LOCATE: i value is out of range");
     }
     if (j >= this->grid_size[1] || j < 0){
-        throw std::out_of_range("j value is out of range");
+        throw std::out_of_range("LOCATE: j value is out of range");
     }
     int row_gap = this->grid.size()/this->grid_size[0];
     int selection = j + i*row_gap;

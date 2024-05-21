@@ -62,6 +62,7 @@ public: // Methods
     /// @param j: column
     /// @param change_position: True will fix the entity in the center of the map_chunk associated to the graph node
     void locate_at(Entity* entity, int i, int j, bool change_position);
+
 private:
     /// @brief Loads all boundaries(connections) between graph nodes for traversing between chunks
     void load_boundaries();

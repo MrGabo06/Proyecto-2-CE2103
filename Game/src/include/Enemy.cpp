@@ -25,19 +25,19 @@ void Enemy::generateRoute(Map2D *map){
     for (int i = 0; i < this->route_size; i++){
         int displacement[] = {random.gen(site[0]-this->mov_range, site[0]+this->mov_range), random.gen(site[1]-this->mov_range, site[1]+this->mov_range)};
         // Horizontal verifications
-        if (displacement[0] >= map->grid_size[0]){
+        if (displacement[0] >= map->grid_size[0]-1){
             displacement[0] = map->grid_size[0]-2;
-        } else if ( displacement[0] < 0){
+        } else if ( displacement[0] < 1){
             displacement[0] = 1;
         }
         // Vertical verifications
-        if (displacement[1] >= map->grid_size[1]){
+        if (displacement[1] >= map->grid_size[1]-1){
             displacement[1] = map->grid_size[1]-2;
-        } else if ( displacement[1] < 0){
+        } else if ( displacement[1] < 1){
             displacement[1] = 1;
         }
         // Verify route is not wall
-        MapChunk& chunk_to_add = map->get(displacement[0], displacement[1]);
+        MapChunk chunk_to_add = map->get(displacement[0], displacement[1]);
         int variation[] = {displacement[0], displacement[1]};
         while (chunk_to_add.chunk_type == ChunkType::wall || chunk_to_add.chunk_type == ChunkType::fake){
             int move_where = random.gen(0,1);
@@ -73,7 +73,7 @@ void Enemy::generateRoute(Map2D *map){
         // Add point to route
         this->route.enqueue(chunk_to_add);
     }
-    this->route.enqueue(this->location->data);
+    this->route.enqueue(this->location->data);  
 }
 
 void Enemy::shift(float frame_time, int64_t time_stamp){
@@ -148,9 +148,33 @@ void Enemy::traceback(float frameTime){
             this->sub_route.dequeue();
         }
     }
+}
+
+void Enemy::traceback(float frameTime){
+
+}
+
+void Enemy::engage(){
+    // Clear the sub route if there was any queued chunks to visit
+    while (this->sub_route.size() > 0){
+        this->sub_route.dequeue();
+    }
+    // Change the pointer to the location of entity before engaging
+    this->LastPosition = this->location;
+    // Change conditions
+    this->engaging = true;
+    this->returning = false;
+    this->routing = false;
 };
 
-bool Enemy::rangeToEntity(Entity* entity, bool attacking){
+void Enemy::disengage(){
+    this->setTarget(nullptr);
+    this->engaging = false;
+    this->returning = true;
+    this->routing = false;
+}
+
+bool Enemy::rangeToEntity(Entity *entity, bool attacking){
     int range = this->detection_range;
     if (attacking){
         range = 15;

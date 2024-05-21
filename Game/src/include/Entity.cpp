@@ -34,6 +34,10 @@ void Entity::setHealthPoints(int newHp){
     healthPoints += newHp;
 }
 
+void Entity::setShieldPoints(int Hp){
+    ShieldPoints += Hp;
+}
+
 void Entity::setPosition(float xCords, float yCords){
     if (xCords != -1.0f) {
         position.x = xCords;
@@ -60,4 +64,8 @@ G_Node<MapChunk>* Entity::getLocation(){
 
 int Entity::getHealth(){
     return healthPoints;
+}
+
+int Entity::getShield(){
+    return ShieldPoints;
 }

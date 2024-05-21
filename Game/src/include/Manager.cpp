@@ -1,5 +1,7 @@
 #include "Manager.h"
 
+#include <iostream>
+
 Manager::Manager(){
     this->origin = nullptr;
 }
@@ -24,67 +26,92 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
     //thread(&Manager::control, this).detach();
 }
 
-void Manager::addMapRef(Map2D* source){
-    this->origin = source;
-}
-
 void Manager::addEntities(EntityType entity_t, int quantity){
     this->entities_lock.lock();
-    switch (entity_t){
-    case (CHOCOBO):
-        for ( int i = 0; i < quantity; i++){
-            Enemy* chocobo = new Chocobo(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
-            this->origin->locate_at(chocobo,chocobo->graphY,chocobo->graphX, true);
-            chocobo->generateRoute(this->origin);
-            this->mob_entities.push_back(chocobo);
+    if ( entity_t == EntityType::TREASURE && entity_t == EntityType::VASE){ // Generate static entities
+        Entity* entity = nullptr;
+        for (int i = 0; i < quantity; i++){
+            // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
+            int location_coords[2] = {randomizer.gen(1,this->origin->grid_size[0]-2), randomizer.gen(1,this->origin->grid_size[1]-2)};
+            MapChunk chunk = this->origin->get(location_coords[0], location_coords[1]);
+            while (chunk.chunk_type != ChunkType::terrain){ // { CHECK THE CHUNK IS WALKABLE TERRAIN }
+                int offset[] = {randomizer.gen(-1,1), randomizer.gen(-1,1)};
+                location_coords[0] += offset[0];
+                if (location_coords[0] > this->origin->grid_size[0]-1){
+                    location_coords[0] = this->origin->grid_size[0]-2;
+                } else if (location_coords[0] < 1){
+                    location_coords[0] = 1;
+                }
+                location_coords[1] += offset[1];
+                if (location_coords[1] > this->origin->grid_size[1]-1){
+                    location_coords[1] = this->origin->grid_size[1]-2;
+                }   else if (location_coords[1] < 1){
+                    location_coords[1] = 1;
+                }
+                chunk = this->origin->get(location_coords[0], location_coords[1]);
+            }
+            // [ CREATE THE REQUIRED ENTITY ]
+            switch (entity_t){
+                case VASE:
+                    entity = new Vase(0,0);
+                    break;
+                case TREASURE:
+                    entity = new Vase(0,0);
+                    break;
+            }
+            // [ LOCATE THE ENEMY AND GENERATES IT ROUTE ]
+            this->origin->locate_at(entity, location_coords[0], location_coords[1], true);
+            // [ ADD ENTITY TO LIST ]
+            this->static_entities.push_back(entity);
         }
-        break;
-    case (EYE):
-        for ( int i = 0; i < quantity; i++){
-            Enemy* eye = new Eye(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
-            this->origin->locate_at(eye,eye->graphY,eye->graphX, true);
-            eye->generateRoute(this->origin);
-            this->mob_entities.push_back(eye);
+    } else { // Create enemies
+        Enemy* enemy = nullptr;
+        for (int i = 0; i < quantity; i++) {
+            // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
+            int location_coords[2] = {randomizer.gen(1,this->origin->grid_size[0]-2), randomizer.gen(1,this->origin->grid_size[1]-2)};
+            std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
+            MapChunk chunk = this->origin->get(location_coords[0], location_coords[1]);
+            while (chunk.chunk_type != ChunkType::terrain){ // { CHECK THE CHUNK IS WALKABLE TERRAIN }
+                int offset[] = {randomizer.gen(-1,1), randomizer.gen(-1,1)};
+                location_coords[0] += offset[0];
+                if (location_coords[0] > this->origin->grid_size[0]-1){
+                    location_coords[0] = this->origin->grid_size[0]-2;
+                } else if (location_coords[0] < 1){
+                    location_coords[0] = 1;
+                }
+                location_coords[1] += offset[1];
+                if (location_coords[1] > this->origin->grid_size[1]-1){
+                    location_coords[1] = this->origin->grid_size[1]-2;
+                }   else if (location_coords[1] < 1){
+                    location_coords[1] = 1;
+                }
+                std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
+                chunk = this->origin->get(location_coords[0], location_coords[1]);
+            }
+            // [ CREATE THE REQUIRED ENEMY ]
+            switch (entity_t){
+                case SPECTER:
+                    enemy = new Specter(0,0,this->stats);
+                    break;
+                case CHOCOBO:
+                    enemy = new Chocobo(0,0,this->stats);
+                    break;
+                case RAT:
+                    enemy = new Rat(0,0,this->stats);
+                    break;
+                case SUPER:
+                    enemy = new Super(0,0,this->stats);
+                    break;
+                case EYE:
+                    enemy = new Eye(0,0,this->stats);
+                    break;
+            }
+            // [ LOCATE THE ENEMY AND GENERATES IT ROUTE ]
+            this->origin->locate_at(enemy, location_coords[0], location_coords[1], true);
+            enemy->generateRoute(this->origin);
+            // [ ADD THE ENEMY TO LIST ]
+            this->mob_entities.push_back(enemy);
         }
-        break;
-    case (RAT):
-        for ( int i = 0; i < quantity; i++){
-            Enemy* rat = new Rat(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
-            this->origin->locate_at(rat,rat->graphY, rat->graphX, true);
-            rat->generateRoute(this->origin);
-            this->mob_entities.push_back(rat);
-        }
-        break;
-    case (SPECTER):
-        for ( int i = 0; i < quantity; i++){
-            Enemy* specter = new Specter(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
-            this->origin->locate_at(specter,specter->graphY, specter->graphX,true);
-            specter->generateRoute(this->origin);
-            this->mob_entities.push_back(specter);
-        }
-        break;
-    case (SUPER):
-        for ( int i = 0; i < quantity; i++){
-            Enemy* boss = new Super(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1), this->stats);
-            this->origin->locate_at(boss,boss->graphY,boss->graphX, true);
-            boss->generateRoute(this->origin);
-            this->mob_entities.push_back(boss);
-        }
-        break;
-    case (TREASURE):
-        for ( int i = 0; i < quantity; i++){
-            Entity* chest = new Treasure(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1));
-            this->origin->locate_at(chest,chest->graphY, chest->graphX, true);
-            this->static_entities.push_back(chest);
-        }
-        break;
-    case (VASE):
-        for ( int i = 0; i < quantity; i++){
-            Entity* vase = new Vase(randomizer.gen(0, this->origin->grid_size[1]-1),randomizer.gen(0, this->origin->grid_size[0]-1));
-            this->origin->locate_at(vase,vase->graphY, vase->graphX, true);
-            this->static_entities.push_back(vase);
-        }
-        break;
     }
     this->entities_lock.unlock();
 }
@@ -108,29 +135,4 @@ int Manager::size(EntGroup group){
         return this->static_entities.size();
     }
     return 0;
-}
-
-void Manager::toggle(){
-    this->status_lock.lock();
-
-    this->active_status = !this->active_status;
-
-    this->status_lock.unlock();
-}
-
-bool Manager::getStatus(){
-    lock_guard<mutex> lock(this->status_lock);
-    return this->active_status;
-}
-
-void Manager::control(){
-    // while (this->getStatus()){
-    //     this->entities_lock.lock();
-    //     for (int i = 0; i < this->mob_entities.size(); i++){
-    //         this->mob_entities[i]->shift(this->origin);
-    //     }
-    //     this->entities_lock.unlock();
-
-    //     std::this_thread::sleep_for(std::chrono::seconds(2));
-    // }
 }
