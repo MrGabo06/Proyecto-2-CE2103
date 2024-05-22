@@ -32,6 +32,7 @@ Vector2 Entity::getPosition(){
 
 void Entity::setHealthPoints(int newHp){
     healthPoints += newHp;
+    cout << "Ataco" << endl;
 }
 
 void Entity::setShieldPoints(int Hp){

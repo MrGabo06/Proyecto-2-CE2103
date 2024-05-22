@@ -10,24 +10,10 @@ Player::Player(int startGraphX, int startGraphY){
     this->currentSpriteSheet = movingDownSprite;
 }
 
-void Player::attack(){
+void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
-    if (direction == 1)
-    {
-
-    }
-    if (direction == 2)
-    {
-
-    }
-    if (direction == 3)
-    {
-
-    }
-    if (direction == 4)
-    {
-
-    }
+    enemy->setHealthPoints(-1);
+    this->isAtacking = false;
 }
 
 void Player::move(float frameTime, const char dir){
@@ -89,17 +75,11 @@ void Player::move(float frameTime, const char dir){
 }
 
 void Player::movePlayer(float frameTime){
-    if (IsKeyDown(KEY_SPACE))
-    {
-        this->attack();
-    }
-    if (!IsKeyDown(KEY_SPACE))
-    {
-        this->isAtacking = false;   
-    }
+    
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
         // Stop movement
+        this->isMoving = false;
     }
 
     if (IsKeyDown(KEY_UP))
@@ -151,26 +131,6 @@ void Player::movePlayer(float frameTime){
         this->light = !light;
     }
 
-    if (this->getPosition().x < this->worldLeftLimit)
-    {
-        this->setPosition(this->worldLeftLimit, -1.0f);
-    }
-
-    if (this->getPosition().x > this->worldRightLimit - 16.0f)
-    {
-        this->setPosition(this->worldRightLimit - 16.0f, -1.0f);
-    }
-
-    if (this->getPosition().y < this->worldUpLimit)
-    {
-        this->setPosition(-1.0f, this->worldUpLimit);
-    }
-
-    if (this->getPosition().y > this->worldDownLimit - 22.0f)
-    {
-        this->setPosition(-1.0f, this->worldDownLimit - 22.0f);
-    }
-
     this->graphX = this->getPosition().x / this->cellSize;
     this->graphY = this->getPosition().y / this->cellSize;
 
@@ -185,11 +145,6 @@ void Player::movePlayer(float frameTime){
     this->rightLimit = this->graphX * this->cellSize + 32.0f;
 }
 
-void Player::setMapLimits(int limits[2])
-{
-    this->worldRightLimit = limits[1] * this->cellSize;
-    this->worldDownLimit = limits[0] * this->cellSize;
-}
 
 
 

@@ -84,6 +84,7 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
     switch (new_level){
         case first:
             this->file_asset += "/level1.txt";
+            this->dark_map = false;
             break;
 
         case second:
@@ -93,14 +94,17 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
 
         case third:
             this->file_asset += "/level3.txt";
+            this->dark_map = false;
             break;
 
         case fourth:
             this->file_asset += "/level4.txt";
+            this->dark_map = false;
             break;
 
         case fifth:
             this->file_asset += "/level5.txt";
+            this->dark_map = false;
             break;
     }
     this->width = chunk_size[0];
