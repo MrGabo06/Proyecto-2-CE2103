@@ -16,6 +16,12 @@ void Player::attack(Enemy* enemy) {
     this->isAtacking = false;
 }
 
+void Player::attackE(Entity* ent){
+    this->isAtacking = true;
+    this->setHealthPoints(+1);
+    this->isAtacking = false;
+}
+
 void Player::move(float frameTime, const char dir){
     above = &this->currentMap->get(graphAbove, graphX);
     below = &this->currentMap->get(graphBelow, graphX);

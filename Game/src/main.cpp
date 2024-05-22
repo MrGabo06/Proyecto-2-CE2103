@@ -204,7 +204,10 @@ int main()
         for (int i = 0; i < computer.size(EntGroup::statical); i++)
         {
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-            if (ent->getHealth() > 0){
+            if(IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f){
+                player.attackE(ent);
+            }
+            if (!ent->getHealth() < 1){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
             }
         }
