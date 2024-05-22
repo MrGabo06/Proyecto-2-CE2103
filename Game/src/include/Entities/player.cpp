@@ -19,6 +19,7 @@ void Player::attack(Enemy* enemy) {
 void Player::attackE(Entity* ent){
     this->isAtacking = true;
     this->setHealthPoints(+1);
+    ent->setHealthPoints(-1);
     this->isAtacking = false;
 }
 
