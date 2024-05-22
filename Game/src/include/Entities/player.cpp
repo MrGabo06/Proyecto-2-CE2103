@@ -10,24 +10,10 @@ Player::Player(int startGraphX, int startGraphY){
     this->currentSpriteSheet = movingDownSprite;
 }
 
-void Player::attack(){
+void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
-    if (direction == 1)
-    {
-
-    }
-    if (direction == 2)
-    {
-
-    }
-    if (direction == 3)
-    {
-
-    }
-    if (direction == 4)
-    {
-
-    }
+    enemy->setHealthPoints(-1);
+    this->isAtacking = false;
 }
 
 void Player::move(float frameTime, const char dir){
@@ -89,14 +75,7 @@ void Player::move(float frameTime, const char dir){
 }
 
 void Player::movePlayer(float frameTime){
-    if (IsKeyDown(KEY_SPACE))
-    {
-        this->attack();
-    }
-    if (!IsKeyDown(KEY_SPACE))
-    {
-        this->isAtacking = false;   
-    }
+    
     if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
     {
         // Stop movement

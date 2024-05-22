@@ -5,6 +5,9 @@
 #include <raylib.h>
 #include "../Entity.h"
 #include "../Map.h"
+#include "../Enemy.h"
+#include "../Map.h"
+#include "../WayFinder.h"
 using namespace std;
 
 #define PLAYER_JUMP_SPD 200.0f
@@ -47,7 +50,8 @@ public: // Methods
 
     /// @brief Make the player attack
     /// @param frameTime: Raylib window frame time
-    void attack();
+    void attack(Enemy* enemy);
+    
 
     /// @brief Create an instance of Player class
     /// @param startingGraphX: The starting horizontal graph coords of the player
