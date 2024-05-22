@@ -28,7 +28,7 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
 
 void Manager::addEntities(EntityType entity_t, int quantity){
     this->entities_lock.lock();
-    if ( entity_t == EntityType::TREASURE && entity_t == EntityType::VASE){ // Generate static entities
+    if ( entity_t == EntityType::TREASURE || entity_t == EntityType::VASE){ // Generate static entities
         Entity* entity = nullptr;
         for (int i = 0; i < quantity; i++){
             // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
@@ -132,7 +132,87 @@ int Manager::size(EntGroup group){
     case enemies:
         return this->mob_entities.size();
     case statical:
-        return this->static_entities.size();
+        return this->static_entities.size(); 
     }
     return 0;
+}
+
+void Manager::killAll(int64_t current_time){
+    for (int i = 0; i<this->mob_entities.size(); i++){
+        Enemy* enemy = this->mob_entities[i];
+        if (enemy->getHealth() > 0){
+            enemy->setHealthPoints(-enemy->getHealth());
+            enemy->lifetime = current_time;
+        }
+    }
+
+    for (int i = 0; i<this->static_entities.size(); i++){
+        Entity* entity = this->static_entities[i];
+        entity->setHealthPoints(-entity->getHealth());
+    }
+}
+
+void Manager::evolve(int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases)
+{
+    // [ GET A NEW SET OF STATS FOR ENTITIES ]
+    Enemy* best_prospects[] = {nullptr, nullptr};
+    for (auto enemy : this->mob_entities){
+        if ( best_prospects[0] == nullptr){
+            best_prospects[0] = enemy;
+        }
+        if ( best_prospects[1] == nullptr){
+            best_prospects[1] = enemy;
+        }
+        if (best_prospects[0] != nullptr && best_prospects[1] != nullptr){
+            if (enemy->lifetime > best_prospects[0]->lifetime){
+                best_prospects[0] = enemy;
+            } else if (enemy->lifetime > best_prospects[1]->lifetime){
+                best_prospects[1] = enemy;
+            }
+        }
+    }
+
+    int total_inherits = randomizer.gen(1,6);
+    int inheritable_stats[total_inherits];
+    for (int i = 0; i < total_inherits; i++){
+        inheritable_stats[i] = randomizer.gen(0,5);
+    }
+    int new_att_set[6] = { 0 };
+    for (int i = 0; i < 6; i++){
+        bool used = false;
+        for ( int stat_num : inheritable_stats){
+            if ( i == stat_num){
+                int parent = randomizer.gen(0,1);
+                new_att_set[i] = best_prospects[parent]->attribute_scaling[i];
+                used = true;
+            }
+        }
+        if (!used){
+            new_att_set[i] = randomizer.gen(1,10);
+        }
+    }
+    for (int i = 0; i < 6; i++){
+        this->stats[i] = new_att_set[i];
+    }
+    // [ CLEAR ANY ENTITIES ON THE ARRAYS ]
+    while (this->mob_entities.size() > 0){
+        Enemy* enemy = this->mob_entities[this->mob_entities.size()-1];
+        this->mob_entities.pop_back();
+        delete enemy;
+    }
+
+    while (this->static_entities.size() > 0){
+        Entity* entity = this->static_entities[this->static_entities.size()-1];
+        this->static_entities.pop_back();
+        delete entity;
+    }
+
+    // [ INSERT THE NEWLY CREATED ENTITIES ]
+    this->addEntities(EntityType::SPECTER, specters);
+    this->addEntities(EntityType::EYE, eyes);
+    this->addEntities(EntityType::RAT, rats);
+    this->addEntities(EntityType::CHOCOBO, chocobos);
+    this->addEntities(EntityType::SUPER, supers);
+    this->addEntities(EntityType::TREASURE, treasures);
+    this->addEntities(EntityType::VASE, vases);
 }

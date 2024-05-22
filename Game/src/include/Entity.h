@@ -11,6 +11,15 @@ class MapChunk;
 #define entityVerticalSpeed 200.0f
 #define entityHorizontalSpeed 200.0f
 
+struct Attributes{
+    int health[2];
+    int damage[2];
+    int range[2];
+    int distance[2];
+    int route_size[2];
+    float speed[2];
+};
+
 /// @brief Generic class for game objects
 class Entity{
 protected: // Attributes

@@ -11,6 +11,7 @@ Rat::Rat(){
     this->target = nullptr;
     this->location = nullptr;
     this->LastPosition = nullptr;
+    this->attribute_scaling = nullptr;
 
     this->routing = true;
     this->engaging = false;
@@ -33,6 +34,7 @@ Rat::Rat(int xCord, int yCord, int skill_rates[]){
     this->target = nullptr;
     this->location = nullptr;
     this->LastPosition = nullptr;
+    this->attribute_scaling = skill_rates;
 
     this->routing = true;
     this->engaging = false;

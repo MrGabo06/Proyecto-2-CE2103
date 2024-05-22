@@ -20,7 +20,7 @@ int main(){
     Map2D map(Level::first, chunk_sizes);
     map.generate();
 
-    Manager computer(&map,5,0,0,0,0,0,0);
+    Manager computer(&map,5,0,0,0,0,0,1);
     LinkedList<MapChunk> breadcrumbList;
 
     Player player(1, 1);
@@ -133,13 +133,15 @@ int main(){
   
         for (int i = 0; i < computer.size(EntGroup::enemies); i++){
             Enemy* enemy = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies, i));
-            if(enemy->rangeToEntity(&player, false)){
-                enemy->setTarget(&player);
-                enemy->engage();
+            if (enemy->getHealth() > 0){
+                if(enemy->rangeToEntity(&player, false)){
+                    enemy->setTarget(&player);
+                    enemy->engage();
+                }
+                enemy->shift(frameTime, elapsedTime);
+                map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
+                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
             }
-            enemy->shift(frameTime, elapsedTime);
-            map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-            DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
         }
       
         // *******************************************
@@ -147,7 +149,9 @@ int main(){
         // *******************************************
         for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-            DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
+            if (ent->getHealth() > 0){
+                DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
+            }
         }
         
         // *******************************************

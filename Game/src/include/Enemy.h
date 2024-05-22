@@ -12,6 +12,15 @@
 
 class Map2D;
 
+struct Attributes{
+    int health[2];
+    int damage[2];
+    int range[2];
+    int distance[2];
+    int route_size[2];
+    float speed[2];
+};
+
 struct Cooldown{
     int action;
     int movement;
@@ -32,6 +41,7 @@ protected: // Atributes
     Entity* target;
     
     // { Enemy properties }
+
     int detection_range;
     int route_size;
     int mov_range;
@@ -40,12 +50,15 @@ protected: // Atributes
     int attack_damage;
 
     Cooldown cooldown;
-    int lifetime;
   
     // { Enemy operational states }
     bool routing;
     bool engaging;
     bool returning;
+
+public:
+    int lifetime = 0;
+    int* attribute_scaling;
 
 public: // Methods
 
