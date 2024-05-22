@@ -13,10 +13,6 @@ using namespace std;
 /// @brief Class for player entity that can be controlled by user
 class Player : public Entity{
 private: // Attributes
-    int worldUpLimit = 0;
-    int worldDownLimit = 0;
-    int worldLeftLimit = 0;
-    int worldRightLimit = 0;
     
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
@@ -66,12 +62,6 @@ public: // Methods
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
     void movePlayer(float frameTime);
-
-    /// @brief Sets the limits of the map so the player doesnt move out of it
-    /// @param limits: Maximum X and Y limits
-    void setMapLimits(int limits[2]);
-
-
 };
 
 #endif // PLAYER_H

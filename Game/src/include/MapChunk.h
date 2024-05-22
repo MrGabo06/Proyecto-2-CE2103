@@ -27,8 +27,9 @@ public: // Attributes
     Vector2 position;
     int coordinates[2];
     float size[2];
-
     Texture2D texture;
+    bool entrance = false;
+    bool exit = false;
 private:
     // [  ]
     Texture2D darkened;

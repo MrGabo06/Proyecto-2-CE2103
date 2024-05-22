@@ -18,6 +18,7 @@ int main(){
 
     float chunk_sizes[] = {(float)48, (float)48};
     Map2D map(Level::first, chunk_sizes);
+    int currentLevel = 1;
     map.generate();
 
     Manager computer(&map,5,0,0,0,0,0,0);
@@ -26,8 +27,6 @@ int main(){
     Player player(1, 1);
     player.currentMap = &map;
     map.locate_at(&player, player.graphY, player.graphX, true);
-
-    player.setMapLimits(map.grid_size);
 
     int currentFrame = 0;
     const int frameSpeed = 5;
@@ -91,6 +90,34 @@ int main(){
         // }
         // cout << breadcrumbList.getSize() << endl;
 
+        // *******************************************
+        // Trasnsitions between levels
+        // *******************************************
+        if(IsKeyDown(KEY_N)){
+            if(map.get(player.graphY, player.graphX).exit){
+            if(currentLevel == 1){
+                map.regenerate(Level::second, chunk_sizes);
+            }else if(currentLevel == 2){
+                map.regenerate(Level::third, chunk_sizes);
+            }else if(currentLevel == 3){
+                map.regenerate(Level::fourth, chunk_sizes);
+            }else if(currentLevel == 4){
+                map.regenerate(Level::fifth, chunk_sizes);
+            }
+            currentLevel++;
+            }else if(map.get(player.graphY, player.graphX).exit){
+                if(currentLevel == 2){
+                map.regenerate(Level::first, chunk_sizes);
+            }else if(currentLevel == 3){
+                map.regenerate(Level::second, chunk_sizes);
+            }else if(currentLevel == 4){
+                map.regenerate(Level::third, chunk_sizes);
+            }else if(currentLevel == 5){
+                map.regenerate(Level::fourth, chunk_sizes);
+            }
+            currentLevel--;
+            }
+        }
 // ------------------------------------------------------------------------------------------------
         BeginMode2D(camera);
       
