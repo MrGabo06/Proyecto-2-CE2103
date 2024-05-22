@@ -4,7 +4,7 @@
 #include "include/Map.h"
 #include "include/MapChunk.h"
 #include "include/Manager.h"
-
+#include "include/Enemy.h"
 #include <chrono>
 #include <iostream>
 #include "modules/LinkedList.h"
@@ -26,6 +26,10 @@ int main(){
     Player player(1, 1);
     player.currentMap = &map;
     map.locate_at(&player, player.graphY, player.graphX, true);
+
+    Enemy enemy;
+
+    player.attack(&enemy);
 
     player.setMapLimits(map.grid_size);
 
@@ -137,11 +141,20 @@ int main(){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
+            if(IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f){           
+                
+                player.attack(enemy);
+            }
             enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-            DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+            if (!(enemy->getHealth() < 1))
+            {
+                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+            }
+            
+
         }
-      
+        
         // *******************************************
         // Vases and treasures behavior
         // *******************************************

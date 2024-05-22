@@ -92,7 +92,7 @@ public: // Methods
     /// @brief Generates a random patrol route for entity
     /// @param map 
     void generateRoute(Map2D* map);
-    
+
 protected:
 
     /// @brief Sets the enemy properties based on a rating (1-10) 
