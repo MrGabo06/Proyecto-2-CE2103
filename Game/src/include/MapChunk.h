@@ -9,7 +9,8 @@ class Entity;
 
 using namespace std;
 
-enum ChunkType{
+enum ChunkType
+{
     terrain,
     wall,
     trap,
@@ -20,20 +21,21 @@ enum ChunkType{
 };
 
 /// @brief Class for building world map chunks
-class MapChunk{
+class MapChunk
+{
 public: // Attributes
     // [  ]
     ChunkType chunk_type;
     Vector2 position;
     int coordinates[2];
     float size[2];
-
+    bool light;
     Texture2D texture;
+
 private:
     // [  ]
     Texture2D darkened;
     Texture2D illuminated;
-    bool light;
 
     int breadcrumb;
 
