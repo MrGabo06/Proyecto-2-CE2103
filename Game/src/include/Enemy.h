@@ -12,7 +12,8 @@
 
 class Map2D;
 
-struct Attributes{
+struct Attributes
+{
     int health[2];
     int damage[2];
     int range[2];
@@ -21,25 +22,27 @@ struct Attributes{
     float speed[2];
 };
 
-struct Cooldown{
+struct Cooldown
+{
     int action;
     int movement;
 };
 
 using namespace std;
 /// @brief Class for creating 'enemy' type entities for the game
-class Enemy : public Entity{
+class Enemy : public Entity
+{
 protected: // Atributes
     Generator random;
     WayFinder device;
 
     // { Pathfinding variables }
-    Queue< MapChunk > route;
-    Queue< MapChunk > sub_route;
+    Queue<MapChunk> route;
+    Queue<MapChunk> sub_route;
 
-    G_Node< MapChunk >* LastPosition;
-    Entity* target;
-    
+    G_Node<MapChunk> *LastPosition;
+    Entity *target;
+
     // { Enemy properties }
 
     int detection_range;
@@ -48,9 +51,10 @@ protected: // Atributes
     float speed_multiplier;
     int decision_chances;
     int attack_damage;
+    bool attacking;
 
     Cooldown cooldown;
-  
+
     // { Enemy operational states }
     bool routing;
     bool engaging;
@@ -58,10 +62,9 @@ protected: // Atributes
 
 public:
     int lifetime = 0;
-    int* attribute_scaling;
+    int *attribute_scaling;
 
 public: // Methods
-
     Enemy(){};
 
     ~Enemy(){};
@@ -73,7 +76,7 @@ public: // Methods
 
     /// @brief Sets an entity as the target of this enemy
     /// @param entity: reference to the entity
-    void setTarget(Entity* entity);
+    void setTarget(Entity *entity);
 
     /// @brief Asks the entity to attack its current target
     virtual void attack();
@@ -82,7 +85,7 @@ public: // Methods
     void patrol(float frameTime);
 
     /// @brief Returns the entity to its last position (only if entity was engaged in combat)
-    /// @param frameTime 
+    /// @param frameTime
     void traceback(float frameTime);
 
     /// @brief Engages the entity into offensive state
@@ -95,23 +98,21 @@ public: // Methods
     /// @param entity: reference to other entity
     /// @param attacking: changes the range from [VISION] to [ATTACK]
     /// @return True or False
-    bool rangeToEntity(Entity* entity, bool attacking);
+    bool rangeToEntity(Entity *entity, bool attacking);
 
     /// @brief Moves the entity to the specified chunk
-    /// @param newMapChunk 
-    /// @param frameTime 
+    /// @param newMapChunk
+    /// @param frameTime
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
     /// @brief Generates a random patrol route for entity
-    /// @param map 
-    void generateRoute(Map2D* map);
+    /// @param map
+    void generateRoute(Map2D *map);
 
 protected:
-
-    /// @brief Sets the enemy properties based on a rating (1-10) 
+    /// @brief Sets the enemy properties based on a rating (1-10)
     /// @param scaling: array(6) of ratings
-    virtual void setProperties(int scaling[]){};
-
+    virtual void setProperties(int scaling[]) {};
 };
 
 #endif // ENEMY_H

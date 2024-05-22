@@ -1,13 +1,14 @@
 #include "Entity.h"
 #include "Map.h"
 
-void Entity::move(float frameTime, const char dir){
+void Entity::move(float frameTime, const char dir)
+{
     if (dir == mvUp)
     {
         this->position.y -= entityVerticalSpeed * frameTime;
     }
 
-    if (dir == mvDown) 
+    if (dir == mvDown)
     {
         this->position.y += entityVerticalSpeed * frameTime;
     }
@@ -26,47 +27,57 @@ void Entity::move(float frameTime, const char dir){
     this->graphY = this->getPosition().y / this->cellSize;
 }
 
-Vector2 Entity::getPosition(){
+Vector2 Entity::getPosition()
+{
     return position;
 }
 
-void Entity::setHealthPoints(int newHp){
+void Entity::setHealthPoints(int newHp)
+{
     healthPoints += newHp;
     cout << "Ataco" << endl;
 }
 
-void Entity::setShieldPoints(int Hp){
+void Entity::setShieldPoints(int Hp)
+{
     ShieldPoints += Hp;
 }
 
-void Entity::setPosition(float xCords, float yCords){
-    if (xCords != -1.0f) {
+void Entity::setPosition(float xCords, float yCords)
+{
+    if (xCords != -1.0f)
+    {
         position.x = xCords;
     }
-    
-    if (yCords != -1.0f) {
+
+    if (yCords != -1.0f)
+    {
         position.y = yCords;
     }
 }
 
-void Entity::setLocation(G_Node<MapChunk>* map_chunk, bool changePosition){
+void Entity::setLocation(G_Node<MapChunk> *map_chunk, bool changePosition)
+{
     this->location = map_chunk;
     this->graphX = map_chunk->data.coordinates[1];
     this->graphY = map_chunk->data.coordinates[0];
-    if (changePosition) {
-        this->position = location->data.center();    
+    if (changePosition)
+    {
+        this->position = location->data.center();
     }
-
 }
 
-G_Node<MapChunk>* Entity::getLocation(){
+G_Node<MapChunk> *Entity::getLocation()
+{
     return this->location;
 }
 
-int Entity::getHealth(){
+int Entity::getHealth()
+{
     return healthPoints;
 }
 
-int Entity::getShield(){
+int Entity::getShield()
+{
     return ShieldPoints;
 }

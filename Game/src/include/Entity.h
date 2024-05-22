@@ -11,22 +11,23 @@ class MapChunk;
 #define entityVerticalSpeed 200.0f
 #define entityHorizontalSpeed 200.0f
 
-struct Attributes{
-    int health[2];
-    int damage[2];
-    int range[2];
-    int distance[2];
-    int route_size[2];
-    float speed[2];
-};
+// struct Attributes{
+//   int health[2];
+// int damage[2];
+// int range[2];
+// int distance[2];
+// int route_size[2];
+// float speed[2];
+//};
 
 /// @brief Generic class for game objects
-class Entity{
+class Entity
+{
 protected: // Attributes
     Vector2 position;
     int healthPoints = 0;
     int ShieldPoints = 0;
-    G_Node<MapChunk>* location;
+    G_Node<MapChunk> *location;
 
 public:
     int cellSize = 48;
@@ -42,20 +43,18 @@ public:
     bool isAtacking = false;
 
 public: // Methods
-
     Entity(){};
-    
+
     /// @brief Moves the entity to the given direction
     /// @param frameTime: Raylib window frame time
     /// @param dir: Direction the entity will move to
     virtual void move(float frameTime, const char dir);
 
-
-    /// @brief Modify (add or take) health points 
+    /// @brief Modify (add or take) health points
     /// @param newHp: Health points to be added to the current ones
     void setHealthPoints(int newHp);
 
-    /// @brief Give the extra health points to the entity 
+    /// @brief Give the extra health points to the entity
     /// @param newHp: Health points to be added to the current ones
     void setShieldPoints(int Hp);
 
@@ -71,11 +70,11 @@ public: // Methods
     /// @brief Changes the location in the graph and the position
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
-    void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+    void setLocation(G_Node<MapChunk> *map_chunk, bool changePosition);
 
     /// @brief Gets the pointer to map graph node where the entity is standing
     /// @return Pointer to node
-    G_Node<MapChunk>* getLocation();
+    G_Node<MapChunk> *getLocation();
 
     /// @brief Get the entity health points
     /// @return Entity health points
