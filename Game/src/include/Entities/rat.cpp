@@ -1,71 +1,59 @@
 #include "rat.h"
 
-Rat::Rat(){
-    // [ INITIALIZE THE ENTITY ]
-    this->healthPoints = 1;
-    this->setPosition(0.f,0.f);
-    this->currentSpriteSheet = movingDownSprite;
-
-    this->cooldown = { 2, 1};
-
-    this->target = nullptr;
-    this->location = nullptr;
-    this->LastPosition = nullptr;
-    this->attribute_scaling = nullptr;
-
-    this->routing = true;
-    this->engaging = false;
-    this->returning = false;
-
-    int default_properties[] = { 3, 3, 3, 3, 3, 3};
-    this->setProperties(default_properties);
-}
+Rat::Rat(){}
 
 Rat::Rat(int xCord, int yCord, int skill_rates[]){
     // [ INITIALIZE THE ENTITY ]
-    this->healthPoints = 2;
     this->setPosition(0.f, 0.f);
     this->graphX = xCord;
     this->graphY = yCord;
     this->currentSpriteSheet = movingDownSprite;
-
-    this->cooldown = { 2, 1};
-
-    this->target = nullptr;
-    this->location = nullptr;
-    this->LastPosition = nullptr;
-    this->attribute_scaling = skill_rates;
-
-    this->routing = true;
-    this->engaging = false;
-    this->returning = false;
-
     this->setProperties(skill_rates);
  }
 
 void Rat::setProperties(int scaling[]) {
-    this->detection_range = (scaling[0]*MAX_DETECTION.rat)/10;
-    if (this->detection_range == 0){
-        this->detection_range = 1;
-    }
-
-    this->route_size = (scaling[1]*MAX_ROUTE.rat)/10;
-    if (this->route_size == 0){
-        this->route_size = 1;
-    }
-
-    this->mov_range = (scaling[2]*MAX_MOVEMENT.rat)/10;
-    if (this->mov_range == 0){
-        this->mov_range = 1;
-    }
-    this->speed_multiplier = (float(scaling[3])*MAX_SPEED.rat)/10.f;
+    this->attributes.cooldown = 2;
     
-    this->decision_chances = (scaling[4]*MAX_DECISIONS.rat)/10;
-    if (this->decision_chances == 0){
-        this->decision_chances = 1;
+    // 1.
+    this->attributes.damage[0] = scaling[0];
+    this->attributes.damage[1] = (scaling[0]*MAX_DAMAGE.rat)/10;
+    if (this->attributes.damage[1] == 0){
+        this->attributes.damage[1] = 1;
     }
-    this->attack_damage = (scaling[5]*MAX_ATTACK.rat)/10;
-    if (this->attack_damage == 0){
-        this->attack_damage = 1;
+
+    // 2.
+    this->attributes.distance[0] = scaling[1];
+    this->attributes.distance[1] = (scaling[1]*MAX_DISTANCE.rat)/10;
+    if (this->attributes.distance[1] == 0){
+        this->attributes.distance[1] = 1;
+    }
+
+    // 3.
+    this->attributes.health[0] = scaling[2];
+    this->attributes.health[1] = (scaling[2]*MAX_HEALTH.rat)/10;
+    if (this->attributes.health[1] == 0){
+        this->attributes.health[1] = 1;
+    }
+    this->healthPoints = this->attributes.health[1];
+
+    // 4.
+    this->attributes.range[0] = scaling[3];
+    this->attributes.range[1] = (scaling[3]*MAX_RANGE.rat)/10;
+    if (this->attributes.range[1] == 0){
+        this->attributes.range[1] = 1;
+    }
+
+    // 5.
+    this->attributes.route_size[0] = scaling[4];
+    this->attributes.route_size[1] = (scaling[4]*MAX_ROUTE_SIZE.rat)/10;
+    if (this->attributes.route_size[1] == 0){
+        this->attributes.route_size[1] = 1;
+    }
+
+    // 6.
+    this->attributes.speed[0] = (float)scaling[5];
+    this->attributes.speed[1] = (scaling[0]*MAX_SPEED.rat)/10;
+    if (this->attributes.speed[1] == 0){
+        this->attributes.speed[1] = 1.0;
     }
  }

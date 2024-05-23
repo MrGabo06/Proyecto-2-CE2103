@@ -56,7 +56,7 @@ class Manager {
         Map2D* origin;
 
         Performance machine_st = Performance::Average;
-        int stats[6] =  { 0 };
+        int stats[6] = {4, 4, 4, 4, 4, 4};
 
     public: // Methods
 

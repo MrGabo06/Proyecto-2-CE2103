@@ -2,7 +2,7 @@
 
 Player::Player(int startGraphX, int startGraphY){
     this->healthPoints = 5;
-    this->setShieldPoints(2);
+    this->addShieldPoints(2);
 
     this->graphX = startGraphX;
     this->graphY = startGraphY;
@@ -12,7 +12,7 @@ Player::Player(int startGraphX, int startGraphY){
 
 void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
-    enemy->setHealthPoints(-1);
+    enemy->addHealthPoints(-1);
     this->isAtacking = false;
 }
 

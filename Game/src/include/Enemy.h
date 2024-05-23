@@ -12,24 +12,12 @@
 
 class Map2D;
 
-struct Attributes{
-    int health[2];
-    int damage[2];
-    int range[2];
-    int distance[2];
-    int route_size[2];
-    float speed[2];
-};
-
-struct Cooldown{
-    int action;
-    int movement;
-};
-
 using namespace std;
 /// @brief Class for creating 'enemy' type entities for the game
 class Enemy : public Entity{
 protected: // Atributes
+
+    // { Tools }
     Generator random;
     WayFinder device;
 
@@ -37,28 +25,16 @@ protected: // Atributes
     Queue< MapChunk > route;
     Queue< MapChunk > sub_route;
 
-    G_Node< MapChunk >* LastPosition;
-    Entity* target;
-    
-    // { Enemy properties }
-
-    int detection_range;
-    int route_size;
-    int mov_range;
-    float speed_multiplier;
-    int decision_chances;
-    int attack_damage;
-
-    Cooldown cooldown;
+    G_Node< MapChunk >* LastPosition = nullptr;
+    Entity* target = nullptr;
   
     // { Enemy operational states }
-    bool routing;
-    bool engaging;
-    bool returning;
+    bool routing = true;
+    bool engaging = false;
+    bool returning = false;
 
 public:
     int lifetime = 0;
-    int* attribute_scaling;
 
 public: // Methods
 
@@ -71,25 +47,28 @@ public: // Methods
     /// @param time_stamp
     void shift(float frame_time, int64_t time_stamp);
 
-    /// @brief Sets an entity as the target of this enemy
-    /// @param entity: reference to the entity
-    void setTarget(Entity* entity);
-
     /// @brief Asks the entity to attack its current target
     virtual void attack();
 
+    /// @brief Asks the entity to follow its current target
+    virtual void follow(float frame_time);
+
     /// @brief Asks the entity to continue its patrol route
-    void patrol(float frameTime);
+    virtual void patrol(float frameTime);
 
     /// @brief Returns the entity to its last position (only if entity was engaged in combat)
     /// @param frameTime 
-    void traceback(float frameTime);
+    virtual void traceback(float frameTime);
 
     /// @brief Engages the entity into offensive state
     void engage();
 
     /// @brief Disengages the entity into its normal state
     void disengage();
+
+    /// @brief Sets an entity as the target of this enemy
+    /// @param entity: reference to the entity
+    void setTarget(Entity* entity);
 
     /// @brief Determines if another entity is in range to this instance
     /// @param entity: reference to other entity
@@ -105,7 +84,7 @@ public: // Methods
     /// @brief Generates a random patrol route for entity
     /// @param map 
     void generateRoute(Map2D* map);
-
+    
 protected:
 
     /// @brief Sets the enemy properties based on a rating (1-10) 

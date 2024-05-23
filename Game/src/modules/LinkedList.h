@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include "Node.hpp"
+#include <stdexcept>
 
 /// @brief C++ implementation of Linked List data structure
 /// @tparam T: data type name
@@ -32,7 +33,7 @@ public: // Methods
     /// @brief Retrieves the data contained in a node from the list
     /// @param index: position of the node to find
     /// @return value contained in the node
-    T get(int index);
+    T& get(int index);
 
     /// @brief Retrieves the data contained in a node from the list
     /// @param index: position of the node to find

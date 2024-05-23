@@ -30,7 +30,7 @@ public: // Attributes
     int coordinates[2];
     float size[2];
     bool light;
-    int breadcrumb;
+    int breadcrumb = 0;
     Texture2D texture;
     bool entrance = false;
     bool exit = false;

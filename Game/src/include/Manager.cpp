@@ -7,10 +7,6 @@ Manager::Manager(){
 }
 
 Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases){
-    // [ SET THE ATTRIBUTE SCALING FOR ENEMIES ]
-    for (int x = 0; x < 6; x++){
-        this->stats[x] = 4;
-    }
     // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
     this->addEntities(EntityType::SPECTER, specters);
@@ -141,14 +137,14 @@ void Manager::killAll(int64_t current_time){
     for (int i = 0; i<this->mob_entities.size(); i++){
         Enemy* enemy = this->mob_entities[i];
         if (enemy->getHealth() > 0){
-            enemy->setHealthPoints(-enemy->getHealth());
+            enemy->addHealthPoints(-enemy->getHealth());
             enemy->lifetime = current_time;
         }
     }
 
     for (int i = 0; i<this->static_entities.size(); i++){
         Entity* entity = this->static_entities[i];
-        entity->setHealthPoints(-entity->getHealth());
+        entity->addHealthPoints(-entity->getHealth());
     }
 }
 
@@ -179,18 +175,36 @@ void Manager::evolve(int specters, int eyes, int rats, int chocobos, int supers,
     }
     int new_att_set[6] = { 0 };
     for (int i = 0; i < 6; i++){
-        bool used = false;
-        for ( int stat_num : inheritable_stats){
-            if ( i == stat_num){
-                int parent = randomizer.gen(0,1);
-                new_att_set[i] = best_prospects[parent]->attribute_scaling[i];
-                used = true;
+        bool inherited = false;
+        for (auto selection : inheritable_stats){
+            int random_parent = randomizer.gen(0,1);
+            if (i == selection){
+                if (i == 0){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().health[0];
+                }
+                if (i == 1){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().damage[0];
+                }
+                if (i == 2){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().range[0];
+                }
+                if (i == 3){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().distance[0];
+                }
+                if (i == 4){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().route_size[0];
+                }
+                if (i == 5){
+                    new_att_set[i] = best_prospects[random_parent]->getAttributes().speed[0];
+                }
+                inherited = true;
             }
         }
-        if (!used){
+        if (!inherited){
             new_att_set[i] = randomizer.gen(1,10);
         }
     }
+
     for (int i = 0; i < 6; i++){
         this->stats[i] = new_att_set[i];
     }

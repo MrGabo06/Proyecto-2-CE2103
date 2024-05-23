@@ -30,12 +30,12 @@ Vector2 Entity::getPosition(){
     return position;
 }
 
-void Entity::setHealthPoints(int newHp){
+void Entity::addHealthPoints(int newHp){
     healthPoints += newHp;
-    cout << "Ataco" << endl;
+    cout << "Attack" << endl;
 }
 
-void Entity::setShieldPoints(int Hp){
+void Entity::addShieldPoints(int Hp){
     ShieldPoints += Hp;
 }
 
@@ -61,6 +61,10 @@ void Entity::setLocation(G_Node<MapChunk>* map_chunk, bool changePosition){
 
 G_Node<MapChunk>* Entity::getLocation(){
     return this->location;
+}
+
+Attributes Entity::getAttributes(){
+    return this->attributes;
 }
 
 int Entity::getHealth(){
