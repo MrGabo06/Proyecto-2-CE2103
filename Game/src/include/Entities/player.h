@@ -66,6 +66,8 @@ public: // Methods
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
     void movePlayer(float frameTime);
+
+    void attackE(Entity* ent);
 };
 
 #endif // PLAYER_H

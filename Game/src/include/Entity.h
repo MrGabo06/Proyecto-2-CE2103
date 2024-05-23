@@ -23,7 +23,8 @@ struct Attributes{
 };
 
 /// @brief Generic class for game objects
-class Entity{
+class Entity
+{
 protected: // Attributes
 
     // { LOCATION AND POSITION}
@@ -52,19 +53,18 @@ public:
     bool isAtacking = false;
 
 public: // Methods
-
     Entity(){};
-    
+
     /// @brief Moves the entity to the given direction
     /// @param frameTime: Raylib window frame time
     /// @param dir: Direction the entity will move to
     virtual void move(float frameTime, const char dir);
 
-    /// @brief Modify (add or take) health points 
+    /// @brief Modify (add or take) health points
     /// @param newHp: Health points to be added to the current ones
     void addHealthPoints(int newHp);
 
-    /// @brief Give the extra health points to the entity 
+    /// @brief Give the extra health points to the entity
     /// @param newHp: Health points to be added to the current ones
     void addShieldPoints(int Hp);
 
@@ -87,11 +87,11 @@ public: // Methods
     /// @brief Changes the location in the graph and the position
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
-    void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+    void setLocation(G_Node<MapChunk> *map_chunk, bool changePosition);
 
     /// @brief Gets the pointer to map graph node where the entity is standing
     /// @return Pointer to node
-    G_Node<MapChunk>* getLocation();
+    G_Node<MapChunk> *getLocation();
 
     Attributes getAttributes();
 };

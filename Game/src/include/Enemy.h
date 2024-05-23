@@ -14,7 +14,8 @@ class Map2D;
 
 using namespace std;
 /// @brief Class for creating 'enemy' type entities for the game
-class Enemy : public Entity{
+class Enemy : public Entity
+{
 protected: // Atributes
 
     // { Tools }
@@ -22,8 +23,8 @@ protected: // Atributes
     WayFinder device;
 
     // { Pathfinding variables }
-    Queue< MapChunk > route;
-    Queue< MapChunk > sub_route;
+    Queue<MapChunk> route;
+    Queue<MapChunk> sub_route;
 
     G_Node< MapChunk >* LastPosition = nullptr;
     Entity* target = nullptr;
@@ -37,7 +38,6 @@ public:
     int lifetime = 0;
 
 public: // Methods
-
     Enemy(){};
 
     ~Enemy(){};
@@ -57,7 +57,7 @@ public: // Methods
     virtual void patrol(float frameTime);
 
     /// @brief Returns the entity to its last position (only if entity was engaged in combat)
-    /// @param frameTime 
+    /// @param frameTime
     virtual void traceback(float frameTime);
 
     /// @brief Engages the entity into offensive state
@@ -74,11 +74,11 @@ public: // Methods
     /// @param entity: reference to other entity
     /// @param attacking: changes the range from [VISION] to [ATTACK]
     /// @return True or False
-    bool rangeToEntity(Entity* entity, bool attacking);
+    bool rangeToEntity(Entity *entity, bool attacking);
 
     /// @brief Moves the entity to the specified chunk
-    /// @param newMapChunk 
-    /// @param frameTime 
+    /// @param newMapChunk
+    /// @param frameTime
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
     /// @brief Generates a random patrol route for entity
@@ -86,11 +86,9 @@ public: // Methods
     void generateRoute(Map2D* map);
     
 protected:
-
-    /// @brief Sets the enemy properties based on a rating (1-10) 
+    /// @brief Sets the enemy properties based on a rating (1-10)
     /// @param scaling: array(6) of ratings
-    virtual void setProperties(int scaling[]){};
-
+    virtual void setProperties(int scaling[]) {};
 };
 
 #endif // ENEMY_H

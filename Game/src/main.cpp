@@ -109,32 +109,50 @@ int main(){
         // *******************************************
         // Trasnsitions between levels
         // *******************************************
-        if(IsKeyDown(KEY_N)){
-            if(map.get(player.graphY, player.graphX).exit){
-            if(currentLevel == 1){
-                map.regenerate(Level::second, chunk_sizes);
-            }else if(currentLevel == 2){
-                map.regenerate(Level::third, chunk_sizes);
-            }else if(currentLevel == 3){
-                map.regenerate(Level::fourth, chunk_sizes);
-            }else if(currentLevel == 4){
-                map.regenerate(Level::fifth, chunk_sizes);
+        if (IsKeyDown(KEY_N))
+        {
+            if (map.get(player.graphY, player.graphX).exit)
+            {
+                if (currentLevel == 1)
+                {
+                    map.regenerate(Level::second, chunk_sizes);
+                }
+                else if (currentLevel == 2)
+                {
+                    map.regenerate(Level::third, chunk_sizes);
+                }
+                else if (currentLevel == 3)
+                {
+                    map.regenerate(Level::fourth, chunk_sizes);
+                }
+                else if (currentLevel == 4)
+                {
+                    map.regenerate(Level::fifth, chunk_sizes);
+                }
+                currentLevel++;
             }
-            currentLevel++;
-            }else if(map.get(player.graphY, player.graphX).exit){
-                if(currentLevel == 2){
-                map.regenerate(Level::first, chunk_sizes);
-            }else if(currentLevel == 3){
-                map.regenerate(Level::second, chunk_sizes);
-            }else if(currentLevel == 4){
-                map.regenerate(Level::third, chunk_sizes);
-            }else if(currentLevel == 5){
-                map.regenerate(Level::fourth, chunk_sizes);
-            }
-            currentLevel--;
+            else if (map.get(player.graphY, player.graphX).exit)
+            {
+                if (currentLevel == 2)
+                {
+                    map.regenerate(Level::first, chunk_sizes);
+                }
+                else if (currentLevel == 3)
+                {
+                    map.regenerate(Level::second, chunk_sizes);
+                }
+                else if (currentLevel == 4)
+                {
+                    map.regenerate(Level::third, chunk_sizes);
+                }
+                else if (currentLevel == 5)
+                {
+                    map.regenerate(Level::fourth, chunk_sizes);
+                }
+                currentLevel--;
             }
         }
-// ------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         BeginMode2D(camera);
 
         // *******************************************
@@ -185,9 +203,13 @@ int main(){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
-
-            if(IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f){           
+            if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
+            {
                 player.attack(enemy);
+            }
+            if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
+            {
+                enemy->attack();
             }
 
             enemy->shift(frameTime, elapsedTime);
@@ -195,17 +217,22 @@ int main(){
             if (enemy->getHealth() > 0){
                 DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
             }
-            
-
         }
-        
+
         // *******************************************
         // Vases and treasures behavior
         // *******************************************
         for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-            if (ent->getHealth() > 0){
-                DrawTexture(ent->currentSpriteSheet, ent->getPosition().x , ent->getPosition().y, RAYWHITE);
+
+            if (ent->getHealth() > 0)
+            {
+                DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
+
+                if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
+                {
+                    player.attackE(ent);
+                }
             }
         }
 
