@@ -7,9 +7,14 @@ void Stack<T>::push(T data){
 
 template<typename T>
 B_Node<T> Stack<T>::pop(){
-    B_Node<T> node(this->elements.find(this->size()-1)->data);
-    this->elements.remove(this->size()-1);
+    B_Node<T> node(this->elements.find(0)->data);
+    this->elements.remove(0);
     return node;
+}
+
+template<typename T>
+T& Stack<T>::peek(){
+    return this->elements.get(0);
 }
 
 template<typename T>

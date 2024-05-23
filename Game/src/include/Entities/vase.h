@@ -7,10 +7,7 @@
 /// @brief Class for creating vase entities that contain loot
 class Vase : public Entity{
 public: // Attributes
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
+    const Texture2D vaseTexture = LoadTexture("Game/src/resources/entity_assets/vase.png");
 public: // Methods
 
     /// @brief Default constructor
@@ -19,7 +16,7 @@ public: // Methods
     /// @brief Constructor for class
     /// @param xCord 
     /// @param yCord 
-    Vase(float xCord, float yCord);
+    Vase(int xCord, int yCord);
 };
 
 #endif // VASE_H

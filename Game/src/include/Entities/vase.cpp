@@ -1,13 +1,16 @@
 #include "vase.h"
 
 Vase::Vase(){
-    this->setHealthPoints(1);
-    this->setPosition(0, 0);
-    this->currentSpriteSheet = movingDownSprite;
+    this->healthPoints = 1;
+    this->setPosition(0.f,0.f);
+    this->currentSpriteSheet = vaseTexture;
 }
 
-Vase::Vase(float xCord, float yCord){
-    this->setHealthPoints(5);
-    this->setPosition(xCord, yCord);
-    this->currentSpriteSheet = movingDownSprite;
+Vase::Vase(int xCord, int yCord){
+    this->healthPoints = 1;
+    this->setPosition(0.f, 0.f);
+    this->graphX = xCord;
+    this->graphY = yCord;
+    this->currentSpriteSheet = vaseTexture;
 }
+

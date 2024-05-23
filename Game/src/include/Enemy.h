@@ -3,54 +3,92 @@
 
 #include "../modules/Queue.h"
 #include "Entity.h"
+#include "../modules/RandGenerator.h"
+#include "enemy_properties.hpp"
+#include "Map.h"
+#include "WayFinder.h"
 
-#include <vector>
-#include <tuple>
 #include <raylib.h>
+
+class Map2D;
 
 using namespace std;
 /// @brief Class for creating 'enemy' type entities for the game
 class Enemy : public Entity
 {
 protected: // Atributes
-    Queue<std::tuple<int, int>> route;
-    G_Node<MapChunk> *LastPosition = nullptr;
+
+    // { Tools }
+    Generator random;
+    WayFinder device;
+
+    // { Pathfinding variables }
+    Queue<MapChunk> route;
+    Queue<MapChunk> sub_route;
+
+    G_Node< MapChunk >* LastPosition = nullptr;
+    Entity* target = nullptr;
+  
+    // { Enemy operational states }
+    bool routing = true;
+    bool engaging = false;
+    bool returning = false;
+
+public:
+    int lifetime = 0;
 
 public: // Methods
     Enemy(){};
-    virtual void shift()
-    {
-        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y + 0.5f);
-    };
 
+    ~Enemy(){};
+
+    /// @brief In this context, the 'shifting' method make the enemy entity do 'something'(which varies on the context of the entity)
+    /// @param frame_time
+    /// @param time_stamp
+    void shift(float frame_time, int64_t time_stamp);
+
+    /// @brief Asks the entity to attack its current target
+    virtual void attack();
+
+    /// @brief Asks the entity to follow its current target
+    virtual void follow(float frame_time);
+
+    /// @brief Asks the entity to continue its patrol route
+    virtual void patrol(float frameTime);
+
+    /// @brief Returns the entity to its last position (only if entity was engaged in combat)
+    /// @param frameTime
+    virtual void traceback(float frameTime);
+
+    /// @brief Engages the entity into offensive state
+    void engage();
+
+    /// @brief Disengages the entity into its normal state
+    void disengage();
+
+    /// @brief Sets an entity as the target of this enemy
+    /// @param entity: reference to the entity
+    void setTarget(Entity* entity);
+
+    /// @brief Determines if another entity is in range to this instance
+    /// @param entity: reference to other entity
+    /// @param attacking: changes the range from [VISION] to [ATTACK]
+    /// @return True or False
+    bool rangeToEntity(Entity *entity, bool attacking);
+
+    /// @brief Moves the entity to the specified chunk
+    /// @param newMapChunk
+    /// @param frameTime
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
-    // void tracedBack() {
-    //     vector< G_Node<MapChunk>* > path;
-    //     path = backtrack(path, location, LastPosition);
-    //     for(int i=0; i<path.size(); i++){
-    //         route.push(make_tuple(path[i]->data->coordinates[0], path[i]->data->coordinates[1]));
-    //     }
-    // }
-    // vector <G_Node<MapChunk>*>backtrack(vector<G_Node<MapChunk>*> path, G_Node<MapChunk>* CurrentPosition, G_Node<MapChunk>* LastPosition){
-    //     int CurX = CurrentPosition->data->coordinates[0];
-    //     int finalX = LastPosition->data->coordinates[0];
-    //     int CurY = CurrentPosition->data->coordinates[0];
-    //     int finalY = LastPosition->data->coordinates[0];
-
-    //     if (CurX == finalX && CurY == finalY){
-    //         return path;
-    //     }
-    //     else{
-    //         for (int i = 0; i < CurrentPosition.total_connected(); i++){
-    //             G_Node<MapChunk>* next = CurrentPosition->getNode(i);
-    //             path.push_back(next);
-    //             backtrack(path, next, LastPosition);
-    //             }
-
-    //         }
-
-    //     }
+    /// @brief Generates a random patrol route for entity
+    /// @param map 
+    void generateRoute(Map2D* map);
+    
+protected:
+    /// @brief Sets the enemy properties based on a rating (1-10)
+    /// @param scaling: array(6) of ratings
+    virtual void setProperties(int scaling[]) {};
 };
 
 #endif // ENEMY_H

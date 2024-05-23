@@ -1,13 +1,15 @@
 #include "treasure.h"
 
 Treasure::Treasure(){
-    this->setHealthPoints(1);
-    this->setPosition(0, 0);
-    this->currentSpriteSheet = movingDownSprite;
+    this->healthPoints = 0;
+    this->setPosition(0.f, 0.f);
+    this->currentSpriteSheet = treasureTexture;
 }
 
-Treasure::Treasure(float xCord, float yCord){
-    this->setHealthPoints(5);
-    this->setPosition(xCord, yCord);
-    this->currentSpriteSheet = movingDownSprite;
+Treasure::Treasure(int xCord, int yCord){
+    this->healthPoints = 0;
+    this->setPosition(0.f, 0.f);
+    this->graphX = xCord;
+    this->graphY = yCord;
+    this->currentSpriteSheet = treasureTexture;
 }
