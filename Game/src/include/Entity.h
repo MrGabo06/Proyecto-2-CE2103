@@ -38,7 +38,7 @@ protected: // Attributes
 public:
     LinkedList<MapChunk>* breadcrumbs = nullptr;
   
-    int cellSize = 48;
+    int cellSize = 59;
     int graphX = 0;
     int graphY = 0;
     Texture2D currentSpriteSheet;

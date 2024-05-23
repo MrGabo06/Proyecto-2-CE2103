@@ -9,8 +9,7 @@ class Entity;
 
 using namespace std;
 
-enum ChunkType
-{
+enum ChunkType{
     terrain,
     wall,
     trap,
@@ -21,19 +20,16 @@ enum ChunkType
 };
 
 /// @brief Class for building world map chunks
-class MapChunk
-{
+class MapChunk{
 public: // Attributes
     // [  ]
     ChunkType chunk_type;
     Vector2 position;
     int coordinates[2];
     float size[2];
-    bool light;
+    bool light = false;
     int breadcrumb = 0;
     Texture2D texture;
-    bool entrance = false;
-    bool exit = false;
 private:
     // [  ]
     Texture2D darkened;
@@ -48,7 +44,7 @@ public: // Methods
     /// @param x: x coordinates of the chunk
     /// @param y: y coordinates of the chunk
     /// @param size: width and length of the chunk to load
-    MapChunk(char type, float x, float y, float *_size, int *coords, bool dark_map);
+    MapChunk(char type, float x, float y, float *_size, int *coords, bool dark_map, string style);
 
     /// @brief Gets the x,y central positions of the chunk
     /// @return raylib Vector2 with the position

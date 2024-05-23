@@ -8,10 +8,10 @@
 /// @brief Class for creating guardian spectral eyes that alert specters of intruders
 class Eye : public Enemy, public Observable {
 public: // Attributes
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");   
+    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/enemies_assets/eye.png");
+    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/enemies_assets/eye.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/enemies_assets/eye.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemies_assets/eye.png");   
     
 public: // Methods
 
