@@ -27,9 +27,17 @@ void Entity::move(float frameTime, const char dir)
     this->graphY = this->getPosition().y / this->cellSize;
 }
 
-Vector2 Entity::getPosition()
+Attributes Entity::getAttributes(){
+    return this->attributes;
+}
+
+int Entity::getHealth(){
+    return healthPoints;
+}
+
+int Entity::getShield()
 {
-    return position;
+    return ShieldPoints;
 }
 
 void Entity::addHealthPoints(int newHp){
@@ -54,6 +62,11 @@ void Entity::setPosition(float xCords, float yCords)
     }
 }
 
+Vector2 Entity::getPosition()
+{
+    return position;
+}
+
 void Entity::setLocation(G_Node<MapChunk> *map_chunk, bool changePosition)
 {
     this->location = map_chunk;
@@ -68,17 +81,4 @@ void Entity::setLocation(G_Node<MapChunk> *map_chunk, bool changePosition)
 G_Node<MapChunk> *Entity::getLocation()
 {
     return this->location;
-}
-
-Attributes Entity::getAttributes(){
-    return this->attributes;
-}
-
-int Entity::getHealth(){
-    return healthPoints;
-}
-
-int Entity::getShield()
-{
-    return ShieldPoints;
 }

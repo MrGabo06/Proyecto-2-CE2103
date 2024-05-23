@@ -17,12 +17,14 @@
 
 using namespace std;
 
-enum EntGroup {
+enum EntGroup
+{
     enemies,
     statical
 };
 
-enum EntityType {
+enum EntityType
+{
     CHOCOBO,
     EYE,
     RAT,

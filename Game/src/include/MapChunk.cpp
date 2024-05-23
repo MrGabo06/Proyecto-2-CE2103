@@ -105,6 +105,10 @@ bool MapChunk::contains(Entity entity){
     return false;
 }
 
+MapChunk MapChunk::defaultMapChunk(){
+    return MapChunk();
+}
+
 bool MapChunk::operator==(MapChunk other){
     return this->coordinates[0] == other.coordinates[0] && this->coordinates[1] == other.coordinates[1];
 }

@@ -1,15 +1,26 @@
 #include "super.h"
+#include <iostream>
 
-Super::Super(){}
+MapChunk Super::defaultChunk = MapChunk::defaultMapChunk();
+Super::Super() : playerPosition(defaultChunk) {
+    this->setPosition(0, 0);
+    this->currentSpriteSheet = movingDownSprite;
+}
 
-Super::Super(int xCord, int yCord, int skill_rates[]){
+Super::Super(int xCord, int yCord, int skill_rates[]) : playerPosition(defaultChunk){
     // [ INITIALIZE THE ENTITY ]
     this->setPosition(0.f, 0.f);
     this->graphX = xCord;
     this->graphY = yCord;
     this->currentSpriteSheet = movingDownSprite;
+    this->frameRec = {0.0f, 0.0f, (float)this->currentSpriteSheet.width, (float)this->currentSpriteSheet.height};
     this->setProperties(skill_rates);
- }
+}
+
+void Super::getPlayerPosition(MapChunk &actualPosition, float frameTime){
+    this->playerPosition = actualPosition;
+    this->frameTime = frameTime;
+}
 
 void Super::setProperties(int scaling[]) {
     this->attributes.cooldown = 2;
@@ -57,3 +68,30 @@ void Super::setProperties(int scaling[]) {
         this->attributes.speed[1] = 1.0;
     }
  }
+
+void Super::movePattern(int mov){
+    if (mov == 1)
+    {
+        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y + 0.5f);
+    }
+    else if (mov == 2)
+    {
+        this->setPosition(this->getPosition().x - 0.5f, this->getPosition().y - 0.5f);
+    }
+    else if (mov == 3)
+    {
+        this->setPosition(this->getPosition().x - 0.5f, this->getPosition().y);
+    }
+    else if (mov == 4)
+    {
+        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y);
+    }
+    else if (mov == 5)
+    {
+        this->setPosition(this->getPosition().x, this->getPosition().y + 0.5);
+    }
+    else if (mov == 6)
+    {
+        this->setPosition(this->getPosition().x, this->getPosition().y - 0.5);
+    }
+}

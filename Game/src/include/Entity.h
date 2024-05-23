@@ -23,8 +23,7 @@ struct Attributes{
 };
 
 /// @brief Generic class for game objects
-class Entity
-{
+class Entity{
 protected: // Attributes
 
     // { LOCATION AND POSITION}
@@ -38,7 +37,7 @@ protected: // Attributes
 
 public:
     LinkedList<MapChunk>* breadcrumbs = nullptr;
-    
+  
     int cellSize = 48;
     int graphX = 0;
     int graphY = 0;
@@ -87,7 +86,7 @@ public: // Methods
     /// @brief Changes the location in the graph and the position
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
-    void setLocation(G_Node<MapChunk> *map_chunk, bool changePosition);
+    void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
 
     /// @brief Gets the pointer to map graph node where the entity is standing
     /// @return Pointer to node

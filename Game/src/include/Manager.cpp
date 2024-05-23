@@ -1,5 +1,4 @@
 #include "Manager.h"
-
 #include <iostream>
 
 Manager::Manager(){
@@ -16,10 +15,6 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
     this->addEntities(EntityType::SUPER, supers);
     this->addEntities(EntityType::TREASURE, treasures);
     this->addEntities(EntityType::VASE, vases);
-
-    // [ START THE CONTROLLER THREAD ]
-    this->active_status = true;
-    //thread(&Manager::control, this).detach();
 }
 
 void Manager::addEntities(EntityType entity_t, int quantity){
@@ -123,8 +118,10 @@ Entity* Manager::getEntity(EntGroup group, int index){
     return nullptr;
 }
 
-int Manager::size(EntGroup group){
-    switch (group){
+int Manager::size(EntGroup group)
+{
+    switch (group)
+    {
     case enemies:
         return this->mob_entities.size();
     case statical:
