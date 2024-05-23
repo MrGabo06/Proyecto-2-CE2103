@@ -38,7 +38,8 @@ void DoubleLinkedList<T>::remove(int index){
             // List pointers fixing
             if ( index == 0){
                 this->head = current->getNext();
-            } else if (index == this->size-1){
+            }
+            if (index == this->size-1){
                 this->tail = current->getPrev();
             }
             // Node connection fixing
@@ -113,6 +114,9 @@ T& DoubleLinkedList<T>::get(int index){
     }
     int counter = 0;
     B_Node<T>* current = this->head;
+    if (current == nullptr){
+        throw std::runtime_error("Cant get data from null pointer");
+    }
     while (current != nullptr){
         if (counter == index){
             break;

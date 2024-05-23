@@ -1,7 +1,7 @@
 #ifndef MAP_CHUNK_H
 #define MAP_CHUNK_H
 
-#include "entity.h"
+#include "Entity.h"
 #include <raylib.h>
 #include <string>
 
@@ -9,7 +9,8 @@ class Entity;
 
 using namespace std;
 
-enum ChunkType{
+enum ChunkType
+{
     terrain,
     wall,
     trap,
@@ -20,14 +21,25 @@ enum ChunkType{
 };
 
 /// @brief Class for building world map chunks
-class MapChunk{
-public:
+class MapChunk
+{
+public: // Attributes
+    // [  ]
     ChunkType chunk_type;
     Vector2 position;
     int coordinates[2];
     float size[2];
+    bool light;
+    int breadcrumb = 0;
     Texture2D texture;
-public:
+    bool entrance = false;
+    bool exit = false;
+private:
+    // [  ]
+    Texture2D darkened;
+    Texture2D illuminated;
+
+public: // Methods
     /// @brief Default constructor
     MapChunk();
 
@@ -35,8 +47,8 @@ public:
     /// @param type: char value indicating the asset to load
     /// @param x: x coordinates of the chunk
     /// @param y: y coordinates of the chunk
-    /// @param size: width and length of the chunk to load 
-    MapChunk(char type , float x, float y, float* _size, int* coords);
+    /// @param size: width and length of the chunk to load
+    MapChunk(char type, float x, float y, float *_size, int *coords, bool dark_map);
 
     /// @brief Gets the x,y central positions of the chunk
     /// @return raylib Vector2 with the position
@@ -46,6 +58,19 @@ public:
     /// @param entity: asking entity
     /// @return (true) if entity's x,y position is inside bounds, (false) if entity's x,y position is out of bounds
     bool contains(Entity entity);
+
+    /// @brief Intern method to create a default map chunk
+    /// @return A new mapchunk object
+    static MapChunk defaultMapChunk();
+  
+    /// @brief Comparison operator for chunks
+    bool operator==(MapChunk other);
+
+    /// @brief Lights up the chunk(changes its current texture) for dynamic illumination
+    void lightChunk();
+
+    /// @brief Lights up the chunk(changes its current texture) for dynamic illumination
+    void unLightChunk();
 };
 
 #endif // MAP_CHUNK_H

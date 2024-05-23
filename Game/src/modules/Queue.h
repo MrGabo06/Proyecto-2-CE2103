@@ -27,6 +27,10 @@ class Queue{
         /// @return Pointer to the node
         B_Node<T>* find(int index);
 
+        /// @brief Get the data of the first element of the queue without removing it
+        /// @return Data of the node
+        T& peek();
+
         /// @brief Get the data of an element of the queue
         /// @param index: position of the element
         /// @return Data of the element
