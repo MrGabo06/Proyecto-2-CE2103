@@ -8,74 +8,68 @@ MapChunk::MapChunk(){
     this->chunk_type = ChunkType::terrain;
     this->light = false;
     this->breadcrumb = 0;
-    // // RayLib elements
-    // Image dark_image = LoadImage("Game/src/resources/map_assets/chunk7.png");
-    // this->darkened = LoadTextureFromImage(dark_image);
-    // Image light_image = LoadImage("Game/src/resources/map_assets/chunk1.png");
-    // this->illuminated = LoadTextureFromImage(light_image);
-
-    // this->texture = illuminated;
 }
 
-MapChunk::MapChunk(char type, float x, float y, float *_size, int *coords, bool dark_map){
+MapChunk::MapChunk(char type, float x, float y, float *_size, int *coords, bool dark_map, string style){
     const string assets_path = "Game/src/resources/map_assets/";
     if (type == 'x'){
         this->chunk_type = ChunkType::wall;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_wall.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == '_') {
         this->chunk_type = ChunkType::trap;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk4.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_trap.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == '.'){
         this->chunk_type = ChunkType::terrain;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk1.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_floor.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == 'H') {
         this->chunk_type = ChunkType::gate;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk6.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_teleport.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == '~') {
         this->chunk_type = ChunkType::cloaked;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk2.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_floor.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == 'o') {
         this->chunk_type = ChunkType::safe;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk5.png").c_str());
+        Image light_image = LoadImage((assets_path+"safe_area.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
     } else if (type == '|') {
         this->chunk_type = ChunkType::fake;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        Image dark_image = LoadImage((assets_path+"dark_area.png").c_str());
         this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+        Image light_image = LoadImage((assets_path+style+"_wall.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
-    } else if (type == 'E') {
-        this->chunk_type = ChunkType::terrain;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
-        this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
-        this->illuminated = LoadTextureFromImage(light_image);
-        this->entrance = true;
-    } else if (type == 'S') {
-        this->chunk_type = ChunkType::terrain;
-        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
-        this->darkened = LoadTextureFromImage(dark_image);
-        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
-        this->illuminated = LoadTextureFromImage(light_image);
-        this->exit = true;
-    }
+    } 
+    // else if (type == 'E') {
+    //     this->chunk_type = ChunkType::terrain;
+    //     Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+    //     this->darkened = LoadTextureFromImage(dark_image);
+    //     Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+    //     this->illuminated = LoadTextureFromImage(light_image);
+    //     this->entrance = true;
+    // } else if (type == 'S') {
+    //     this->chunk_type = ChunkType::terrain;
+    //     Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+    //     this->darkened = LoadTextureFromImage(dark_image);
+    //     Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+    //     this->illuminated = LoadTextureFromImage(light_image);
+    //     this->exit = true;
+    // }
     this->coordinates[0] = coords[0], this->coordinates[1] = coords[1];
     this->size[0] = _size[0];
     this->size[1] = _size[1];

@@ -7,10 +7,10 @@
 /// @brief Class for creating bird enemy type
 class Chocobo : public Enemy {
 public: // Attributes
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/entity_assets/cochoLeft.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/entity_assets/cochoLeft.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/cochoLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/entity_assets/cochoLeft.png");
+    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/enemies_assets/cochoLeft.png");
+    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/enemies_assets/cochoLeft.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/enemies_assets/cochoLeft.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/enemies_assets/cochoLeft.png");
 
 public: // Methods
     

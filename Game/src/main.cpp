@@ -13,34 +13,38 @@
 int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
+    const Level rotation[] = {Level::first, Level::second, Level::third, Level::fourth, Level::fifth};
+    int level = 0;
 
     InitWindow(screenWidth, screenHeight, "Selda");
 
-    float chunk_sizes[] = {(float)48, (float)48};
-    Map2D map(Level::first, chunk_sizes);
-    int currentLevel = 1;
-    map.generate();
-
-    Manager computer(&map, 5, 0, 0, 0, 0, 0, 1);
-    LinkedList<MapChunk> breadcrumbList;
-
+    // { BASIC INITIALIZATION }
     Player player(1, 1);
-    player.currentMap = &map;
-    player.breadcrumbs = &breadcrumbList;
-    map.locate_at(&player, player.graphY, player.graphX, true);
 
+    float chunk_sizes[] = {(float)player.cellSize, (float)player.cellSize};
+    Map2D map(rotation[level], chunk_sizes);
+        map.generate();
+        map.locate_at(&player, player.graphY, player.graphX, true);
+        player.currentMap = &map;
+
+    Manager computer(&map, 1,1,1,1,1,5,7);
+
+    LinkedList<MapChunk> breadcrumbList;
+        player.breadcrumbs = &breadcrumbList;
+    
+    // { FRAME PARAMETERS }
     int currentFrame = 0;
     const int frameSpeed = 5;
     int frameCounter = 0;
 
+    // { TEXTURE RECTANGLE }
     Rectangle playerFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
+    /// { CAMERA INITIALIZATION }
     Camera2D camera = {0};
-    camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
-    camera.rotation = 0.0f;
-
-    // Camera limits are set for 3.5f zoom
-    camera.zoom = 0.5f;
+        camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
+        camera.rotation = 0.0f;
+        camera.zoom = 0.5f; // Camera limits are set for 3.5f zoom
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
@@ -97,52 +101,28 @@ int main(){
             breadcrumbList.insert(map.get(player.graphY, player.graphX));
         }
 
-        cout << breadcrumbList.getSize() << endl;
+        // cout << breadcrumbList.getSize() << endl;
 
         // *******************************************
-        // Trasnsitions between levels
+        // Transitions between levels
         // *******************************************
-        if (IsKeyDown(KEY_N))
-        {
-            if (map.get(player.graphY, player.graphX).exit)
-            {
-                if (currentLevel == 1)
-                {
-                    map.regenerate(Level::second, chunk_sizes);
+        if (IsKeyDown(KEY_ENTER)){
+            if (player.getLocation()->data.chunk_type == ChunkType::gate ){
+                level++;
+                computer.killAll(elapsedTime);
+                map.regenerate(rotation[level], chunk_sizes);
+                if (level == 0){
+                    computer.evolve(1,0,0,0,0,0,0);
+                } else if (level == 1){
+                    computer.evolve(1,0,0,0,0,0,0);
+                } else if (level == 2) {
+                    computer.evolve(1,0,0,0,0,0,0);
+                } else if (level == 3) {
+                    computer.evolve(1,0,0,0,0,0,0);
+                } else if (level == 4) {
+                    computer.evolve(1,0,0,0,0,0,0);
                 }
-                else if (currentLevel == 2)
-                {
-                    map.regenerate(Level::third, chunk_sizes);
-                }
-                else if (currentLevel == 3)
-                {
-                    map.regenerate(Level::fourth, chunk_sizes);
-                }
-                else if (currentLevel == 4)
-                {
-                    map.regenerate(Level::fifth, chunk_sizes);
-                }
-                currentLevel++;
-            }
-            else if (map.get(player.graphY, player.graphX).exit)
-            {
-                if (currentLevel == 2)
-                {
-                    map.regenerate(Level::first, chunk_sizes);
-                }
-                else if (currentLevel == 3)
-                {
-                    map.regenerate(Level::second, chunk_sizes);
-                }
-                else if (currentLevel == 4)
-                {
-                    map.regenerate(Level::third, chunk_sizes);
-                }
-                else if (currentLevel == 5)
-                {
-                    map.regenerate(Level::fourth, chunk_sizes);
-                }
-                currentLevel--;
+                map.locate_at(&player, 1, 1, true);
             }
         }
         // ------------------------------------------------------------------------------------------------
@@ -208,7 +188,8 @@ int main(){
             enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             if (enemy->getHealth() > 0){
-                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+                Rectangle rect = {0.f , 0.f , (float)enemy->currentSpriteSheet.width, (float)enemy->currentSpriteSheet.height};
+                DrawTextureRec(enemy->currentSpriteSheet, rect, enemy->getPosition(), RAYWHITE);
             }
         }
 

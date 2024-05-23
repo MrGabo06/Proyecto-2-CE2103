@@ -27,6 +27,7 @@ class Map2D{
 private: // Atributes
     Graph<MapChunk> grid;
     string file_asset = "Game/src/resources/map_assets";
+    string map_style;
     bool dark_map = false;
 public:
     float width;
