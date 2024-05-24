@@ -89,15 +89,15 @@ void Player::move(float frameTime, const char dir){
     }
 }
 
-void Player::movePlayer(float frameTime){
+void Player::movePlayer(float frameTime, char contrEntry){
     
-    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
+    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && contrEntry != 'w' && contrEntry != 'a' && contrEntry != 's' && contrEntry != 'd')
     {
         // Stop movement
         this->isMoving = false;
     }
 
-    if (IsKeyDown(KEY_UP))
+    if (IsKeyDown(KEY_UP) || contrEntry == 'w')
     {
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
@@ -108,7 +108,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_DOWN))
+    if (IsKeyDown(KEY_DOWN) || contrEntry == 's')
     {
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
@@ -119,7 +119,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_LEFT))
+    if (IsKeyDown(KEY_LEFT) || contrEntry == 'a')
     {
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
@@ -130,7 +130,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_RIGHT))
+    if (IsKeyDown(KEY_RIGHT) || contrEntry == 'd')
     {
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;

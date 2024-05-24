@@ -67,7 +67,8 @@ public: // Methods
 
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
-    void movePlayer(float frameTime);
+    /// @param contrEntry: Entry from the controller
+    void movePlayer(float frameTime, char contrEntry);
 
     void attack_E(Entity* ent);
 };

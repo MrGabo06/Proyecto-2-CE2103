@@ -9,6 +9,7 @@
 #include <iostream>
 #include "modules/LinkedList.h"
 #include "modules/Node.hpp"
+#include "controller.h"
 
 int main()
 {
@@ -18,6 +19,18 @@ int main()
     int sp[] = {1, 1, 1, 1, 1, 7, 7};
     //          ^SP ^Y ^R ^C ^SU ^T ^V
     int level = 0;
+
+    Controller* gameController = nullptr;
+    char controllerEntry;
+
+    // Controller reader module
+    // gameController = new Controller();
+    // controllerEntry = gameController->entry;
+    
+    // To not read the controller inputs
+    controllerEntry = 'u';
+    
+    
 
     InitWindow(screenWidth, screenHeight, "Selda");
 
@@ -53,6 +66,9 @@ int main()
     auto startTime = std::chrono::steady_clock::now();
     while (!WindowShouldClose())
     {
+        if(gameController != nullptr){
+            controllerEntry = gameController->entry;
+        }
         auto currentTime = std::chrono::steady_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
         ClearBackground(RAYWHITE);
@@ -62,7 +78,7 @@ int main()
         // *****************************************
 
         float frameTime = GetFrameTime();
-        player.movePlayer(frameTime);
+        player.movePlayer(frameTime, controllerEntry);
 
         if (player.getPosition().x < 207.0f)
         {
@@ -116,7 +132,7 @@ int main()
         // *******************************************
         // Transitions between levels
         // *******************************************
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER) || controllerEntry == 'e')
         {
             if (player.getLocation()->data.chunk_type == ChunkType::gate)
             {
@@ -207,7 +223,7 @@ int main()
                 if (abs(boss->bullet->getPosition().x - player.getPosition().x) < 40 && abs(boss->bullet->getPosition().y - player.getPosition().y) < 40 && boss->bullet->hit == false)
                 {
                     cout << "Daño" << endl;
-                    player.addHealthPoints(-1);
+                    // player.addHealthPoints(-1);
                 }
 
                 DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
@@ -231,7 +247,7 @@ int main()
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             if (enemy->getHealth() > 0)
             {
-                if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
+                if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attack(enemy, elapsedTime);
                 }
@@ -250,7 +266,7 @@ int main()
             if (ent->getHealth() > 0)
             {
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
-                if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
+                if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attack_E(ent);
                 }
@@ -281,6 +297,10 @@ int main()
     }
 
     CloseWindow();
+    if(gameController!= nullptr){
+        gameController->playing = false;
+        gameController->controllerThread.join();
+    }
 
     return 0;
 }
