@@ -2,15 +2,16 @@
 #define OBSERVER_H
 
 #include "../DoubleLinkedList.h"
+#include "../../include/Entity.h"
 
 class Observer{
     protected: // Attributes
-        int id;
+        Entity* detected = nullptr;
 
     public: // Methods
         Observer(){};
 
-        virtual void update(){};
+        virtual void update(Entity* target){};
 
         bool operator==(Observer* other){
             return this == other;
@@ -20,6 +21,8 @@ class Observer{
 class Observable{
     private: // Attributes
         DoubleLinkedList<Observer*> observers;
+    protected:
+        Entity* detected = nullptr;
 
     public: // Methods
         Observable(){};
@@ -35,7 +38,7 @@ class Observable{
         void notify(){
             B_Node<Observer*>* node = this->observers.find(0);
             while (node != nullptr){
-                node->data->update();
+                node->data->update(this->detected);
                 node = node->getNext();
             }
         }

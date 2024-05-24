@@ -13,11 +13,11 @@ struct Property {
 
 // [ DECLARATION OF MAX ATTRIBUTE CONFIGURATION FOR ENTITIES ]
 
-const Property<int> MAX_HEALTH = { 5, 1, 3, 2, 10};
+const Property<int> MAX_HEALTH = { 20, 1, 3, 2, 15};
 const Property<int> MAX_DAMAGE = {10, 0, 1, 1, 3};
-const Property<int> MAX_RANGE = {7, 0, 6, 3, 8};
-const Property<int> MAX_DISTANCE = { 10, 2, 2, 2, 2};
-const Property<int> MAX_ROUTE_SIZE = {9, 0, 3, 5, 5};
-const Property<float> MAX_SPEED = { 0.5, 0.0, 0.9, 0.4, 0.6};
+const Property<int> MAX_RANGE = {7, 15, 10, 5, 8};
+const Property<int> MAX_DISTANCE = { 15, 0, 6, 5, 5};
+const Property<int> MAX_ROUTE_SIZE = {9, 0, 4, 5, 5};
+const Property<float> MAX_SPEED = { 2.4, 0.0, 2.8, 0.9, 1.0};
 
 #endif

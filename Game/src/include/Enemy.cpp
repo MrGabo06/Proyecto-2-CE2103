@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 #include "iostream"
+#include <math.h>
 
 void Enemy::shift(float frame_time, int64_t time_stamp){
     if (this->routing){
@@ -18,10 +19,11 @@ void Enemy::shift(float frame_time, int64_t time_stamp){
     if (this->engaging){
         if(this->target != nullptr){
             // Always check that player target has not entered a safe spot
-            if (this->target->getLocation()->data.chunk_type != ChunkType::safe){
+            if (!this->target->isSafe()){
                 if (this->rangeToEntity(this->target, true)){
-                    if (time_stamp % this->attributes.cooldown == 0){
+                    if (time_stamp % this->attributes.cooldown == 0 && time_stamp != last_time){
                         this->attack();
+                        this->last_time = time_stamp;
                     }
                 } else {
                     this->follow(frame_time);
@@ -46,7 +48,7 @@ void Enemy::follow(float frame_time){
 };
 
 void Enemy::patrol(float frameTime){
-    if (sub_route.size() == 0){
+    if (sub_route.size() == 0 && this->attributes.route_size[1] > 0){
         G_Node<MapChunk> fictional_point(this->route.peek());
 
         this->device.search(this->location, &fictional_point);
@@ -106,16 +108,16 @@ void Enemy::setTarget(Entity* entity){
 };
 
 bool Enemy::rangeToEntity(Entity *entity, bool attacking){
-    int range = this->attributes.range[1]*40;
+    int range = this->attributes.range[1]*35;
     if (attacking){
-        range = 15;
+        range = 40;
     }
     Vector2 other = entity->getPosition();
     Vector2 current = this->getPosition();
     // [ VALIDATION IN X ]
-    bool conditionX = (other.x < current.x + range) && (other.x > current.x - range);
+    bool conditionX = std::abs(this->getPosition().x - entity->getPosition().x) <= range;
     // [ VALIDATION IN Y ]
-    bool conditionY = (other.y < current.y + range) && (other.y > current.y - range);
+    bool conditionY = std::abs(this->getPosition().y - entity->getPosition().y) <= range;
 
     return conditionX && conditionY;
 };
@@ -143,8 +145,7 @@ void Enemy::moveTo(MapChunk &newMapChunk, float frameTime)
     }
 }
 
-void Enemy::generateRoute(Map2D *map)
-{
+void Enemy::generateRoute(Map2D *map){
     int site[] = {this->graphY, this->graphX};
     int offset = this->attributes.distance[1];
     for (int i = 0; i < this->attributes.route_size[1]; i++){
@@ -224,6 +225,8 @@ void Enemy::generateRoute(Map2D *map)
         // Add point to route
         this->route.enqueue(chunk_to_add);
     }
-    this->route.enqueue(this->location->data);
+    if (this->attributes.route_size[1] > 0){
+        this->route.enqueue(this->location->data);
+    }
 }
 

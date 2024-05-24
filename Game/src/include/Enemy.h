@@ -34,6 +34,9 @@ protected: // Atributes
     bool engaging = false;
     bool returning = false;
 
+    // { Properties }
+    int64_t last_time = 0;
+
 public:
     int lifetime = 0;
 
@@ -68,7 +71,7 @@ public: // Methods
 
     /// @brief Sets an entity as the target of this enemy
     /// @param entity: reference to the entity
-    void setTarget(Entity* entity);
+    virtual void setTarget(Entity* entity);
 
     /// @brief Determines if another entity is in range to this instance
     /// @param entity: reference to other entity

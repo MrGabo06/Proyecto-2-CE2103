@@ -49,7 +49,7 @@ public:
     const char mvRight = 'R';
 
     int direction = 0;
-    bool isAtacking = false;
+    bool isAtacking = false; 
 
 public: // Methods
     Entity(){};
@@ -92,7 +92,12 @@ public: // Methods
     /// @return Pointer to node
     G_Node<MapChunk> *getLocation();
 
+    /// @brief Get a struct list of the attributes of the entity
     Attributes getAttributes();
+
+    /// @brief Checks if the entity is in safe location right now or not
+    /// @return (true) if entity on safe or cloaked chunk, (false) otherwise 
+    bool isSafe();
 };
 
 #endif // ENTITY_H

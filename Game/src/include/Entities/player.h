@@ -6,8 +6,7 @@
 #include "../Entity.h"
 #include "../Map.h"
 #include "../Enemy.h"
-#include "../Map.h"
-#include "../WayFinder.h"
+#include "../../modules/RandGenerator.h"
 using namespace std;
 
 #define PLAYER_JUMP_SPD 200.0f
@@ -16,6 +15,7 @@ using namespace std;
 /// @brief Class for player entity that can be controlled by user
 class Player : public Entity{
 private: // Attributes
+    Generator randomizer;
     
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
@@ -35,6 +35,8 @@ private: // Attributes
     MapChunk *aboveRight = nullptr;
     MapChunk *belowLeft = nullptr;
 
+    int gold = 0;
+
 public:
     bool light = false;
     bool isMoving;
@@ -50,7 +52,7 @@ public: // Methods
 
     /// @brief Make the player attack
     /// @param frameTime: Raylib window frame time
-    void attack(Enemy* enemy);
+    void attack(Enemy* enemy, int64_t time_stamp);
     
 
     /// @brief Create an instance of Player class
@@ -67,7 +69,7 @@ public: // Methods
     /// @param frameTime: Raylib window frame time
     void movePlayer(float frameTime);
 
-    void attackE(Entity* ent);
+    void attack_E(Entity* ent);
 };
 
 #endif // PLAYER_H

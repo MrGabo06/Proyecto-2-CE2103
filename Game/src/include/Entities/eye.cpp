@@ -11,22 +11,22 @@ Eye::Eye(int xCord, int yCord, int skill_rates[]){
     this->setProperties(skill_rates);
  }
 
+ void Eye::setTarget(Entity *entity){
+    this->target = entity;
+    this->detected = entity;
+    this->notify();
+ }
+
 void Eye::setProperties(int scaling[]) {
     this->attributes.cooldown = 2;
     
     // 1.
     this->attributes.damage[0] = scaling[0];
     this->attributes.damage[1] = (scaling[0]*MAX_DAMAGE.eye)/10;
-    if (this->attributes.damage[1] == 0){
-        this->attributes.damage[1] = 1;
-    }
 
     // 2.
     this->attributes.distance[0] = scaling[1];
     this->attributes.distance[1] = (scaling[1]*MAX_DISTANCE.eye)/10;
-    if (this->attributes.distance[1] == 0){
-        this->attributes.distance[1] = 1;
-    }
 
     // 3.
     this->attributes.health[0] = scaling[2];
@@ -46,14 +46,8 @@ void Eye::setProperties(int scaling[]) {
     // 5.
     this->attributes.route_size[0] = scaling[4];
     this->attributes.route_size[1] = (scaling[4]*MAX_ROUTE_SIZE.eye)/10;
-    if (this->attributes.route_size[1] == 0){
-        this->attributes.route_size[1] = 1;
-    }
 
     // 6.
     this->attributes.speed[0] = (float)scaling[5];
     this->attributes.speed[1] = (scaling[0]*MAX_SPEED.eye)/10;
-    if (this->attributes.speed[1] == 0){
-        this->attributes.speed[1] = 1.0;
-    }
  }

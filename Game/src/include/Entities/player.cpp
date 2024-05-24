@@ -10,16 +10,24 @@ Player::Player(int startGraphX, int startGraphY){
     this->currentSpriteSheet = movingDownSprite;
 }
 
-void Player::attack(Enemy* enemy) {
+void Player::attack(Enemy* enemy, int64_t time_stamp) {
     this->isAtacking = true;
     enemy->addHealthPoints(-1);
+    if (enemy->getHealth() <= 0){
+        enemy->lifetime = time_stamp;
+    }
     this->isAtacking = false;
 }
 
-void Player::attackE(Entity* ent){
+void Player::attack_E(Entity* entity){
     this->isAtacking = true;
-    this->addHealthPoints(+1);
-    ent->addHealthPoints(-1);
+    entity->addHealthPoints(-1);
+    int chance = randomizer.gen(1,6);
+    if (chance <= 2){
+        this->addHealthPoints(1);
+    } else {
+        this->gold += 50;
+    }
     this->isAtacking = false;
 }
 

@@ -24,6 +24,7 @@ public: // Methods
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
     Eye(int xCord, int yCord, int skill_rates[]);
 
+    void setTarget(Entity* entity) override;
 private:
     /// @brief Sets the enemy properties based on a rating (1-10) 
     /// @param scaling: array(6) of ratings

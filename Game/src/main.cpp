@@ -14,6 +14,8 @@ int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
     const Level rotation[] = {Level::first, Level::second, Level::third, Level::fourth, Level::fifth};
+    int sp[] = {1, 1, 1, 1, 1, 7, 7};
+    //          ^SP ^Y ^R ^C ^SU ^T ^V
     int level = 0;
 
     InitWindow(screenWidth, screenHeight, "Selda");
@@ -27,7 +29,7 @@ int main(){
         map.locate_at(&player, player.graphY, player.graphX, true);
         player.currentMap = &map;
 
-    Manager computer(&map, 1,1,1,1,1,5,7);
+    Manager computer(&map, sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
 
     LinkedList<MapChunk> breadcrumbList;
         player.breadcrumbs = &breadcrumbList;
@@ -82,18 +84,17 @@ int main(){
 
         map.locate_at(&player, player.graphY, player.graphX, false);
 
-        if (player.getHealth() <= 0)
-        {
+        if (player.getHealth() <= 0){
             break;
         }
 
-        if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 20)
+        if (map.get(player.graphY, player.graphX).breadcrumb == 0 && player.isMoving && breadcrumbList.getSize() < 10)
         {
             breadcrumbList.insert(map.get(player.graphY, player.graphX));
             map.get(player.graphY, player.graphX).breadcrumb = 1;
         }
 
-        if (player.isMoving && breadcrumbList.getSize() > 20)
+        if (player.isMoving && breadcrumbList.getSize() == 10)
         {   
             breadcrumbList.get(breadcrumbList.getSize()-1).breadcrumb = 0;
             breadcrumbList.remove(breadcrumbList.getSize()-1);
@@ -172,23 +173,30 @@ int main(){
 
         for (int i = 0; i < computer.size(EntGroup::enemies); i++){
             Enemy *enemy = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, i));
-            if (enemy->rangeToEntity(&player, false)){
+            if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
-            if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
-            {
-                player.attack(enemy);
+            if ( i < sp[1] && i > 0){
+                for (int a = sp[0]+sp[1]; a < sp[0]+sp[1]+sp[2]; a++){
+                    Enemy* rat = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies,a));
+                    if ( enemy->rangeToEntity(rat, false) ){
+                        enemy->disengage();
+                    }
+                }
             }
-            if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
-            {
-                enemy->attack();
-            }
-
+            // if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
+            // {
+            //     enemy->attack();
+            // }
             enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             if (enemy->getHealth() > 0){
-                Rectangle rect = {0.f , 0.f , (float)enemy->currentSpriteSheet.width, (float)enemy->currentSpriteSheet.height};
+                if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
+                {
+                    player.attack(enemy, elapsedTime);
+                }
+                Rectangle rect = {0.f , 0.f , (float)enemy->currentSpriteSheet.width/4, (float)enemy->currentSpriteSheet.height};
                 DrawTextureRec(enemy->currentSpriteSheet, rect, enemy->getPosition(), RAYWHITE);
             }
         }
@@ -199,13 +207,11 @@ int main(){
         for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
 
-            if (ent->getHealth() > 0)
-            {
+            if (ent->getHealth() > 0){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
-
                 if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
-                    player.attackE(ent);
+                    player.attack_E(ent);
                 }
             }
         }

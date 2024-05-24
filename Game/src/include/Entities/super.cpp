@@ -23,7 +23,7 @@ void Super::getPlayerPosition(MapChunk &actualPosition, float frameTime){
 }
 
 void Super::setProperties(int scaling[]) {
-    this->attributes.cooldown = 2;
+    this->attributes.cooldown = 4;
     
     // 1.
     this->attributes.damage[0] = scaling[0];

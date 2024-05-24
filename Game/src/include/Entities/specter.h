@@ -25,7 +25,8 @@ public: // Methods
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
     Specter(int xCord, int yCord, int skill_rates[]);
 
-    void update() override {};
+    /// @brief Receive and update for this entity
+    void update(Entity* target) override;
     
 private:
     /// @brief Sets the enemy properties based on a rating (1-10) 
