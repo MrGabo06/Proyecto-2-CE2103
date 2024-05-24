@@ -31,6 +31,26 @@ int main(){
 
     LinkedList<MapChunk> breadcrumbList;
         player.breadcrumbs = &breadcrumbList;
+
+    // init minimap
+    Texture2D minimaps[5];
+    Vector2 minimap_pos[5];
+    std::string map_asset = "Game/src/resources/map_assets/minimap";
+    for (int i = 0; i < 5; i++){
+    	std::string asset = map_asset + std::to_string(i) + ".png";
+    	const char* c_str = asset.c_str();
+    	
+    	Image image = LoadImage(c_str);
+    	ImageResize(&image, image.width/4, image.height/4);
+    	minimaps[i] = LoadTextureFromImage(image);
+    	UnloadImage(image);
+    	
+    	Vector2 mm_pos;
+    	mm_pos.x = 0;
+    	mm_pos.y = screenHeight - minimaps[i].height;
+    	minimap_pos[i] = mm_pos;
+    }
+
     
     // { FRAME PARAMETERS }
     int currentFrame = 0;
@@ -45,6 +65,8 @@ int main(){
         camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
         camera.rotation = 0.0f;
         camera.zoom = 0.5f; // Camera limits are set for 3.5f zoom
+
+    // minimap 
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
@@ -230,7 +252,12 @@ int main(){
             DrawTexture(player.idleSprite2, 40 * (i + 4), 10, WHITE);
         }
 
+        // minimap drawing
+
+        DrawTexture(minimaps[level], minimap_pos[level].x, minimap_pos[level].y, WHITE);
+		DrawCircle(player.getPosition().x/8, screenHeight - screenHeight/5.8 + player.getPosition().y/8, 3, RED);
         EndDrawing();
+
     }
 
     CloseWindow();
