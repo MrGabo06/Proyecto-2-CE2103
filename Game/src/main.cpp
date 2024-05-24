@@ -27,8 +27,8 @@ int main(){
     char controllerEntry;
 
     // Controller reader module
-    // gameController = new Controller();
-    // controllerEntry = gameController->entry;
+    gameController = new Controller();
+    controllerEntry = gameController->entry;
     
     // To not read the controller inputs
     controllerEntry = 'u';
@@ -143,18 +143,20 @@ int main(){
 
         cout << breadcrumbList.getSize() << endl;
 
-        // if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
-        // {
-        //     lightList.enqueue(map.get(player.graphY, player.graphX));
-        //     // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
-        // }
+        if(rotation[level] == Level::second){
+            if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
+            {
+                lightList.enqueue(map.get(player.graphY, player.graphX));
+                // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
+            }
 
-        // else if (player.isMoving && lightList.size() > 2000)
-        // {
-        //     lightList.enqueue(map.get(player.graphY, player.graphX));
-        //     lightList.dequeue();
-        // }
-        // cout << lightList.size() << endl;
+            else if (player.isMoving && lightList.size() > 2000)
+            {
+                lightList.enqueue(map.get(player.graphY, player.graphX));
+                lightList.dequeue();
+            }
+            cout << lightList.size() << endl;
+        }
       
         // *******************************************
         // Transitions between levels
@@ -382,10 +384,11 @@ int main(){
 
     CloseWindow();
   
-//     if(gameController!= nullptr){
-//         gameController->playing = false;
-//         gameController->controllerThread.join();
-//     }
+    if(gameController!= nullptr){
+        gameController->playing = false;
+        gameController->controllerThread.join();
+    }
+    
 	  google::ShutdownGoogleLogging();
   
     return 0;

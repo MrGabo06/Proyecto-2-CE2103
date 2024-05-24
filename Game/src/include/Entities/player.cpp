@@ -98,7 +98,7 @@ void Player::move(float frameTime, const char dir){
 }
 
 void Player::movePlayer(float frameTime, char contrEntry){
-    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && contrEntry != 'w' && contrEntry != 'a' && contrEntry != 's' && contrEntry != 'd')
+    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D) && contrEntry != 'w' && contrEntry != 'a' && contrEntry != 's' && contrEntry != 'd')
     {
         // Stop movement
         this->isMoving = false;
@@ -110,7 +110,7 @@ void Player::movePlayer(float frameTime, char contrEntry){
         }
     }
 
-    if (IsKeyDown(KEY_UP) || contrEntry == 'w'){
+    if (IsKeyDown(KEY_W) || contrEntry == 'w'){
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -124,7 +124,7 @@ void Player::movePlayer(float frameTime, char contrEntry){
         }
     }
 
-    if (IsKeyDown(KEY_DOWN) || contrEntry == 's'){
+    if (IsKeyDown(KEY_S) || contrEntry == 's'){
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -138,7 +138,7 @@ void Player::movePlayer(float frameTime, char contrEntry){
         }
     }
 
-    if (IsKeyDown(KEY_LEFT) || contrEntry == 'a'){
+    if (IsKeyDown(KEY_A) || contrEntry == 'a'){
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -152,7 +152,7 @@ void Player::movePlayer(float frameTime, char contrEntry){
         }
     }
 
-    if (IsKeyDown(KEY_RIGHT) || contrEntry == 'd'){
+    if (IsKeyDown(KEY_D) || contrEntry == 'd'){
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -166,11 +166,8 @@ void Player::movePlayer(float frameTime, char contrEntry){
         }
     }
   
-    if (IsKeyDown(KEY_Q)){
-        this->light = !light;
-    }
 
-    if (IsKeyPressed(KEY_C)){
+    if (IsKeyPressed(KEY_C) || contrEntry == 'q'){
         this->toggleShield();
     }
 
