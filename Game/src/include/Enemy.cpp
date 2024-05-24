@@ -36,10 +36,12 @@ void Enemy::shift(float frame_time, int64_t time_stamp){
 }
 
 void Enemy::attack(){
-    if (this->target->shieldActive && this->target->ShieldPoints > 0){
-        this->target->addShieldPoints(-this->attributes.damage[1]);
-    } else {
-        this->target->addHealthPoints(-this->attributes.damage[1]);
+    if (this->target != nullptr){
+        if (this->target->shieldActive && this->target->ShieldPoints > 0){
+            this->target->addShieldPoints(-this->attributes.damage[1]);
+        } else {
+            this->target->addHealthPoints(-this->attributes.damage[1]);
+        }
     }
 };
 

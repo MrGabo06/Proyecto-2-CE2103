@@ -289,66 +289,68 @@ int main(){
 
         for (int i = 0; i < computer.size(EntGroup::enemies); i++){
             Enemy *enemy = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, i));
-            enemy->shift(frameTime, elapsedTime);
-            if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
-                enemy->setTarget(&player);
-                enemy->engage();
-            }
-
-            if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4]){
-                Super *boss = static_cast<Super *>(enemy);
-                boss->bullet->shoot(player.getLocation()->data, frameTime);
-                map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
-                if (abs(boss->bullet->getPosition().x - player.getPosition().x) < 40 && abs(boss->bullet->getPosition().y - player.getPosition().y) < 40 && boss->bullet->hit == false)
-                {
-                    boss->bullet->deleteBull(boss->getPosition().x, boss->getPosition().y);
-                    player.addHealthPoints(-1);
-                }
-
-                DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
-            }
-          
-            if ( i < sp[0]+sp[1] && i >= sp[0] ){
-                for (int a = 0; a < sp[0]; a++){
-                    Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
-                    if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
-                        specter->setTarget(&player);
-                        specter->engage();
-                    }
-                }
-            }
-          
-            if (i < sp[1] && i > 0){
-                for (int a = sp[0] + sp[1]; a < sp[0] + sp[1] + sp[2]; a++){
-                    Enemy *rat = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
-                    if (enemy->rangeToEntity(rat, false)){
-                        enemy->disengage();
-                    }
-                }
-            }
-            if ( i < sp[0]+sp[1] && i >= sp[0] ){
-                for (int a = 0; a < sp[0]; a++){
-                    Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
-                    if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
-                        specter->setTarget(&player);
-                        specter->engage();
-                    }
-                }
-            }
-            enemy->shift(frameTime, elapsedTime);
-            map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-          
             if (enemy->getHealth() > 0){
+                enemy->shift(frameTime, elapsedTime);
+                if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                    enemy->setTarget(&player);
+                    enemy->engage();
+                }
+
+                if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4]){
+                    Super *boss = static_cast<Super *>(enemy);
+                    boss->bullet->shoot(player.getLocation()->data, frameTime);
+                    map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
+                    if (abs(boss->bullet->getPosition().x - player.getPosition().x) < 40 && abs(boss->bullet->getPosition().y - player.getPosition().y) < 40 && boss->bullet->hit == false)
+                    {
+                        boss->bullet->deleteBull(boss->getPosition().x, boss->getPosition().y);
+                        player.addHealthPoints(-1);
+                    }
+
+                    DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
+                }
+            
+                if ( i < sp[0]+sp[1] && i >= sp[0] ){
+                    for (int a = 0; a < sp[0]; a++){
+                        Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                        if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                            specter->setTarget(&player);
+                            specter->engage();
+                        }
+                    }
+                }
+            
+                if (i < sp[1] && i > 0){
+                    for (int a = sp[0] + sp[1]; a < sp[0] + sp[1] + sp[2]; a++){
+                        Enemy *rat = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                        if (enemy->rangeToEntity(rat, false)){
+                            enemy->disengage();
+                        }
+                    }
+                }
+                if ( i < sp[0]+sp[1] && i >= sp[0] ){
+                    for (int a = 0; a < sp[0]; a++){
+                        Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                        if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                            specter->setTarget(&player);
+                            specter->engage();
+                        }
+                    }
+                }
+                enemy->shift(frameTime, elapsedTime);
+                map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
+            
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attack(enemy, elapsedTime);
                     player.addCoins(1);
                 } else if(IsKeyDown(KEY_SPACE)){
-                  player.attack(nullptr, 0.0f);
+                    player.attack(nullptr, 0.0f);
                 }
-              
-                Rectangle rect = {0.f, 0.f, (float)enemy->currentSpriteSheet.width / 4, (float)enemy->currentSpriteSheet.height};
-                DrawTextureRec(enemy->currentSpriteSheet, rect, enemy->getPosition(), RAYWHITE);
+
+                if (!enemy->getLocation()->data.light){
+                    Rectangle rect = {0.f, 0.f, (float)enemy->currentSpriteSheet.width / 4, (float)enemy->currentSpriteSheet.height};
+                    DrawTextureRec(enemy->currentSpriteSheet, rect, enemy->getPosition(), RAYWHITE);
+                }
             }
         }
 
