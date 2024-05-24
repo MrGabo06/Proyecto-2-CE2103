@@ -10,7 +10,6 @@ PROPS = Game/src/include/**.cpp Game/src/include/Entities/**.cpp
 
 selda:
 	${CXX} -g ${INCS} ${PROPS} ${GAME} -o $@ ${L} ${RAYLIB}
-	./selda
 run: selda
 	./selda
 clean:
