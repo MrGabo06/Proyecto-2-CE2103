@@ -42,7 +42,7 @@ class Controller{
             try{
                 char data;
                 serial_port.ReadByte(data);
-                if(data == 'w' || data == 'a' || data == 's' || data == 'd' || data == 'e' || data == 'c' || data == 'v'){
+                if(data == 'w' || data == 'a' || data == 's' || data == 'd' || data == 'e' || data == 'c' || data == 'v' || data == 'q'){
                     entry = data;
                 }
             }catch (const ReadTimeout&) {

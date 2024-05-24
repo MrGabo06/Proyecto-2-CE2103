@@ -27,8 +27,8 @@ int main(){
     char controllerEntry;
 
     // Controller reader module
-    // gameController = new Controller();
-    // controllerEntry = gameController->entry;
+    gameController = new Controller();
+    controllerEntry = gameController->entry;
     
     // To not read the controller inputs
     controllerEntry = 'u';
@@ -84,7 +84,7 @@ int main(){
     Camera2D camera = {0};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
-    camera.zoom = 0.5f; // Camera limits are set for 3.5f zoom
+    camera.zoom = 3.5f; // Camera limits are set for 3.5f zoom
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
@@ -143,18 +143,20 @@ int main(){
 
         cout << breadcrumbList.getSize() << endl;
 
-        // if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
-        // {
-        //     lightList.enqueue(map.get(player.graphY, player.graphX));
-        //     // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
-        // }
+        if(rotation[level] == Level::second){
+            if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
+            {
+                lightList.enqueue(map.get(player.graphY, player.graphX));
+                // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
+            }
 
-        // else if (player.isMoving && lightList.size() > 2000)
-        // {
-        //     lightList.enqueue(map.get(player.graphY, player.graphX));
-        //     lightList.dequeue();
-        // }
-        // cout << lightList.size() << endl;
+            else if (player.isMoving && lightList.size() > 2000)
+            {
+                lightList.enqueue(map.get(player.graphY, player.graphX));
+                lightList.dequeue();
+            }
+            cout << lightList.size() << endl;
+        }
       
         // *******************************************
         // Transitions between levels
@@ -341,10 +343,11 @@ int main(){
             
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
                 {
+                    controllerEntry = 'u';
                     player.attack(enemy, elapsedTime);
                     player.addCoins(1);
-                } else if(IsKeyDown(KEY_SPACE)){
-                    player.attack(nullptr, 0.0f);
+                } else if(IsKeyDown(KEY_SPACE) || controllerEntry == 'v'){
+                  player.attack(nullptr, 0.0f);
                 }
 
                 if (!enemy->getLocation()->data.light){
@@ -363,9 +366,10 @@ int main(){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
+                    controllerEntry = 'u';
                     player.attackE(ent);
                     player.addCoins(1);
-                } else if(IsKeyDown(KEY_SPACE)){
+                } else if(IsKeyDown(KEY_SPACE) || controllerEntry == 'v'){
                     player.attackE(nullptr);
                 }
             }
@@ -410,10 +414,11 @@ int main(){
 
     CloseWindow();
   
-//     if(gameController!= nullptr){
-//         gameController->playing = false;
-//         gameController->controllerThread.join();
-//     }
+    if(gameController!= nullptr){
+        gameController->playing = false;
+        gameController->controllerThread.join();
+    }
+    
 	  google::ShutdownGoogleLogging();
   
     return 0;
