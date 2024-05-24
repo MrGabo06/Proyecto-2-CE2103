@@ -30,6 +30,7 @@ template<typename T>
 void DoubleLinkedList<T>::remove(int index){
     if (index >= this->size || index < 0){
         throw std::out_of_range("Index out of range");
+        LOG(ERROR) << "DoubleLinkedList.cpp::remove Index out of range";
     }
     B_Node<T>* current = this->head;
     int counter = 0;
@@ -94,6 +95,7 @@ template<typename T>
 B_Node<T>* DoubleLinkedList<T>::find(int index){
     if (index >= this->size || index < 0){
         throw std::out_of_range("Index out of range");
+        LOG(ERROR) << "DoubleLinkedList.cpp::find Index out of range";
     }
     int counter = 0;
     B_Node<T>* current = this->head;
@@ -111,11 +113,13 @@ template<typename T>
 T& DoubleLinkedList<T>::get(int index){
     if (index >= this->size || index < 0){
         throw std::out_of_range("Index out of range");
+        LOG(ERROR) << "DoubleLinkedList.cpp::get Index out of range";
     }
     int counter = 0;
     B_Node<T>* current = this->head;
     if (current == nullptr){
         throw std::runtime_error("Cant get data from null pointer");
+        LOG(ERROR) << "DoubleLinkedList.cpp::get Cant get data from null pointer";
     }
     while (current != nullptr){
         if (counter == index){

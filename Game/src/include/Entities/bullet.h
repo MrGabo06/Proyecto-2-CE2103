@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include <raylib.h>
+#include <glog/logging.h>
 #include "../Enemy.h"
 
 /// @brief Class for creating bird enemy type

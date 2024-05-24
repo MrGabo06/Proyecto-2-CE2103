@@ -3,6 +3,7 @@
 
 #include "Node.hpp"
 #include <stdexcept>
+#include <glog/logging.h>
 
 /// @brief C++ implementation of Linked List data structure
 /// @tparam T: data type name

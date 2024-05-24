@@ -42,7 +42,7 @@ int Entity::getShield()
 
 void Entity::addHealthPoints(int newHp){
     healthPoints += newHp;
-    cout << "Attack" << endl;
+    LOG(INFO) << "Attack";
 }
 
 void Entity::addShieldPoints(int Hp){

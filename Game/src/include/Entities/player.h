@@ -54,7 +54,7 @@ public:
     float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
     Map2D *currentMap = nullptr;
     bool isAnimation = false;
-    const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/fullheartShield.png");
+    const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/shieldHeart.png");
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
 
 public: // Methods
