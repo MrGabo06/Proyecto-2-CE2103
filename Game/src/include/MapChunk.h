@@ -34,6 +34,7 @@ public: // Attributes
     Texture2D texture;
     bool entrance = false;
     bool exit = false;
+  
 private:
     // [  ]
     Texture2D darkened;

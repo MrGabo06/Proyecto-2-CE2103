@@ -12,9 +12,9 @@
 #include <glog/logging.h>
 
 int main(){
-	google::InitGoogleLogging("Selda");
-	LOG(INFO) << "Logging initialized!";
-	
+	  google::InitGoogleLogging("Selda");
+	  LOG(INFO) << "Logging initialized!";
+
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
@@ -26,7 +26,9 @@ int main(){
     map.generate();
 
     Manager computer(&map, 5, 0, 0, 0, 0, 0, 10);
+  
     LinkedList<MapChunk> breadcrumbList;
+    Queue<MapChunk> lightList;
 
     Player player(1, 1);
     player.currentMap = &map;
@@ -66,28 +68,23 @@ int main(){
 
         if (player.getPosition().x < 207.0f){
             camera.target.x = 107.0f;
-        }
-        else if (player.getPosition().x > 1843.0f){
+        } else if (player.getPosition().x > 1843.0f){
             camera.target.x = 1740.0f;
-        }
-        else{
+        } else{
             camera.target.x = player.getPosition().x - 100.0f;
         }
 
         if (player.getPosition().y < 85.0f){
             camera.target.y = 55.0f;
-        }
-        else if (player.getPosition().y > 732.0f){
+        } else if (player.getPosition().y > 732.0f){
             camera.target.y = 702.0f;
-        }
-        else{
+        } else {
             camera.target.y = player.getPosition().y - 30.0f;
         }
 
         map.locate_at(&player, player.graphY, player.graphX, false);
 
-        if (player.getHealth() <= 0)
-        {
+        if (player.getHealth() <= 0){
             break;
         }
 
@@ -107,6 +104,19 @@ int main(){
 
         cout << breadcrumbList.getSize() << endl;
 
+        if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
+        {
+            lightList.enqueue(map.get(player.graphY, player.graphX));
+            // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
+        }
+
+        else if (player.isMoving && lightList.size() > 2000)
+        {
+            lightList.enqueue(map.get(player.graphY, player.graphX));
+            lightList.dequeue();
+        }
+        cout << lightList.size() << endl;
+      
         // *******************************************
         // Trasnsitions between levels
         // *******************************************
@@ -166,6 +176,17 @@ int main(){
             {
                 MapChunk &chunk = map.get(i, j);
                 Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
+                for (int x = 0; x < lightList.size(); x++)
+                {
+                    if (chunk == lightList.get(x))
+                    {
+                        chunk.lightChunk();
+                    }
+                    else
+                    {
+                        chunk.unLightChunk();
+                    }
+                }
                 DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
             }
         }
@@ -188,8 +209,7 @@ int main(){
                 currentFrame++;
             }
 
-            if (currentFrame > 3)
-            {
+            if (currentFrame > 3){
                 currentFrame = 0;
             }
 
@@ -210,8 +230,7 @@ int main(){
 
             enemyFrameRect.x = (float)enemyCurrentFrame * (float)player.currentSpriteSheet.width / 4;
         }
-        
-
+      
         // *******************************************
         // Enemy drawing and behavior
         // *******************************************
@@ -222,14 +241,15 @@ int main(){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
+          
             if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
             {
                 player.attack(enemy);
                 player.addCoins(1);
-            }else if(IsKeyDown(KEY_SPACE))
-            {
+            } else if(IsKeyDown(KEY_SPACE)){
                 player.attack(nullptr);
             }
+          
             if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
             {
                 enemy->attack();
@@ -245,23 +265,20 @@ int main(){
         // *******************************************
         // Vases and treasures behavior
         // *******************************************
-        for (int i = 0; i < computer.size(EntGroup::statical); i++){
+        for (int i = 0; i < computer.size(EntGroup::statical); i++)
+        {
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-
-            if (ent->getHealth() > 0)
-            {
+            if (ent->getHealth() > 0){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
 
                 if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attackE(ent);
                     player.addCoins(1);
-                }else if(IsKeyDown(KEY_SPACE))
-                {
+                } else if(IsKeyDown(KEY_SPACE)){
                     player.attackE(nullptr);
                 }
             }
- 
         }
 
         // *******************************************
@@ -271,7 +288,6 @@ int main(){
         EndMode2D();
 
         // ------------------------------------------------------------------------------------------------
-
         BeginDrawing();
       
         int heartOffset = 40; // Offset entre cada corazón
@@ -294,6 +310,7 @@ int main(){
         // Contador de monedas
         std::string coinsText = "Coins: " + std::to_string(player.getCoins());
         DrawText(coinsText.c_str(), 40 + player.CointSprite.width + 10, 60, 20, BLACK);
+      
         EndDrawing();
     }
 
