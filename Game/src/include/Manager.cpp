@@ -47,7 +47,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
                     entity = new Vase(0,0);
                     break;
                 case TREASURE:
-                    entity = new Vase(0,0);
+                    entity = new Treasure(0,0);
                     break;
             }
             // [ LOCATE THE ENEMY AND GENERATES IT ROUTE ]
