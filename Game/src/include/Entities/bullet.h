@@ -21,6 +21,7 @@ public: // Methods
     /// @param yCord
     Bullet(float xCord, float yCord);
     void shoot(MapChunk playerPosition, float frameTime);
+    void deleteBull(float x, float y);
 };
 
 #endif // BULLET_H

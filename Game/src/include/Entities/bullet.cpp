@@ -18,3 +18,8 @@ void Bullet::shoot(MapChunk playerPosition, float frameTime)
     this->graphX = playerPosition.coordinates[1];
     this->graphY = playerPosition.coordinates[0];
 }
+
+void Bullet::deleteBull(float x, float y)
+{
+    this->setPosition(x, y);
+}
