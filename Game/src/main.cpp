@@ -206,7 +206,7 @@ int main()
                 map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
                 if (abs(boss->bullet->getPosition().x - player.getPosition().x) < 40 && abs(boss->bullet->getPosition().y - player.getPosition().y) < 40 && boss->bullet->hit == false)
                 {
-                    cout << "Daño" << endl;
+                    boss->bullet->deleteBull(boss->getPosition().x, boss->getPosition().y);
                     player.addHealthPoints(-1);
                 }
 
