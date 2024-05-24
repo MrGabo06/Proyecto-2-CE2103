@@ -12,23 +12,28 @@ Map2D::Map2D(Level level_to_load, float* chunk_size){
     switch (level_to_load){
         case first:
             this->file_asset += "/level1.txt";
+            this->map_style = "grassland";
             break;
 
         case second:
             this->file_asset += "/level2.txt";
             this->dark_map = true;
+            this->map_style = "brick";
             break;
 
         case third:
             this->file_asset += "/level3.txt";
+            this->map_style = "brick";
             break;
 
         case fourth:
             this->file_asset += "/level4.txt";
+            this->map_style = "grassland";
             break;
 
         case fifth:
             this->file_asset += "/level5.txt";
+            this->map_style = "brick";
             break;
     }
     this->width = chunk_size[0];
@@ -65,7 +70,7 @@ void Map2D::generate(){
     for ( int i = 0; i<layout.size(); i++){
         for (int j = 0; j<layout[i].size(); j++){
             int coords[2] = {i,j};
-            MapChunk chunk(layout[i][j], positions[0], positions[1], chunk_dimensions, coords, this->dark_map);
+            MapChunk chunk(layout[i][j], positions[0], positions[1], chunk_dimensions, coords, false, this->map_style);
             this->grid.add(chunk);
             positions[0] += chunk_dimensions[0];
         }
@@ -85,27 +90,28 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
     switch (new_level){
         case first:
             this->file_asset += "/level1.txt";
-            this->dark_map = false;
+            this->map_style = "grassland";
             break;
 
         case second:
             this->file_asset += "/level2.txt";
             this->dark_map = true;
+            this->map_style = "brick";
             break;
 
         case third:
             this->file_asset += "/level3.txt";
-            this->dark_map = false;
+            this->map_style = "brick";
             break;
 
         case fourth:
             this->file_asset += "/level4.txt";
-            this->dark_map = false;
+            this->map_style = "grassland";
             break;
 
         case fifth:
             this->file_asset += "/level5.txt";
-            this->dark_map = false;
+            this->map_style = "brick";
             break;
     }
     this->width = chunk_size[0];
@@ -126,7 +132,7 @@ void Map2D::load_boundaries(){
                 if ( (neighbor[0] < this->grid_size[1] && neighbor[0] >= 0) && (neighbor[1] < this->grid_size[0] && neighbor[1] >= 0)){
                     MapChunk& chunk = this->get(neighbor[1], neighbor[0]);
                     this->grid.makeConnection(current, neighbor[0]+neighbor[1]*row_gap, false, make_tuple(this->chunk_output(chunk),0));
-                    std::cout << i << "," << j << " => " << neighbor[1] << "," << neighbor[0] << std::endl; 
+                    //std::cout << i << "," << j << " => " << neighbor[1] << "," << neighbor[0] << std::endl; 
                 }
             }
         }
@@ -152,7 +158,7 @@ int Map2D::chunk_output(MapChunk& chunk){
             travel_time = 100;
             break;
         case cloaked:
-            travel_time = 25;
+            travel_time = 50;
             break;
         case gate:
             travel_time = 100;

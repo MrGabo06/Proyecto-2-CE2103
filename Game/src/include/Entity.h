@@ -25,8 +25,7 @@ struct Attributes
 };
 
 /// @brief Generic class for game objects
-class Entity
-{
+class Entity{
 protected: // Attributes
     // { LOCATION AND POSITION}
     Vector2 position;
@@ -36,9 +35,9 @@ protected: // Attributes
     Attributes attributes = {2, {0, 5}, {0, 1}, {0, 6}, {0, 1}, {0, 5}, {0.0, 1.0}};
 
 public:
-    LinkedList<MapChunk> *breadcrumbs = nullptr;
-
-    int cellSize = 48;
+    LinkedList<MapChunk>* breadcrumbs = nullptr;
+  
+    int cellSize = 59;
     int graphX = 0;
     int graphY = 0;
     Texture2D currentSpriteSheet;
@@ -100,7 +99,12 @@ public: // Methods
     /// @return Pointer to node
     G_Node<MapChunk> *getLocation();
 
+    /// @brief Get a struct list of the attributes of the entity
     Attributes getAttributes();
+
+    /// @brief Checks if the entity is in safe location right now or not
+    /// @return (true) if entity on safe or cloaked chunk, (false) otherwise 
+    bool isSafe();
 };
 
 #endif // ENTITY_H

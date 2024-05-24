@@ -9,7 +9,19 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
     // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
     this->addEntities(EntityType::SPECTER, specters);
+    int specters_to_eyes[] = { specters, specters+eyes};
     this->addEntities(EntityType::EYE, eyes);
+    // [ ADD THE SPECTERS AS OBSERVERS OF THE EYES OF THE MAP]
+    for (int i = specters_to_eyes[0]; i < specters_to_eyes[1]; i++){
+        Eye* eye = static_cast<Eye*>(this->getEntity(EntGroup::enemies,i));
+        for (int j = 0; j < specters_to_eyes[0]; j++){
+            Specter* specter = static_cast<Specter*>(this->getEntity(EntGroup::enemies,j));
+            if (specter == nullptr){
+                std::cout << "null instance" << std::endl;
+            }
+            eye->addObserver(specter);
+        }
+    }
     this->addEntities(EntityType::RAT, rats);
     this->addEntities(EntityType::CHOCOBO, chocobos);
     this->addEntities(EntityType::SUPER, supers);
@@ -60,7 +72,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
         for (int i = 0; i < quantity; i++) {
             // [ CREATE AND SET A NON-CLUTTERING LOCATION FOR ENTITY]
             int location_coords[2] = {randomizer.gen(1,this->origin->grid_size[0]-2), randomizer.gen(1,this->origin->grid_size[1]-2)};
-            std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
+            // std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
             MapChunk chunk = this->origin->get(location_coords[0], location_coords[1]);
             while (chunk.chunk_type != ChunkType::terrain){ // { CHECK THE CHUNK IS WALKABLE TERRAIN }
                 int offset[] = {randomizer.gen(-1,1), randomizer.gen(-1,1)};
@@ -76,7 +88,7 @@ void Manager::addEntities(EntityType entity_t, int quantity){
                 }   else if (location_coords[1] < 1){
                     location_coords[1] = 1;
                 }
-                std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
+                // std::cout << location_coords[0] << "   " << location_coords[1] << std::endl;
                 chunk = this->origin->get(location_coords[0], location_coords[1]);
             }
             // [ CREATE THE REQUIRED ENEMY ]
@@ -147,6 +159,12 @@ void Manager::killAll(int64_t current_time){
 
 void Manager::evolve(int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases)
 {
+    // std::cout << "OLD STAT(HP): " << this->stats[0] << std::endl;
+    // std::cout << "OLD STAT(DMG): " << this->stats[1] << std::endl;
+    // std::cout << "OLD STAT(RNG): " << this->stats[2] << std::endl;
+    // std::cout << "OLD STAT(DST): " << this->stats[3] << std::endl;
+    // std::cout << "OLD STAT(RTS): " << this->stats[4] << std::endl;
+    // std::cout << "OLD STAT(SPD): " << this->stats[5] << std::endl;
     // [ GET A NEW SET OF STATS FOR ENTITIES ]
     Enemy* best_prospects[] = {nullptr, nullptr};
     for (auto enemy : this->mob_entities){
@@ -220,10 +238,26 @@ void Manager::evolve(int specters, int eyes, int rats, int chocobos, int supers,
 
     // [ INSERT THE NEWLY CREATED ENTITIES ]
     this->addEntities(EntityType::SPECTER, specters);
+    int specters_to_eyes[] = { specters, specters+eyes};
     this->addEntities(EntityType::EYE, eyes);
+    // [ ADD THE SPECTERS AS OBSERVERS OF THE EYES OF THE MAP]
+    for (int i = specters_to_eyes[0]; i < specters_to_eyes[1]; i++){
+        Eye* eye = static_cast<Eye*>(this->getEntity(EntGroup::enemies,i));
+        for (int j = 0; j < specters_to_eyes[0]; j++){
+            Specter* specter = static_cast<Specter*>(this->getEntity(EntGroup::enemies,j));
+            eye->addObserver(specter);
+        }
+    }
     this->addEntities(EntityType::RAT, rats);
     this->addEntities(EntityType::CHOCOBO, chocobos);
     this->addEntities(EntityType::SUPER, supers);
     this->addEntities(EntityType::TREASURE, treasures);
     this->addEntities(EntityType::VASE, vases);
+
+    // std::cout << "NEW STAT(HP): " << this->stats[0] << std::endl;
+    // std::cout << "NEW STAT(DMG): " << this->stats[1] << std::endl;
+    // std::cout << "NEW STAT(RNG): " << this->stats[2] << std::endl;
+    // std::cout << "NEW STAT(DST): " << this->stats[3] << std::endl;
+    // std::cout << "NEW STAT(RTS): " << this->stats[4] << std::endl;
+    // std::cout << "NEW STAT(SPD): " << this->stats[5] << std::endl;
 }

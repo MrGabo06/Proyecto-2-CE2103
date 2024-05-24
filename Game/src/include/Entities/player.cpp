@@ -10,21 +10,22 @@ Player::Player(int startGraphX, int startGraphY){
     
 }
 
-
-
-void Player::attack(Enemy* enemy) {
+void Player::attack(Enemy* enemy, int64_t time_stamp) {
     this->isAtacking = true;
     if(enemy != nullptr){
         enemy->addHealthPoints(-1);
+        if (enemy->getHealth() <= 0){
+          enemy->lifetime = time_stamp;
+        }
     }
     this->attackTimer = 0.5f;
 }
 
-void Player::attackE(Entity* ent){
+void Player::attack_E(Entity* entity){
     this->isAtacking = true;
     if(ent != nullptr){
-    this->addHealthPoints(+1);
-    ent->addHealthPoints(-1);
+      this->addHealthPoints(+1);
+      ent->addHealthPoints(-1);
     }
     this->attackTimer = 0.5f;
 }
@@ -39,8 +40,6 @@ void Player::toggleShield(){
     shieldActive = !shieldActive;
 }
 
-
-
 void Player::move(float frameTime, const char dir){
     above = &this->currentMap->get(graphAbove, graphX);
     below = &this->currentMap->get(graphBelow, graphX);
@@ -50,8 +49,7 @@ void Player::move(float frameTime, const char dir){
     aboveRight = &this->currentMap->get(graphAbove, graphRight);
     belowLeft = &this->currentMap->get(graphBelow, graphLeft);
     
-    if (dir == mvUp)
-    {
+    if (dir == mvUp){
         direction = 1;
         if((above->chunk_type == wall && this->getPosition().y < this->aboveLimit + 2.0f) || (aboveRight->chunk_type == wall && this->getPosition().x > this->rightLimit && this->getPosition().y < this->aboveLimit + 2.0f))
         {
@@ -99,9 +97,8 @@ void Player::move(float frameTime, const char dir){
     }
 }
 
-void Player::movePlayer(float frameTime){
-    
-    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D))
+void Player::movePlayer(float frameTime, char contrEntry){
+    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && contrEntry != 'w' && contrEntry != 'a' && contrEntry != 's' && contrEntry != 'd')
     {
         // Stop movement
         this->isMoving = false;
@@ -113,8 +110,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_W))
-    {
+    if (IsKeyDown(KEY_UP) || contrEntry == 'w'){
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -128,8 +124,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_S))
-    {
+    if (IsKeyDown(KEY_DOWN) || contrEntry == 's'){
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -143,8 +138,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_A))
-    {
+    if (IsKeyDown(KEY_LEFT) || contrEntry == 'a'){
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -158,8 +152,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_D))
-    {
+    if (IsKeyDown(KEY_RIGHT) || contrEntry == 'd'){
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;
         if (isAtacking && shieldActive){
@@ -173,13 +166,11 @@ void Player::movePlayer(float frameTime){
         }
     }
   
-    if (IsKeyDown(KEY_Q))
-    {
+    if (IsKeyDown(KEY_Q)){
         this->light = !light;
     }
 
-    if (IsKeyPressed(KEY_C))
-    {
+    if (IsKeyPressed(KEY_C)){
         this->toggleShield();
     }
 

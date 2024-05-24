@@ -6,16 +6,18 @@
 #include "../Entity.h"
 #include "../Map.h"
 #include "../Enemy.h"
+#include "../../modules/RandGenerator.h"
 #include "../WayFinder.h"
+
 using namespace std;
 
 #define PLAYER_JUMP_SPD 200.0f
 #define PLAYER_HOR_SPD 200.0f
 
 /// @brief Class for player entity that can be controlled by user
-class Player : public Entity
-{
+class Player : public Entity{
 private: // Attributes
+    Generator randomizer;
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playUp.png");
     const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playDown.png");
     const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playLeft.png");
@@ -44,6 +46,8 @@ private: // Attributes
     MapChunk *aboveRight = nullptr;
     MapChunk *belowLeft = nullptr;
 
+    int gold = 0;
+
 public:
     bool light = false;
     bool isMoving;
@@ -58,7 +62,7 @@ public:
 public: // Methods
     /// @brief Make the player attack
     /// @param frameTime: Raylib window frame time
-    void attack(Enemy *enemy);
+    void attack(Enemy* enemy, int64_t time_stamp);
 
     /// @brief Create an instance of Player class
     /// @param startingGraphX: The starting horizontal graph coords of the player
@@ -72,7 +76,8 @@ public: // Methods
 
     /// @brief Moves the player and checks it doesnt overpass the limits of the map
     /// @param frameTime: Raylib window frame time
-    void movePlayer(float frameTime);
+    /// @param contrEntry: Entry from the controller
+    void movePlayer(float frameTime, char contrEntry);
 
     void attackE(Entity *ent);
 

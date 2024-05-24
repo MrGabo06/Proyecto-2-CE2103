@@ -5,22 +5,22 @@ void Entity::move(float frameTime, const char dir)
 {
     if (dir == mvUp)
     {
-        this->position.y -= entityVerticalSpeed * frameTime;
+        this->position.y -= entityVerticalSpeed * frameTime * attributes.speed[1];
     }
 
     if (dir == mvDown)
     {
-        this->position.y += entityVerticalSpeed * frameTime;
+        this->position.y += entityVerticalSpeed * frameTime * attributes.speed[1];
     }
 
     if (dir == mvLeft)
     {
-        this->position.x -= entityHorizontalSpeed * frameTime;
+        this->position.x -= entityHorizontalSpeed * frameTime * attributes.speed[1];
     }
 
     if (dir == mvRight)
     {
-        this->position.x += entityHorizontalSpeed * frameTime;
+        this->position.x += entityHorizontalSpeed * frameTime * attributes.speed[1];
     }
 
     this->graphX = this->getPosition().x / this->cellSize;
@@ -29,6 +29,10 @@ void Entity::move(float frameTime, const char dir)
 
 Attributes Entity::getAttributes(){
     return this->attributes;
+}
+
+bool Entity::isSafe(){
+    return this->location->data.chunk_type == ChunkType::safe || this->location->data.chunk_type == ChunkType::cloaked;
 }
 
 int Entity::getHealth(){
