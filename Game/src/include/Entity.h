@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <raylib.h>
+#include <glog/logging.h>
 
 #include "../modules/Node.hpp"
 #include "../modules/LinkedList.h"
@@ -12,7 +13,8 @@ class MapChunk;
 #define entityVerticalSpeed 200.0f
 #define entityHorizontalSpeed 200.0f
 
-struct Attributes{
+struct Attributes
+{
     int cooldown;
     int health[2];
     int damage[2];
@@ -25,15 +27,12 @@ struct Attributes{
 /// @brief Generic class for game objects
 class Entity{
 protected: // Attributes
-
     // { LOCATION AND POSITION}
     Vector2 position;
-    G_Node<MapChunk>* location = nullptr;
+    G_Node<MapChunk> *location = nullptr;
 
     /// { ENTITY ATTRIBUTES }
-    Attributes attributes = {2, {0,5}, {0,1}, {0,6}, {0,1}, {0,5}, {0.0, 1.0} };
-    int healthPoints = 0;
-    int ShieldPoints = 0;
+    Attributes attributes = {2, {0, 5}, {0, 1}, {0, 6}, {0, 1}, {0, 5}, {0.0, 1.0}};
 
 public:
     LinkedList<MapChunk>* breadcrumbs = nullptr;
@@ -42,14 +41,18 @@ public:
     int graphX = 0;
     int graphY = 0;
     Texture2D currentSpriteSheet;
+    int healthPoints = 0;
+    int ShieldPoints = 0;
+    int CoinPoints = 0;
 
     const char mvUp = 'U';
     const char mvDown = 'D';
     const char mvLeft = 'L';
     const char mvRight = 'R';
-
+    bool shieldActive = false;
     int direction = 0;
-    bool isAtacking = false; 
+    bool isAtacking = false;
+    bool isProcessed;
 
 public: // Methods
     Entity(){};
@@ -74,6 +77,10 @@ public: // Methods
     /// @brief Get the entity shield points
     int getShield();
 
+    void addCoins(int coins);
+
+    int getCoins();
+
     /// @brief Change the position to a new one
     /// @param xCords: New X position (-1.0f wont change the current)
     /// @param yCords: New Y position (-1.0f wont change the current)
@@ -86,7 +93,7 @@ public: // Methods
     /// @brief Changes the location in the graph and the position
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
-    void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+    void setLocation(G_Node<MapChunk> *map_chunk, bool changePosition);
 
     /// @brief Gets the pointer to map graph node where the entity is standing
     /// @return Pointer to node

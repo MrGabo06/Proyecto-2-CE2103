@@ -9,10 +9,10 @@
 class Specter : public Enemy {
 public:
     //Attributes
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
+    Texture2D movingUpSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterUp.png");
+    Texture2D movingDownSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
+    Texture2D movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterLeft.png");
+    Texture2D movingRightSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
     
 public: // Methods
 
@@ -23,7 +23,7 @@ public: // Methods
     /// @param xCord: x coordinate of entity
     /// @param yCord: y coordinate of entity
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
-    Specter(int xCord, int yCord, int skill_rates[]);
+    Specter(int xCord, int yCord, int skill_rates[], int type = 1);
     
 private:
     /// @brief Sets the enemy properties based on a rating (1-10) 
