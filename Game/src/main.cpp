@@ -187,20 +187,21 @@ int main(){
             if (currentFrame > 3)
                 currentFrame = 0;
 
+            // if(player.isAtacking){
+                
+            //     if (!player.isAnimation)
+            //     {
+            //         player.isAnimation = true;
+            //         currentFrame = 0;
+            //     }
+            //     if(player.isAnimation && currentFrame + 1 % 4 == 0){
+            //         player.isAnimation = false;
+            //         player.isAtacking = false;
+            //     }
+            // }
+
             playerFrameRect.x = (float)currentFrame * (float)player.currentSpriteSheet.width / 4;
         }
-            if(player.isAtacking){
-                
-                if (!player.isAnimation)
-                {
-                    player.isAnimation = true;
-                    currentFrame = 0;
-                }
-                if(player.isAnimation && currentFrame + 1 % 4 == 0){
-                    player.isAnimation = false;
-                    player.isAtacking = false;
-                }
-            }
 
         // *******************************************
         // Enemy drawing and behavior

@@ -107,8 +107,12 @@ void Player::movePlayer(float frameTime){
     {
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackUpSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackUpSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protUpSprite;
         }else{
             this->currentSpriteSheet = movingUpSprite;
         }
@@ -118,8 +122,12 @@ void Player::movePlayer(float frameTime){
     {
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackDownSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackDownSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protDownSprite;
         }else{
             this->currentSpriteSheet = movingDownSprite;
         }
@@ -129,8 +137,12 @@ void Player::movePlayer(float frameTime){
     {
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackLeftSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackLeftSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protLeftSprite;
         }else{
             this->currentSpriteSheet = movingLeftSprite;
         }
@@ -140,8 +152,12 @@ void Player::movePlayer(float frameTime){
     {
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackRightSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackRightSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protRightSprite;
         }else{
             this->currentSpriteSheet = movingRightSprite;
         }
