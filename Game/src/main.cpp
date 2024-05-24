@@ -84,7 +84,7 @@ int main(){
     Camera2D camera = {0};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
-    camera.zoom = 0.5f; // Camera limits are set for 3.5f zoom
+    camera.zoom = 3.5f; // Camera limits are set for 3.5f zoom
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
@@ -343,9 +343,10 @@ int main(){
             if (enemy->getHealth() > 0){
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
                 {
+                    controllerEntry = 'u';
                     player.attack(enemy, elapsedTime);
                     player.addCoins(1);
-                } else if(IsKeyDown(KEY_SPACE)){
+                } else if(IsKeyDown(KEY_SPACE) || controllerEntry == 'v'){
                   player.attack(nullptr, 0.0f);
                 }
               
@@ -363,9 +364,10 @@ int main(){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
+                    controllerEntry = 'u';
                     player.attackE(ent);
                     player.addCoins(1);
-                } else if(IsKeyDown(KEY_SPACE)){
+                } else if(IsKeyDown(KEY_SPACE) || controllerEntry == 'v'){
                     player.attackE(nullptr);
                 }
             }
