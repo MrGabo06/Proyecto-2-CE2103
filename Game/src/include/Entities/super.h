@@ -18,8 +18,7 @@ private: // Attributes
     MapChunk &playerPosition;
     float frameTime;
     static MapChunk defaultChunk;
-    Bullet *bullet = nullptr;
-    LinkedList<Bullet *> bulletList;
+
     Rectangle frameRec;
 
 public: // Methods
@@ -35,6 +34,8 @@ public: // Methods
     void movePattern(int mov);
 
     void attackPattern(int atk);
+    Bullet *bullet = nullptr;
+    LinkedList<Bullet *> bulletList;
 
     void getPlayerPosition(MapChunk &actualPosition, float frameTime);
 

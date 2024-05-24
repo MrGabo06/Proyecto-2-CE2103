@@ -18,6 +18,7 @@ Super::Super(int xCord, int yCord, int skill_rates[]) : playerPosition(defaultCh
     this->currentSpriteSheet = movingDownSprite;
     this->frameRec = {0.0f, 0.0f, (float)this->currentSpriteSheet.width, (float)this->currentSpriteSheet.height};
     this->setProperties(skill_rates);
+    this->bullet = new Bullet(this->getPosition().x, this->getPosition().y);
 }
 
 void Super::getPlayerPosition(MapChunk &actualPosition, float frameTime)

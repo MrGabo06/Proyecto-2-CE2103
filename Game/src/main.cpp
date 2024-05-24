@@ -199,6 +199,13 @@ int main()
                 enemy->setTarget(&player);
                 enemy->engage();
             }
+            if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4])
+            {
+                Super *boss = static_cast<Super *>(enemy);
+                cout << "hola boss" << endl;
+
+                DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
+            }
             if (i < sp[1] && i > 0)
             {
                 for (int a = sp[0] + sp[1]; a < sp[0] + sp[1] + sp[2]; a++)
