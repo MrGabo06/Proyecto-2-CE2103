@@ -37,7 +37,11 @@ int main(){
     const int frameSpeed = 5;
     int frameCounter = 0;
 
+    int enemyCurrentFrame = 0;
+    int enemyFrameCounter = 0;
+
     Rectangle playerFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle enemyFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     Camera2D camera = {0};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
@@ -191,6 +195,21 @@ int main(){
 
             playerFrameRect.x = (float)currentFrame * (float)player.currentSpriteSheet.width / 4;
         }
+
+        enemyFrameCounter++;
+
+        if (enemyFrameCounter >= (60 / frameSpeed))
+        {
+            enemyFrameCounter = 0;
+            enemyCurrentFrame++;
+
+            if (enemyCurrentFrame > 3)
+            {
+                enemyCurrentFrame = 0;
+            }
+
+            enemyFrameRect.x = (float)enemyCurrentFrame * (float)player.currentSpriteSheet.width / 4;
+        }
         
 
         // *******************************************
@@ -218,7 +237,7 @@ int main(){
             enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             if (enemy->getHealth() > 0){
-                DrawTextureRec(enemy->currentSpriteSheet, playerFrameRect, enemy->getPosition(), RAYWHITE);
+                DrawTextureRec(enemy->currentSpriteSheet, enemyFrameRect, enemy->getPosition(), RAYWHITE);
             }
         }
 
