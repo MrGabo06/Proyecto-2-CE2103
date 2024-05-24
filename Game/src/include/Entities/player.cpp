@@ -2,13 +2,15 @@
 
 Player::Player(int startGraphX, int startGraphY){
     this->healthPoints = 5;
-    this->addShieldPoints(2);
 
     this->graphX = startGraphX;
     this->graphY = startGraphY;
     this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
     this->currentSpriteSheet = movingDownSprite;
+    
 }
+
+
 
 void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
@@ -22,6 +24,18 @@ void Player::attackE(Entity* ent){
     ent->addHealthPoints(-1);
     this->isAtacking = false;
 }
+
+
+void Player::toggleShield(){
+    if (shieldActive) {
+        this->addShieldPoints(-2);
+    } else {
+        this->addShieldPoints(2);
+    }
+    shieldActive = !shieldActive;
+}
+
+
 
 void Player::move(float frameTime, const char dir){
     above = &this->currentMap->get(graphAbove, graphX);
@@ -79,6 +93,10 @@ void Player::move(float frameTime, const char dir){
             this->position.x += entityHorizontalSpeed * frameTime;
         }
     }
+
+    if (IsKeyPressed(KEY_Q)){
+        this->toggleShield();
+    }
 }
 
 void Player::movePlayer(float frameTime){
@@ -89,7 +107,7 @@ void Player::movePlayer(float frameTime){
         this->isMoving = false;
     }
 
-    if (IsKeyDown(KEY_UP))
+    if (IsKeyDown(KEY_W))
     {
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
@@ -100,7 +118,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_DOWN))
+    if (IsKeyDown(KEY_S))
     {
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
@@ -111,7 +129,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_LEFT))
+    if (IsKeyDown(KEY_A))
     {
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
@@ -122,7 +140,7 @@ void Player::movePlayer(float frameTime){
         }
     }
 
-    if (IsKeyDown(KEY_RIGHT))
+    if (IsKeyDown(KEY_D))
     {
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;

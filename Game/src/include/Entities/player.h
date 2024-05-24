@@ -6,7 +6,6 @@
 #include "../Entity.h"
 #include "../Map.h"
 #include "../Enemy.h"
-#include "../Map.h"
 #include "../WayFinder.h"
 using namespace std;
 
@@ -35,10 +34,12 @@ private: // Attributes
     MapChunk *aboveRight = nullptr;
     MapChunk *belowLeft = nullptr;
 
+    
+
 public:
     bool light = false;
     bool isMoving;
-
+    bool shieldActive = false;
     int graphAbove = 0, graphBelow = 0, graphLeft = 0, graphRight = 0;
     float aboveLimit = 0.0f, belowLimit = 0.0f, leftLimit = 0.0f, rightLimit = 0.0f, downRightLimit = 0.0f;
     Map2D *currentMap = nullptr;
@@ -68,6 +69,9 @@ public: // Methods
     void movePlayer(float frameTime);
 
     void attackE(Entity* ent);
+
+    void toggleShield();
+
 };
 
 #endif // PLAYER_H

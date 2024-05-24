@@ -239,14 +239,19 @@ int main(){
 
         BeginDrawing();
       
-        for (int i = 1; i < player.getHealth() + 1; i++)
-        {
-            DrawTexture(player.idleSprite, 40 * i, 10, WHITE);
+        int heartOffset = 40; // Offset entre cada corazón
+        int shieldOffset = 40; // Offset entre cada escudo
+        int heartStartPosX = 40; // Posición inicial en X para los corazones
+        int shieldStartPosX = heartStartPosX + (player.getHealth() * heartOffset); // Posición inicial en X para los escudos
+
+        // Dibujar corazones
+        for (int i = 0; i < player.getHealth(); i++) {
+            DrawTexture(player.idleSprite, heartStartPosX + (heartOffset * i), 10, WHITE);
         }
 
-        for (int i = 1; i < player.getShield() + 1; i++)
-        {
-            DrawTexture(player.idleSprite2, 40 * (i + 4), 10, WHITE);
+        // Dibujar escudos
+        for (int i = 0; i < player.getShield(); i++) {
+            DrawTexture(player.idleSprite2, shieldStartPosX + (shieldOffset * i), 10, WHITE);
         }
 
         EndDrawing();
