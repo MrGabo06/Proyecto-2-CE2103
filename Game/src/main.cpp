@@ -10,9 +10,12 @@
 #include "modules/LinkedList.h"
 #include "modules/Node.hpp"
 #include "controller.h"
+#include <glog/logging.h>
 
-int main()
-{
+int main(){
+	  google::InitGoogleLogging("Selda");
+	  LOG(INFO) << "Logging initialized!";
+  
     const int screenWidth = 1500;
     const int screenHeight = 750;
     const Level rotation[] = {Level::first, Level::second, Level::third, Level::fourth, Level::fifth};
@@ -29,8 +32,6 @@ int main()
     
     // To not read the controller inputs
     controllerEntry = 'u';
-    
-    
 
     InitWindow(screenWidth, screenHeight, "Selda");
 
@@ -39,14 +40,15 @@ int main()
 
     float chunk_sizes[] = {(float)player.cellSize, (float)player.cellSize};
     Map2D map(rotation[level], chunk_sizes);
-    map.generate();
-    map.locate_at(&player, player.graphY, player.graphX, true);
-    player.currentMap = &map;
+      map.generate();
+      map.locate_at(&player, player.graphY, player.graphX, true);
+      player.currentMap = &map;
 
     Manager computer(&map, sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
-
+  
     LinkedList<MapChunk> breadcrumbList;
-	player.breadcrumbs = &breadcrumbList;
+        player.breadcrumbs = &breadcrumbList;
+    Queue<MapChunk> lightList;
 
     // init minimap
     Texture2D minimaps[5];
@@ -71,17 +73,18 @@ int main()
     int currentFrame = 0;
     const int frameSpeed = 5;
     int frameCounter = 0;
-
+    int enemyCurrentFrame = 0;
+    int enemyFrameCounter = 0;
+  
     // { TEXTURE RECTANGLE }
     Rectangle playerFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
+    Rectangle enemyFrameRect = {0.0f, 0.0f, (float)player.currentSpriteSheet.width / 4, (float)player.currentSpriteSheet.height};
 
     /// { CAMERA INITIALIZATION }
     Camera2D camera = {0};
     camera.offset = (Vector2){screenWidth / 4, screenHeight / 4};
     camera.rotation = 0.0f;
     camera.zoom = 0.5f; // Camera limits are set for 3.5f zoom
-
-    // minimap 
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
@@ -104,33 +107,23 @@ int main()
         if (player.getPosition().x < 207.0f)
         {
             camera.target.x = 107.0f;
-        }
-        else if (player.getPosition().x > 1843.0f)
-        {
+        } else if (player.getPosition().x > 1843.0f){
             camera.target.x = 1740.0f;
-        }
-        else
-        {
+        } else{
             camera.target.x = player.getPosition().x - 100.0f;
         }
 
-        if (player.getPosition().y < 85.0f)
-        {
+        if (player.getPosition().y < 85.0f){
             camera.target.y = 55.0f;
-        }
-        else if (player.getPosition().y > 732.0f)
-        {
+        } else if (player.getPosition().y > 732.0f){
             camera.target.y = 702.0f;
-        }
-        else
-        {
+        } else {
             camera.target.y = player.getPosition().y - 30.0f;
         }
 
         map.locate_at(&player, player.graphY, player.graphX, false);
 
-        if (player.getHealth() <= 0)
-        {
+        if (player.getHealth() <= 0){
             break;
         }
 
@@ -150,6 +143,19 @@ int main()
 
         // cout << breadcrumbList.getSize() << endl;
 
+        if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
+        {
+            lightList.enqueue(map.get(player.graphY, player.graphX));
+            // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
+        }
+
+        else if (player.isMoving && lightList.size() > 2000)
+        {
+            lightList.enqueue(map.get(player.graphY, player.graphX));
+            lightList.dequeue();
+        }
+        cout << lightList.size() << endl;
+      
         // *******************************************
         // Transitions between levels
         // *******************************************
@@ -196,6 +202,17 @@ int main()
             {
                 MapChunk &chunk = map.get(i, j);
                 Rectangle chunkRec = {0.0f, 0.0f, chunk.size[0], chunk.size[1]};
+                for (int x = 0; x < lightList.size(); x++)
+                {
+                    if (chunk == lightList.get(x))
+                    {
+                        chunk.lightChunk();
+                    }
+                    else
+                    {
+                        chunk.unLightChunk();
+                    }
+                }
                 DrawTextureRec(chunk.texture, chunkRec, chunk.position, RAYWHITE);
             }
         }
@@ -218,26 +235,41 @@ int main()
                 currentFrame++;
             }
 
-            if (currentFrame > 3)
+            if (currentFrame > 3){
                 currentFrame = 0;
+            }
 
             playerFrameRect.x = (float)currentFrame * (float)player.currentSpriteSheet.width / 4;
         }
 
+        enemyFrameCounter++;
+
+        if (enemyFrameCounter >= (60 / frameSpeed))
+        {
+            enemyFrameCounter = 0;
+            enemyCurrentFrame++;
+
+            if (enemyCurrentFrame > 3)
+            {
+                enemyCurrentFrame = 0;
+            }
+
+            enemyFrameRect.x = (float)enemyCurrentFrame * (float)player.currentSpriteSheet.width / 4;
+        }
+      
         // *******************************************
         // Enemy drawing and behavior
         // *******************************************
 
-        for (int i = 0; i < computer.size(EntGroup::enemies); i++)
-        {
+        for (int i = 0; i < computer.size(EntGroup::enemies); i++){
             Enemy *enemy = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, i));
-            if (enemy->rangeToEntity(&player, false) && !player.isSafe())
-            {
+            enemy->shift(frameTime, elapsedTime);
+            if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
-            if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4])
-            {
+
+            if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4]){
                 Super *boss = static_cast<Super *>(enemy);
                 boss->bullet->shoot(player.getLocation()->data, frameTime);
                 map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
@@ -249,29 +281,36 @@ int main()
 
                 DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
             }
-            if (i < sp[1] && i > 0)
-            {
-                for (int a = sp[0] + sp[1]; a < sp[0] + sp[1] + sp[2]; a++)
-                {
+          
+            if ( i < sp[0]+sp[1] && i >= sp[0] ){
+                for (int a = 0; a < sp[0]; a++){
+                    Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                    if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                        specter->setTarget(&player);
+                        specter->engage();
+                    }
+                }
+            }
+          
+            if (i < sp[1] && i > 0){
+                for (int a = sp[0] + sp[1]; a < sp[0] + sp[1] + sp[2]; a++){
                     Enemy *rat = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
-                    if (enemy->rangeToEntity(rat, false))
-                    {
+                    if (enemy->rangeToEntity(rat, false)){
                         enemy->disengage();
                     }
                 }
             }
-            // if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
-            // {
-            //     enemy->attack();
-            // }
-            enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
-            if (enemy->getHealth() > 0)
-            {
+          
+            if (enemy->getHealth() > 0){
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attack(enemy, elapsedTime);
+                    player.addCoins(1);
+                } else if(IsKeyDown(KEY_SPACE)){
+                  player.attack(nullptr);
                 }
+              
                 Rectangle rect = {0.f, 0.f, (float)enemy->currentSpriteSheet.width / 4, (float)enemy->currentSpriteSheet.height};
                 DrawTextureRec(enemy->currentSpriteSheet, rect, enemy->getPosition(), RAYWHITE);
             }
@@ -280,16 +319,16 @@ int main()
         // *******************************************
         // Vases and treasures behavior
         // *******************************************
-        for (int i = 0; i < computer.size(EntGroup::statical); i++)
-        {
+        for (int i = 0; i < computer.size(EntGroup::statical); i++){
             Entity *ent = computer.getEntity(EntGroup::statical, i);
-
-            if (ent->getHealth() > 0)
-            {
+            if (ent->getHealth() > 0){
                 DrawTexture(ent->currentSpriteSheet, ent->getPosition().x, ent->getPosition().y, RAYWHITE);
                 if ((IsKeyDown(KEY_SPACE) || controllerEntry == 'v') && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
-                    player.attack_E(ent);
+                    player.attackE(ent);
+                    player.addCoins(1);
+                } else if(IsKeyDown(KEY_SPACE)){
+                    player.attackE(nullptr);
                 }
             }
         }
@@ -301,32 +340,43 @@ int main()
         EndMode2D();
 
         // ------------------------------------------------------------------------------------------------
-
         BeginDrawing();
+      
+        int heartOffset = 40; // Offset entre cada corazón
+        int shieldOffset = 40; // Offset entre cada escudo
+        int heartStartPosX = 40; // Posición inicial en X para los corazones
+        int shieldStartPosX = heartStartPosX + (player.getHealth() * heartOffset); // Posición inicial en X para los escudos
 
-        for (int i = 1; i < player.getHealth() + 1; i++)
-        {
-            DrawTexture(player.idleSprite, 40 * i, 10, WHITE);
+        // Dibujar corazones
+        for (int i = 0; i < player.getHealth(); i++) {
+            DrawTexture(player.idleSprite, heartStartPosX + (heartOffset * i), 10, WHITE);
         }
 
-        for (int i = 1; i < player.getShield() + 1; i++)
-        {
-            DrawTexture(player.idleSprite2, 40 * (i + 4), 10, WHITE);
+        // Dibujar escudos
+        for (int i = 0; i < player.getShield(); i++) {
+            DrawTexture(player.idleSprite2, shieldStartPosX + (shieldOffset * i), 10, WHITE);
         }
-
+      
         // minimap drawing
-
         DrawTexture(minimaps[level], minimap_pos[level].x, minimap_pos[level].y, WHITE);
-		DrawCircle(player.getPosition().x/8, screenHeight - screenHeight/5.8 + player.getPosition().y/8, 3, RED);
+		    DrawCircle(player.getPosition().x/8, screenHeight - screenHeight/5.8 + player.getPosition().y/8, 3, RED);
+        // Dibujar monedas
+        DrawTexture(player.CointSprite, 40, 60, WHITE);
+        // Contador de monedas
+        std::string coinsText = "Coins: " + std::to_string(player.getCoins());
+        DrawText(coinsText.c_str(), 40 + player.CointSprite.width + 10, 60, 20, BLACK);
+      
         EndDrawing();
 
     }
 
     CloseWindow();
-    if(gameController!= nullptr){
-        gameController->playing = false;
-        gameController->controllerThread.join();
-    }
-
+  
+//     if(gameController!= nullptr){
+//         gameController->playing = false;
+//         gameController->controllerThread.join();
+//     }
+	  google::ShutdownGoogleLogging();
+  
     return 0;
 }

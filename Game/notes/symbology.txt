@@ -1,5 +1,9 @@
-_ => chunks lentos pero traversibles
-. => chunk normal(de pasto)
-x => paredes
+x es pared
+. es piso
+o es zona segura
+| es pared falsa
+~ es zona para ocultarse
+_ son trampas
+H es teleport a siguiente nivel
 
 TODO: *Meter otros tipos de chunks y un asset para utilizar*

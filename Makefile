@@ -8,9 +8,11 @@ SRCS =  src/include/*.cpp src/*.cpp
 GAME = Game/src/main.cpp
 PROPS = Game/src/include/**.cpp Game/src/include/Entities/**.cpp
 
-selda:
-	${CXX} -g ${INCS} ${PROPS} ${GAME} -o $@ ${LIBS} ${RAYLIB}
+Selda:
+	${CXX} -g ${INCS} ${PROPS} ${GAME} -o Selda ${LIBS} ${RAYLIB}
+  
 run: selda
-	./selda
+	./Selda
+  
 clean:
 	rm ./selda
