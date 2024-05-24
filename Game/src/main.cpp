@@ -27,8 +27,8 @@ int main(){
     char controllerEntry;
 
     // Controller reader module
-    gameController = new Controller();
-    controllerEntry = gameController->entry;
+    // gameController = new Controller();
+    // controllerEntry = gameController->entry;
     
     // To not read the controller inputs
     controllerEntry = 'u';
@@ -107,16 +107,16 @@ int main(){
         if (player.getPosition().x < 207.0f)
         {
             camera.target.x = 107.0f;
-        } else if (player.getPosition().x > 1843.0f){
-            camera.target.x = 1740.0f;
+        } else if (player.getPosition().x > 2303.0f){
+            camera.target.x = 2200.0f;
         } else{
             camera.target.x = player.getPosition().x - 100.0f;
         }
 
         if (player.getPosition().y < 85.0f){
             camera.target.y = 55.0f;
-        } else if (player.getPosition().y > 732.0f){
-            camera.target.y = 702.0f;
+        } else if (player.getPosition().y > 932.0f){
+            camera.target.y = 902.0f;
         } else {
             camera.target.y = player.getPosition().y - 30.0f;
         }
