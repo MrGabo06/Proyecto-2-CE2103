@@ -185,23 +185,13 @@ int main(){
             }
 
             if (currentFrame > 3)
+            {
                 currentFrame = 0;
-
-            // if(player.isAtacking){
-                
-            //     if (!player.isAnimation)
-            //     {
-            //         player.isAnimation = true;
-            //         currentFrame = 0;
-            //     }
-            //     if(player.isAnimation && currentFrame + 1 % 4 == 0){
-            //         player.isAnimation = false;
-            //         player.isAtacking = false;
-            //     }
-            // }
+            }
 
             playerFrameRect.x = (float)currentFrame * (float)player.currentSpriteSheet.width / 4;
         }
+        
 
         // *******************************************
         // Enemy drawing and behavior
@@ -216,6 +206,9 @@ int main(){
             if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
             {
                 player.attack(enemy);
+            }else if(IsKeyDown(KEY_SPACE))
+            {
+                player.attack(nullptr);
             }
             if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
             {
@@ -242,6 +235,9 @@ int main(){
                 if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attackE(ent);
+                }else if(IsKeyDown(KEY_SPACE))
+                {
+                    player.attackE(nullptr);
                 }
             }
         }
