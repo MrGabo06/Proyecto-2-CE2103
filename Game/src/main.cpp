@@ -225,6 +225,7 @@ int main(){
             if (IsKeyDown(KEY_SPACE) && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
             {
                 player.attack(enemy);
+                player.addCoins(1);
             }else if(IsKeyDown(KEY_SPACE))
             {
                 player.attack(nullptr);
@@ -254,11 +255,13 @@ int main(){
                 if (IsKeyDown(KEY_SPACE) && std::abs(ent->getPosition().x - player.getPosition().x) < 40.0f && std::abs(ent->getPosition().y - player.getPosition().y) < 40.0f)
                 {
                     player.attackE(ent);
+                    player.addCoins(1);
                 }else if(IsKeyDown(KEY_SPACE))
                 {
                     player.attackE(nullptr);
                 }
             }
+ 
         }
 
         // *******************************************
@@ -286,6 +289,11 @@ int main(){
             DrawTexture(player.idleSprite2, shieldStartPosX + (shieldOffset * i), 10, WHITE);
         }
 
+        // Dibujar monedas
+        DrawTexture(player.CointSprite, 40, 60, WHITE);
+        // Contador de monedas
+        std::string coinsText = "Coins: " + std::to_string(player.getCoins());
+        DrawText(coinsText.c_str(), 40 + player.CointSprite.width + 10, 60, 20, BLACK);
         EndDrawing();
     }
 

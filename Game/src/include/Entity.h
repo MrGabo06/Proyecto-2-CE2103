@@ -35,6 +35,7 @@ protected: // Attributes
     Attributes attributes = {2, {0,5}, {0,1}, {0,6}, {0,1}, {0,5}, {0.0, 1.0} };
     int healthPoints = 0;
     int ShieldPoints = 0;
+    int CoinPoints = 0;
 
 public:
     LinkedList<MapChunk>* breadcrumbs = nullptr;
@@ -51,7 +52,7 @@ public:
 
     int direction = 0;
     bool isAtacking = false;
-
+    bool isProcessed; 
 public: // Methods
     Entity(){};
 
@@ -75,6 +76,10 @@ public: // Methods
     /// @brief Get the entity shield points
     int getShield();
 
+    void addCoins(int coins);
+
+    int getCoins();
+
     /// @brief Change the position to a new one
     /// @param xCords: New X position (-1.0f wont change the current)
     /// @param yCords: New Y position (-1.0f wont change the current)
@@ -88,6 +93,7 @@ public: // Methods
     /// @param map_chunk: Pointer to the new map_chunk the entity will be placed in
     /// @param changePosition: True will fix the entity in the center of the map_chunk associated to the graph node
     void setLocation(G_Node<MapChunk>* map_chunk, bool changePosition);
+
 
     /// @brief Gets the pointer to map graph node where the entity is standing
     /// @return Pointer to node

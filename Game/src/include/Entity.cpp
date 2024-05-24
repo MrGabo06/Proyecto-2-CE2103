@@ -40,6 +40,16 @@ int Entity::getShield()
     return ShieldPoints;
 }
 
+int Entity::getCoins()
+{
+    return CoinPoints;
+}
+
+void Entity::addCoins(int newCoins)
+{
+    CoinPoints += newCoins;
+}
+
 void Entity::addHealthPoints(int newHp){
     healthPoints += newHp;
     LOG(INFO) << "Attack";

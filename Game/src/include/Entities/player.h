@@ -55,6 +55,7 @@ public:
     Map2D *currentMap = nullptr;
     const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/shieldHeart.png");
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
+    const Texture2D CointSprite = LoadTexture("Game/src/resources/player_assets/coin.png");
     float attackTimer;
 public: // Methods
 
