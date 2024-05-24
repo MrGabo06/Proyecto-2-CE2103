@@ -9,6 +9,7 @@ Bullet::Bullet(float xCord, float yCord)
 {
     this->setPosition(xCord, yCord);
     this->currentSpriteSheet = movingLeftSprite;
+    hit = false;
 }
 
 void Bullet::shoot(MapChunk playerPosition, float frameTime)

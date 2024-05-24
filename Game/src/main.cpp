@@ -202,12 +202,12 @@ int main()
             if (i >= sp[0] + sp[1] + sp[2] + sp[3] && i < sp[0] + sp[1] + sp[2] + sp[3] + sp[4])
             {
                 Super *boss = static_cast<Super *>(enemy);
-                boss->getPlayerPosition(player.getLocation()->data, frameTime);
                 boss->bullet->shoot(player.getLocation()->data, frameTime);
                 map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
-                if (boss->bullet->getLocation()->data == player.getLocation()->data)
+                if (boss->bullet->getLocation()->data == player.getLocation()->data && boss->bullet->hit == false)
                 {
-                    cout << "dano masivo" << endl;
+                    cout << "dano" << endl;
+                    // player.addHealthPoints(-1);  Esta vara no deberia estar printeando pero si lo esta haciendo, entra al condicional sin cumplir la condicion?
                 }
 
                 DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
