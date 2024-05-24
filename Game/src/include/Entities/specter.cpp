@@ -7,8 +7,29 @@ Specter::Specter(int xCord, int yCord, int skill_rates[]){
     this->setPosition(0.f, 0.f);
     this->graphX = xCord;
     this->graphY = yCord;
-    this->currentSpriteSheet = movingDownSprite;
+    ///this->currentSpriteSheet = movingDownSprite;
     this->setProperties(skill_rates);
+    switch (type) {
+        case TYPE1:
+            this->blueUpSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterUp.png");
+            this->blueDownSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterDown.png");
+            this->blueLeftSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterLeft.png");
+            this->blueRightSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterRight.png");
+            break;
+        case TYPE2:
+            this->redUpSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterUp.png");
+            this->redDownSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterDown.png");
+            this->redLeftSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterLeft.png");
+            this->redRightSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterRight.png");
+            break;
+        case TYPE3:
+            this->grayUpSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterUp.png");
+            this->grayDownSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
+            this->grayLeftSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterLeft.png");
+            this->grayRightSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
+            break;
+    }
+
  }
 
 void Specter::setProperties(int scaling[]) {
