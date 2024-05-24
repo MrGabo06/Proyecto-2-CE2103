@@ -15,4 +15,4 @@ run: selda
 	./Selda
   
 clean:
-	rm ./selda
+	rm ./Selda

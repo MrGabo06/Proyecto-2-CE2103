@@ -19,7 +19,7 @@ int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
     const Level rotation[] = {Level::first, Level::second, Level::third, Level::fourth, Level::fifth};
-    int sp[] = {1, 1, 1, 1, 1, 7, 7};
+    int sp[] = {1, 1, 1, 1, 0, 7, 7};
     //          ^SP ^Y ^R ^C ^SU ^T ^V
     int level = 0;
 
@@ -143,18 +143,18 @@ int main(){
 
         cout << breadcrumbList.getSize() << endl;
 
-        if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
-        {
-            lightList.enqueue(map.get(player.graphY, player.graphX));
-            // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
-        }
+        // if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
+        // {
+        //     lightList.enqueue(map.get(player.graphY, player.graphX));
+        //     // lightList.enqueue(map.get(player.graphY + 1, player.graphX));
+        // }
 
-        else if (player.isMoving && lightList.size() > 2000)
-        {
-            lightList.enqueue(map.get(player.graphY, player.graphX));
-            lightList.dequeue();
-        }
-        cout << lightList.size() << endl;
+        // else if (player.isMoving && lightList.size() > 2000)
+        // {
+        //     lightList.enqueue(map.get(player.graphY, player.graphX));
+        //     lightList.dequeue();
+        // }
+        // cout << lightList.size() << endl;
       
         // *******************************************
         // Transitions between levels
