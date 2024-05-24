@@ -141,7 +141,7 @@ int main(){
             breadcrumbList.insert(map.get(player.graphY, player.graphX));
         }
 
-        // cout << breadcrumbList.getSize() << endl;
+        cout << breadcrumbList.getSize() << endl;
 
         if (map.get(player.graphY, player.graphX).light == false && player.isMoving && lightList.size() < 2000)
         {
@@ -300,6 +300,16 @@ int main(){
                     }
                 }
             }
+            if ( i < sp[0]+sp[1] && i >= sp[0] ){
+                for (int a = 0; a < sp[0]; a++){
+                    Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                    if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                        specter->setTarget(&player);
+                        specter->engage();
+                    }
+                }
+            }
+            enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
           
             if (enemy->getHealth() > 0){

@@ -27,11 +27,6 @@ Specter::Specter(int xCord, int yCord, int skill_rates[], int type){
     }
  }
 
- void Specter::update(Entity* target){
-    this->target = target;
-    this->engage();
- }
-
 void Specter::setProperties(int scaling[]) {
     this->attributes.cooldown = 4;
     

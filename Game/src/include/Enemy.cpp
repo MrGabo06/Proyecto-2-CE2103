@@ -44,9 +44,24 @@ void Enemy::attack(){
 };
 
 void Enemy::follow(float frame_time){
-    if (this->target->breadcrumbs->getSize() > 0){
-        MapChunk chunk = this->target->breadcrumbs->get(this->target->breadcrumbs->getSize() - 1);
+    if (this->sub_route.size() == 0){
+        if (this->target->breadcrumbs->getSize() > 0){
+            MapChunk chunk = this->target->breadcrumbs->get(this->target->breadcrumbs->getSize()-1);
+            G_Node<MapChunk> fictional(chunk);
+            if(chunk.chunk_type == ChunkType::terrain){
+                this->device.search(this->location, &fictional);
+                for (auto point : this->device.obt){
+                    this->sub_route.enqueue(point->data);
+                }
+            }
+        }
+    }
+    if (this->sub_route.size() > 0){
+        auto chunk = this->sub_route.peek();
         this->moveTo(chunk, frame_time);
+        if (this->graphY == chunk.coordinates[0] && this->graphX == chunk.coordinates[1]){
+            this->sub_route.dequeue();
+        }
     }
 };
 
@@ -100,6 +115,10 @@ void Enemy::engage(){
 };
 
 void Enemy::disengage(){
+    // Clear the sub route if there was any queued chunks to visit
+    while (this->sub_route.size() > 0){
+        this->sub_route.dequeue();
+    }
     this->setTarget(nullptr);
     this->engaging = false;
     this->returning = true;
