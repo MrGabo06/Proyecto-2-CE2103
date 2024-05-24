@@ -19,8 +19,8 @@ int main(){
     const int screenWidth = 1500;
     const int screenHeight = 750;
     const Level rotation[] = {Level::first, Level::second, Level::third, Level::fourth, Level::fifth};
-    int sp[] = {1, 1, 1, 1, 0, 7, 7};
-    //          ^SP ^Y ^R ^C ^SU ^T ^V
+    int sp[] = {3, 0, 1, 3, 0, 3, 4};
+    //         ^SP ^Y ^R ^C ^SU ^T ^V
     int level = 0;
 
     Controller* gameController = nullptr;
@@ -159,33 +159,59 @@ int main(){
         // *******************************************
         // Transitions between levels
         // *******************************************
-        if (IsKeyDown(KEY_ENTER) || controllerEntry == 'e')
-        {
-            if (player.getLocation()->data.chunk_type == ChunkType::gate)
-            {
+        if (IsKeyDown(KEY_ENTER) || controllerEntry == 'e'){
+            if (player.getLocation()->data.chunk_type == ChunkType::gate){
                 level++;
                 computer.killAll(elapsedTime);
                 map.regenerate(rotation[level], chunk_sizes);
-                if (level == 0)
-                {
-                    computer.evolve(1, 0, 0, 0, 0, 0, 0);
+                switch (rotation[level]){
+                    case first:
+                        sp[0] = 3;
+                        sp[1] = 1;
+                        sp[2] = 1;
+                        sp[3] = 2;
+                        sp[4] = 0;
+                        sp[5] = 3;
+                        sp[6] = 4;
+                        break;
+                    case second:
+                        sp[0] = 3;
+                        sp[1] = 2;
+                        sp[2] = 1;
+                        sp[3] = 1;
+                        sp[4] = 0;
+                        sp[5] = 3;
+                        sp[6] = 4;
+                        break;
+                    case third:
+                        sp[0] = 3;
+                        sp[1] = 2;
+                        sp[2] = 3;
+                        sp[3] = 1;
+                        sp[4] = 0;
+                        sp[5] = 3;
+                        sp[6] = 4;
+                        break;
+                    case fourth:
+                        sp[0] = 3;
+                        sp[1] = 1;
+                        sp[2] = 2;
+                        sp[3] = 2;
+                        sp[4] = 0;
+                        sp[5] = 3;
+                        sp[6] = 4;
+                        break;
+                    case fifth:
+                        sp[0] = 0;
+                        sp[1] = 0;
+                        sp[2] = 0;
+                        sp[3] = 0;
+                        sp[4] = 1;
+                        sp[5] = 4;
+                        sp[6] = 14;
+                        break;
                 }
-                else if (level == 1)
-                {
-                    computer.evolve(1, 0, 0, 0, 0, 0, 0);
-                }
-                else if (level == 2)
-                {
-                    computer.evolve(1, 0, 0, 0, 0, 0, 0);
-                }
-                else if (level == 3)
-                {
-                    computer.evolve(1, 0, 0, 0, 0, 0, 0);
-                }
-                else if (level == 4)
-                {
-                    computer.evolve(1, 0, 0, 0, 0, 0, 0);
-                }
+                computer.evolve(sp[0],sp[1],sp[2],sp[3],sp[4],sp[5],sp[6]);
                 map.locate_at(&player, 1, 1, true);
             }
         }
