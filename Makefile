@@ -9,8 +9,8 @@ GAME = Game/src/main.cpp
 PROPS = Game/src/include/**.cpp Game/src/include/Entities/**.cpp
 
 selda:
-	${CXX} -g ${INCS} ${PROPS} ${GAME} -o $@ ${L} ${RAYLIB}
+	${CXX} -g ${INCS} ${PROPS} ${GAME} -o Selda ${L} ${RAYLIB}
 run: selda
-	./selda
+	./Selda
 clean:
 	rm ./selda
