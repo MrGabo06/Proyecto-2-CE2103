@@ -61,6 +61,20 @@ MapChunk::MapChunk(char type, float x, float y, float *_size, int *coords, bool 
         this->darkened = LoadTextureFromImage(dark_image);
         Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
         this->illuminated = LoadTextureFromImage(light_image);
+    } else if (type == 'E') {
+        this->chunk_type = ChunkType::terrain;
+        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        this->darkened = LoadTextureFromImage(dark_image);
+        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+        this->illuminated = LoadTextureFromImage(light_image);
+        this->entrance = true;
+    } else if (type == 'S') {
+        this->chunk_type = ChunkType::terrain;
+        Image dark_image = LoadImage((assets_path+"chunk7.png").c_str());
+        this->darkened = LoadTextureFromImage(dark_image);
+        Image light_image = LoadImage((assets_path+"chunk3.png").c_str());
+        this->illuminated = LoadTextureFromImage(light_image);
+        this->exit = true;
     }
     this->coordinates[0] = coords[0], this->coordinates[1] = coords[1];
     this->size[0] = _size[0];
@@ -89,6 +103,10 @@ bool MapChunk::contains(Entity entity){
         return true;
     }
     return false;
+}
+
+MapChunk MapChunk::defaultMapChunk(){
+    return MapChunk();
 }
 
 bool MapChunk::operator==(MapChunk other){

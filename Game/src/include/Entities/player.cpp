@@ -2,33 +2,44 @@
 
 Player::Player(int startGraphX, int startGraphY){
     this->healthPoints = 5;
-    this->setShieldPoints(2);
 
     this->graphX = startGraphX;
     this->graphY = startGraphY;
     this->setPosition(this->graphX * this->cellSize, this->graphY * this->cellSize);
     this->currentSpriteSheet = movingDownSprite;
+    
 }
 
-void Player::attack(){
+
+
+void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
-    if (direction == 1)
-    {
-
+    if(enemy != nullptr){
+        enemy->addHealthPoints(-1);
     }
-    if (direction == 2)
-    {
-
-    }
-    if (direction == 3)
-    {
-
-    }
-    if (direction == 4)
-    {
-
-    }
+    this->attackTimer = 0.5f;
 }
+
+void Player::attackE(Entity* ent){
+    this->isAtacking = true;
+    if(ent != nullptr){
+    this->addHealthPoints(+1);
+    ent->addHealthPoints(-1);
+    }
+    this->attackTimer = 0.5f;
+}
+
+
+void Player::toggleShield(){
+    if (shieldActive) {
+        this->addShieldPoints(-2);
+    } else {
+        this->addShieldPoints(2);
+    }
+    shieldActive = !shieldActive;
+}
+
+
 
 void Player::move(float frameTime, const char dir){
     above = &this->currentMap->get(graphAbove, graphX);
@@ -89,58 +100,74 @@ void Player::move(float frameTime, const char dir){
 }
 
 void Player::movePlayer(float frameTime){
-    if (IsKeyDown(KEY_SPACE))
-    {
-        this->attack();
-    }
-    if (!IsKeyDown(KEY_SPACE))
-    {
-        this->isAtacking = false;   
-    }
-    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
+    
+    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D))
     {
         // Stop movement
+        this->isMoving = false;
+    }
+    if (this->attackTimer > 0) {
+        this->attackTimer -= frameTime * 2.0f;
+        if (this->attackTimer <= 0) {
+            this->isAtacking = false;
+        }
     }
 
-    if (IsKeyDown(KEY_UP))
+    if (IsKeyDown(KEY_W))
     {
         this->move(frameTime, Entity::mvUp);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackUpSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackUpSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protUpSprite;
         }else{
             this->currentSpriteSheet = movingUpSprite;
         }
     }
 
-    if (IsKeyDown(KEY_DOWN))
+    if (IsKeyDown(KEY_S))
     {
         this->move(frameTime, Entity::mvDown);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackDownSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackDownSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protDownSprite;
         }else{
             this->currentSpriteSheet = movingDownSprite;
         }
     }
 
-    if (IsKeyDown(KEY_LEFT))
+    if (IsKeyDown(KEY_A))
     {
         this->move(frameTime, Entity::mvLeft);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackLeftSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackLeftSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protLeftSprite;
         }else{
             this->currentSpriteSheet = movingLeftSprite;
         }
     }
 
-    if (IsKeyDown(KEY_RIGHT))
+    if (IsKeyDown(KEY_D))
     {
         this->move(frameTime, Entity::mvRight);
         this->isMoving = true;
-        if (isAtacking){
+        if (isAtacking && shieldActive){
+            this->currentSpriteSheet = protAttackRightSprite;
+        }else if(isAtacking && !shieldActive){
             this->currentSpriteSheet = attackRightSprite;
+        }else if(!isAtacking && shieldActive){
+            this->currentSpriteSheet = protRightSprite;
         }else{
             this->currentSpriteSheet = movingRightSprite;
         }
@@ -151,24 +178,9 @@ void Player::movePlayer(float frameTime){
         this->light = !light;
     }
 
-    if (this->getPosition().x < this->worldLeftLimit)
+    if (IsKeyPressed(KEY_C))
     {
-        this->setPosition(this->worldLeftLimit, -1.0f);
-    }
-
-    if (this->getPosition().x > this->worldRightLimit - 16.0f)
-    {
-        this->setPosition(this->worldRightLimit - 16.0f, -1.0f);
-    }
-
-    if (this->getPosition().y < this->worldUpLimit)
-    {
-        this->setPosition(-1.0f, this->worldUpLimit);
-    }
-
-    if (this->getPosition().y > this->worldDownLimit - 22.0f)
-    {
-        this->setPosition(-1.0f, this->worldDownLimit - 22.0f);
+        this->toggleShield();
     }
 
     this->graphX = this->getPosition().x / this->cellSize;
@@ -185,11 +197,6 @@ void Player::movePlayer(float frameTime){
     this->rightLimit = this->graphX * this->cellSize + 32.0f;
 }
 
-void Player::setMapLimits(int limits[2])
-{
-    this->worldRightLimit = limits[1] * this->cellSize;
-    this->worldDownLimit = limits[0] * this->cellSize;
-}
 
 
 

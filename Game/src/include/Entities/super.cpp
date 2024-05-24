@@ -1,69 +1,97 @@
 #include "super.h"
+#include <iostream>
 
-Super::Super(){
-    // [ INITIALIZE THE ENTITY ]
-    this->healthPoints = 1;
-    this->setPosition(0.f,0.f);
+MapChunk Super::defaultChunk = MapChunk::defaultMapChunk();
+Super::Super() : playerPosition(defaultChunk) {
+    this->setPosition(0, 0);
     this->currentSpriteSheet = movingDownSprite;
-
-    this->cooldown = { 2, 1};
-
-    this->target = nullptr;
-    this->location = nullptr;
-    this->LastPosition = nullptr;
-
-    this->routing = true;
-    this->engaging = false;
-    this->returning = false;
-
-    int default_properties[] = { 3, 3, 3, 3, 3, 3};
-    this->setProperties(default_properties);
 }
 
-Super::Super(int xCord, int yCord, int skill_rates[]){
+Super::Super(int xCord, int yCord, int skill_rates[]) : playerPosition(defaultChunk){
     // [ INITIALIZE THE ENTITY ]
-    this->healthPoints = 10;
     this->setPosition(0.f, 0.f);
     this->graphX = xCord;
     this->graphY = yCord;
     this->currentSpriteSheet = movingDownSprite;
-
-    this->cooldown = { 2, 1};
-
-    this->target = nullptr;
-    this->location = nullptr;
-    this->LastPosition = nullptr;
-
-    this->routing = true;
-    this->engaging = false;
-    this->returning = false;
-
+    this->frameRec = {0.0f, 0.0f, (float)this->currentSpriteSheet.width, (float)this->currentSpriteSheet.height};
     this->setProperties(skill_rates);
- }
+}
+
+void Super::getPlayerPosition(MapChunk &actualPosition, float frameTime){
+    this->playerPosition = actualPosition;
+    this->frameTime = frameTime;
+}
 
 void Super::setProperties(int scaling[]) {
-    this->detection_range = (scaling[0]*MAX_DETECTION.super)/10;
-    if (this->detection_range == 0){
-        this->detection_range = 1;
+    this->attributes.cooldown = 2;
+    
+    // 1.
+    this->attributes.damage[0] = scaling[0];
+    this->attributes.damage[1] = (scaling[0]*MAX_DAMAGE.super)/10;
+    if (this->attributes.damage[1] == 0){
+        this->attributes.damage[1] = 1;
     }
 
-    this->route_size = (scaling[1]*MAX_ROUTE.super)/10;
-    if (this->route_size == 0){
-        this->route_size = 1;
+    // 2.
+    this->attributes.distance[0] = scaling[1];
+    this->attributes.distance[1] = (scaling[1]*MAX_DISTANCE.super)/10;
+    if (this->attributes.distance[1] == 0){
+        this->attributes.distance[1] = 1;
     }
 
-    this->mov_range = (scaling[2]*MAX_MOVEMENT.super)/10;
-    if (this->mov_range == 0){
-        this->mov_range = 1;
+    // 3.
+    this->attributes.health[0] = scaling[2];
+    this->attributes.health[1] = (scaling[2]*MAX_HEALTH.super)/10;
+    if (this->attributes.health[1] == 0){
+        this->attributes.health[1] = 1;
     }
-    this->speed_multiplier = (float(scaling[3])*MAX_SPEED.super)/10.f;
+    this->healthPoints = this->attributes.health[1];
 
-    this->decision_chances = (scaling[4]*MAX_DECISIONS.super)/10;
-    if (this->decision_chances == 0){
-        this->decision_chances = 1;
+    // 4.
+    this->attributes.range[0] = scaling[3];
+    this->attributes.range[1] = (scaling[3]*MAX_RANGE.super)/10;
+    if (this->attributes.range[1] == 0){
+        this->attributes.range[1] = 1;
     }
-    this->attack_damage = (scaling[5]*MAX_ATTACK.super)/10;
-    if (this->attack_damage == 0){
-        this->attack_damage = 1;
+
+    // 5.
+    this->attributes.route_size[0] = scaling[4];
+    this->attributes.route_size[1] = (scaling[4]*MAX_ROUTE_SIZE.super)/10;
+    if (this->attributes.route_size[1] == 0){
+        this->attributes.route_size[1] = 1;
+    }
+
+    // 6.
+    this->attributes.speed[0] = (float)scaling[5];
+    this->attributes.speed[1] = (scaling[0]*MAX_SPEED.super)/10;
+    if (this->attributes.speed[1] == 0){
+        this->attributes.speed[1] = 1.0;
     }
  }
+
+void Super::movePattern(int mov){
+    if (mov == 1)
+    {
+        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y + 0.5f);
+    }
+    else if (mov == 2)
+    {
+        this->setPosition(this->getPosition().x - 0.5f, this->getPosition().y - 0.5f);
+    }
+    else if (mov == 3)
+    {
+        this->setPosition(this->getPosition().x - 0.5f, this->getPosition().y);
+    }
+    else if (mov == 4)
+    {
+        this->setPosition(this->getPosition().x + 0.5f, this->getPosition().y);
+    }
+    else if (mov == 5)
+    {
+        this->setPosition(this->getPosition().x, this->getPosition().y + 0.5);
+    }
+    else if (mov == 6)
+    {
+        this->setPosition(this->getPosition().x, this->getPosition().y - 0.5);
+    }
+}

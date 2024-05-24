@@ -60,23 +60,21 @@ B_Node<T> *LinkedList<T>::getNode(int index)
 };
 
 template <typename T>
-T LinkedList<T>::get(int index)
-{
-    if (this->head == nullptr)
-    {
-        throw std::exception("List has no elements");
+T& LinkedList<T>::get(int index){
+    if (this->head == nullptr){
+        throw std::runtime_error("LINKEDLIST: List is empty");
+        LOG(ERROR) << "LinkedList.cpp::get List is empty";
     }
     int counter = 0;
     B_Node<T> *current = this->head;
-    while (counter <= index)
-    {
-        if (counter == index)
-        {
-            return current->data;
+    while (counter <= index){
+        if (counter == index){
+           break;
         }
         current = current->getNext();
         counter++;
     }
+    return current->data;
 };
 
 template <typename T>

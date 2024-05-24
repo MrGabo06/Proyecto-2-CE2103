@@ -30,14 +30,15 @@ public: // Attributes
     int coordinates[2];
     float size[2];
     bool light;
+    int breadcrumb = 0;
     Texture2D texture;
-
+    bool entrance = false;
+    bool exit = false;
+  
 private:
     // [  ]
     Texture2D darkened;
     Texture2D illuminated;
-
-    int breadcrumb;
 
 public: // Methods
     /// @brief Default constructor
@@ -59,6 +60,10 @@ public: // Methods
     /// @return (true) if entity's x,y position is inside bounds, (false) if entity's x,y position is out of bounds
     bool contains(Entity entity);
 
+    /// @brief Intern method to create a default map chunk
+    /// @return A new mapchunk object
+    static MapChunk defaultMapChunk();
+  
     /// @brief Comparison operator for chunks
     bool operator==(MapChunk other);
 

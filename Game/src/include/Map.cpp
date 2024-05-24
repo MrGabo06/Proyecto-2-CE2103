@@ -41,6 +41,7 @@ void Map2D::generate(){
     fstream file(this->file_asset);
     if (!file.is_open()){
         throw std::runtime_error("Coded map data file was not found");
+        LOG(ERROR) << "Map.cpp::generate Coded map data file was not found";
     }
     // [READ CHARS FROM FILE ]
     string line_buffer;
@@ -84,6 +85,7 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
     switch (new_level){
         case first:
             this->file_asset += "/level1.txt";
+            this->dark_map = false;
             break;
 
         case second:
@@ -93,14 +95,17 @@ void Map2D::regenerate(Level new_level, float* chunk_size){
 
         case third:
             this->file_asset += "/level3.txt";
+            this->dark_map = false;
             break;
 
         case fourth:
             this->file_asset += "/level4.txt";
+            this->dark_map = false;
             break;
 
         case fifth:
             this->file_asset += "/level5.txt";
+            this->dark_map = false;
             break;
     }
     this->width = chunk_size[0];
@@ -159,9 +164,11 @@ int Map2D::chunk_output(MapChunk& chunk){
 MapChunk& Map2D::get(int i, int j){
     if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("GET: i value is out of range");
+        LOG(ERROR) << "Map.cpp::get i value is out of range";
     }
     if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("GET: j value is out of range");
+        LOG(ERROR) << "Map.cpp::get j value is out of range";
     }
     int row_gap = this->grid.size()/this->grid_size[0];
     int selection = j + i*row_gap;
@@ -173,9 +180,11 @@ void Map2D::locate_at(Entity* entity, int i, int j, bool change_position){
     // [ NODE <CHUNK> RETRIEVAL ]
     if (i >= this->grid_size[0] || i < 0){
         throw std::out_of_range("LOCATE: i value is out of range");
+        LOG(ERROR) << "Map.cpp::locate_at i value is out of range";
     }
     if (j >= this->grid_size[1] || j < 0){
         throw std::out_of_range("LOCATE: j value is out of range");
+        LOG(ERROR) << "Map.cpp::locate_at j value is out of range";
     }
     int row_gap = this->grid.size()/this->grid_size[0];
     int selection = j + i*row_gap;

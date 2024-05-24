@@ -17,12 +17,14 @@
 
 using namespace std;
 
-enum EntGroup {
+enum EntGroup
+{
     enemies,
     statical
 };
 
-enum EntityType {
+enum EntityType
+{
     CHOCOBO,
     EYE,
     RAT,
@@ -56,7 +58,7 @@ class Manager {
         Map2D* origin;
 
         Performance machine_st = Performance::Average;
-        int stats[6] =  { 0 };
+        int stats[6] = {4, 4, 4, 4, 4, 4};
 
     public: // Methods
 
@@ -89,8 +91,19 @@ class Manager {
         /// @param group: name of group
         int size(EntGroup group);
 
+        /// @brief Kills all entities of held by this instance
+        /// @param current_time: sets this time as their lifetime
+        void killAll(int64_t current_time);
+
         /// @brief Analyzes the results of the enemies and generates new behaviors/attributes
-        void evolve();
+        /// @param specters 
+        /// @param eyes 
+        /// @param rats 
+        /// @param chocobos 
+        /// @param supers 
+        /// @param treasures 
+        /// @param vases 
+        void evolve(int specters, int eyes, int rats, int chocobos, int supers, int treasures, int vases);
 };
 
 #endif // MANAGER_H

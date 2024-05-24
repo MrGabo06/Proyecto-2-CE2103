@@ -3,6 +3,7 @@
 
 #include "Node.hpp"
 #include <stdexcept>
+#include <glog/logging.h>
 
 /// @brief C++ implementation of a linked list of nodes with forward and backward pointers
 /// @tparam T: data type name
