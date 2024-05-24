@@ -204,10 +204,10 @@ int main()
                 Super *boss = static_cast<Super *>(enemy);
                 boss->bullet->shoot(player.getLocation()->data, frameTime);
                 map.locate_at(boss->bullet, boss->bullet->graphY, boss->bullet->graphX, false);
-                if (boss->bullet->getLocation()->data == player.getLocation()->data && boss->bullet->hit == false)
+                if (abs(boss->bullet->getPosition().x - player.getPosition().x) < 40 && abs(boss->bullet->getPosition().y - player.getPosition().y) < 40 && boss->bullet->hit == false)
                 {
-                    cout << "dano" << endl;
-                    // player.addHealthPoints(-1);  Esta vara no deberia estar printeando pero si lo esta haciendo, entra al condicional sin cumplir la condicion?
+                    cout << "Daño" << endl;
+                    player.addHealthPoints(-1);
                 }
 
                 DrawTextureRec(boss->bullet->movingLeftSprite, playerFrameRect, boss->bullet->getPosition(), WHITE);
