@@ -17,7 +17,6 @@ using namespace std;
 class Enemy : public Entity
 {
 protected: // Atributes
-
     // { Tools }
     Generator random;
     WayFinder device;
@@ -26,9 +25,9 @@ protected: // Atributes
     Queue<MapChunk> route;
     Queue<MapChunk> sub_route;
 
-    G_Node< MapChunk >* LastPosition = nullptr;
-    Entity* target = nullptr;
-  
+    G_Node<MapChunk> *LastPosition = nullptr;
+    Entity *target = nullptr;
+
     // { Enemy operational states }
     bool routing = true;
     bool engaging = false;
@@ -48,7 +47,7 @@ public: // Methods
     /// @brief In this context, the 'shifting' method make the enemy entity do 'something'(which varies on the context of the entity)
     /// @param frame_time
     /// @param time_stamp
-    void shift(float frame_time, int64_t time_stamp);
+    virtual void shift(float frame_time, int64_t time_stamp);
 
     /// @brief Asks the entity to attack its current target
     virtual void attack();
@@ -71,7 +70,7 @@ public: // Methods
 
     /// @brief Sets an entity as the target of this enemy
     /// @param entity: reference to the entity
-    virtual void setTarget(Entity* entity);
+    virtual void setTarget(Entity *entity);
 
     /// @brief Determines if another entity is in range to this instance
     /// @param entity: reference to other entity
@@ -85,9 +84,9 @@ public: // Methods
     void moveTo(MapChunk &newMapChunk, float frameTime);
 
     /// @brief Generates a random patrol route for entity
-    /// @param map 
-    void generateRoute(Map2D* map);
-    
+    /// @param map
+    void generateRoute(Map2D *map);
+
 protected:
     /// @brief Sets the enemy properties based on a rating (1-10)
     /// @param scaling: array(6) of ratings
