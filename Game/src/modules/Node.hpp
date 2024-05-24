@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdexcept>
 #include <tuple>
+#include <glog/logging.h>
 
 /// @brief C++ implementation of a simple (binary) node useful for linear data structures and binary trees
 /// @tparam T: data type name for the node
@@ -175,6 +176,7 @@ class G_Node {
         void removeNode(int index){
             if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
+                LOG(ERROR) << "Node.hpp::removeNode Index out of range";
             }
             if (index == 0){
                 std::tuple< G_Node<T>*, int> connection = this->connections.operator[](index);
@@ -200,6 +202,7 @@ class G_Node {
         G_Node<T>* getNode(int index){
             if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
+                LOG(ERROR) << "Node.hpp::getNode Index out of range";
             }
             std::tuple< G_Node<T>*, int > connection = this->connections.operator[](index);
             return std::get<0>(connection);
@@ -210,6 +213,7 @@ class G_Node {
         std::tuple< G_Node<T>*, int > getNode_W(int index){
             if (index < 0 || index >= this->connections.size() ){
                 throw std::out_of_range("Index out of range");
+                LOG(ERROR) << "Node.hpp::getNode_W Index out of range";
             }
             return this->connections.operator[](index);
         }

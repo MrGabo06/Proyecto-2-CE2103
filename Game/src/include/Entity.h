@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <raylib.h>
+#include <glog/logging.h>
 
 #include "../modules/Node.hpp"
 #include "../modules/LinkedList.h"
