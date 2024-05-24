@@ -93,15 +93,11 @@ void Player::move(float frameTime, const char dir){
             this->position.x += entityHorizontalSpeed * frameTime;
         }
     }
-
-    if (IsKeyPressed(KEY_Q)){
-        this->toggleShield();
-    }
 }
 
 void Player::movePlayer(float frameTime){
     
-    if (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
+    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D))
     {
         // Stop movement
         this->isMoving = false;
@@ -154,6 +150,11 @@ void Player::movePlayer(float frameTime){
     if (IsKeyDown(KEY_Q))
     {
         this->light = !light;
+    }
+
+    if (IsKeyPressed(KEY_C))
+    {
+        this->toggleShield();
     }
 
     this->graphX = this->getPosition().x / this->cellSize;

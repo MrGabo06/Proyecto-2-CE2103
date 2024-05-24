@@ -16,15 +16,25 @@ using namespace std;
 class Player : public Entity{
 private: // Attributes
     
-    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
-    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playerDown.png");
-    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playerLeft.png");
-    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playerRight.png");
+    const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playUp.png");
+    const Texture2D movingDownSprite = LoadTexture("Game/src/resources/player_assets/playDown.png");
+    const Texture2D movingLeftSprite = LoadTexture("Game/src/resources/player_assets/playLeft.png");
+    const Texture2D movingRightSprite = LoadTexture("Game/src/resources/player_assets/playRight.png");
   
     const Texture2D attackDownSprite = LoadTexture("Game/src/resources/player_assets/playAttackDown.png");
     const Texture2D attackUpSprite = LoadTexture("Game/src/resources/player_assets/playAttackUp.png");
     const Texture2D attackLeftSprite = LoadTexture("Game/src/resources/player_assets/playAttackLeft.png");
     const Texture2D attackRightSprite = LoadTexture("Game/src/resources/player_assets/playAttackRight.png");
+
+    const Texture2D protAttackDownSprite = LoadTexture("Game/src/resources/player_assets/playProtAttackDown.png");
+    const Texture2D protAttackUpSprite = LoadTexture("Game/src/resources/player_assets/playProtAttackUp.png");
+    const Texture2D protAttackLeftSprite = LoadTexture("Game/src/resources/player_assets/playProtAttackLeft.png");
+    const Texture2D protAttackRightSprite = LoadTexture("Game/src/resources/player_assets/playProtAttackRight.png");
+
+    const Texture2D protDownSprite = LoadTexture("Game/src/resources/player_assets/playProtDown.png");
+    const Texture2D protUpSprite = LoadTexture("Game/src/resources/player_assets/playProtUp.png");
+    const Texture2D protLeftSprite = LoadTexture("Game/src/resources/player_assets/playProtLeft.png");
+    const Texture2D protRightSprite = LoadTexture("Game/src/resources/player_assets/playProtRight.png");
   
     MapChunk *above = nullptr;
     MapChunk *below = nullptr;
