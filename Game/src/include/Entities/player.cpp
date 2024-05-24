@@ -21,11 +21,11 @@ void Player::attack(Enemy* enemy, int64_t time_stamp) {
     this->attackTimer = 0.5f;
 }
 
-void Player::attack_E(Entity* entity){
+void Player::attackE(Entity* entity){
     this->isAtacking = true;
-    if(ent != nullptr){
+    if(entity != nullptr){
       this->addHealthPoints(+1);
-      ent->addHealthPoints(-1);
+      entity->addHealthPoints(-1);
     }
     this->attackTimer = 0.5f;
 }

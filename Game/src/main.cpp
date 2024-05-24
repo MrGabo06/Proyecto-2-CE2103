@@ -318,7 +318,7 @@ int main(){
                     player.attack(enemy, elapsedTime);
                     player.addCoins(1);
                 } else if(IsKeyDown(KEY_SPACE)){
-                  player.attack(nullptr);
+                  player.attack(nullptr, 0.0f);
                 }
               
                 Rectangle rect = {0.f, 0.f, (float)enemy->currentSpriteSheet.width / 4, (float)enemy->currentSpriteSheet.height};
