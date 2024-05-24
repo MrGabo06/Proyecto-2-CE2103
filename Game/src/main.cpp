@@ -25,7 +25,7 @@ int main(){
     int currentLevel = 1;
     map.generate();
 
-    Manager computer(&map, 5, 0, 0, 0, 0, 0, 1);
+    Manager computer(&map, 5, 0, 0, 0, 0, 0, 10);
     LinkedList<MapChunk> breadcrumbList;
 
     Player player(1, 1);

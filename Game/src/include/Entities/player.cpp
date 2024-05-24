@@ -15,14 +15,16 @@ Player::Player(int startGraphX, int startGraphY){
 void Player::attack(Enemy* enemy) {
     this->isAtacking = true;
     enemy->addHealthPoints(-1);
-    this->isAtacking = false;
+    ///this->isAtacking = false;
+    this->attackTimer = 0.5f;
 }
 
 void Player::attackE(Entity* ent){
     this->isAtacking = true;
     this->addHealthPoints(+1);
     ent->addHealthPoints(-1);
-    this->isAtacking = false;
+    ///his->isAtacking = false;
+    this->attackTimer = 0.5f;
 }
 
 
@@ -101,6 +103,12 @@ void Player::movePlayer(float frameTime){
     {
         // Stop movement
         this->isMoving = false;
+    }
+    if (this->attackTimer > 0) {
+        this->attackTimer -= frameTime;
+        if (this->attackTimer <= 0) {
+            this->isAtacking = false;
+        }
     }
 
     if (IsKeyDown(KEY_W))

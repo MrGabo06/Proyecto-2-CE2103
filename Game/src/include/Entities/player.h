@@ -56,7 +56,7 @@ public:
     bool isAnimation = false;
     const Texture2D idleSprite2 = LoadTexture("Game/src/resources/player_assets/shieldHeart.png");
     const Texture2D idleSprite = LoadTexture("Game/src/resources/player_assets/fullheart.png");
-
+    float attackTimer;
 public: // Methods
 
     /// @brief Make the player attack
@@ -82,7 +82,7 @@ public: // Methods
 
     void toggleShield();
 
-
+    
 
 };
 
