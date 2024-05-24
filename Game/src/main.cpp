@@ -9,8 +9,12 @@
 #include <iostream>
 #include "modules/LinkedList.h"
 #include "modules/Node.hpp"
+#include <glog/logging.h>
 
 int main(){
+	google::InitGoogleLogging("Selda");
+	LOG(INFO) << "Logging initialized!";
+	
     const int screenWidth = 1500;
     const int screenHeight = 750;
 
@@ -270,6 +274,6 @@ int main(){
     }
 
     CloseWindow();
-
+	google::ShutdownGoogleLogging();
     return 0;
 }

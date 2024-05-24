@@ -5,6 +5,7 @@
 
 #include <tuple>
 #include <vector>
+#include <glog/logging.h>
 
 using namespace std;
 

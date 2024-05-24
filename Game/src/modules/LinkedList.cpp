@@ -63,6 +63,7 @@ template <typename T>
 T& LinkedList<T>::get(int index){
     if (this->head == nullptr){
         throw std::runtime_error("LINKEDLIST: List is empty");
+        LOG(ERROR) << "LinkedList.cpp::get List is empty";
     }
     int counter = 0;
     B_Node<T> *current = this->head;
