@@ -2,32 +2,28 @@
 
 Specter::Specter(){}
 
-Specter::Specter(int xCord, int yCord, int skill_rates[], specterType type){
+Specter::Specter(int xCord, int yCord, int skill_rates[], int type){
     // [ INITIALIZE THE ENTITY ]
     this->setPosition(0.f, 0.f);
     this->graphX = xCord;
     this->graphY = yCord;
-    ///this->currentSpriteSheet = movingDownSprite;
+    this->currentSpriteSheet = movingDownSprite;
     this->setProperties(skill_rates);
-    switch (type) {
-        case blue:
-            this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterUp.png");
-            this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterDown.png");
-            this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterLeft.png");
-            this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterRight.png");
-            break;
-        case red:
-            this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterUp.png");
-            this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterDown.png");
-            this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterLeft.png");
-            this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterRight.png");
-            break;
-        case gray:
-            this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterUp.png");
-            this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
-            this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterLeft.png");
-            this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
-            break;
+    if(type == 1){
+        this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterUp.png");
+        this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterDown.png");
+        this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterLeft.png");
+        this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/blueSpecterRight.png");
+    }else if(type == 2){
+        this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterUp.png");
+        this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterDown.png");
+        this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterLeft.png");
+        this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/redSpecterRight.png");
+    }else if(type == 3){
+        this->movingUpSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterUp.png");
+        this->movingDownSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
+        this->movingLeftSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterLeft.png");
+        this->movingRightSprite = LoadTexture("Game/src/resources/entity_assets/graySpecterDown.png");
     }
  }
 

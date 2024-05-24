@@ -5,13 +5,6 @@
 #include "../Enemy.h"
 #include "../../modules/patterns/Observer.h"
 
-enum specterType
-{
-    gray,
-    blue,
-    red
-};
-
 /// @brief Class for creating a 'guardian specter' for the temple levels
 class Specter : public Enemy, public Observer {
 public:
@@ -30,7 +23,7 @@ public: // Methods
     /// @param xCord: x coordinate of entity
     /// @param yCord: y coordinate of entity
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
-    Specter(int xCord, int yCord, int skill_rates[], specterType type = gray);
+    Specter(int xCord, int yCord, int skill_rates[], int type = 1);
 
     void update() override {};
     

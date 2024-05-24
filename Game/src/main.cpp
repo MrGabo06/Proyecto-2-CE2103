@@ -48,7 +48,7 @@ int main(){
     camera.rotation = 0.0f;
 
     // Camera limits are set for 3.5f zoom
-    camera.zoom = 0.5f;
+    camera.zoom = 3.5f;
 
     SetTargetFPS(120);
     auto startTime = std::chrono::steady_clock::now();
