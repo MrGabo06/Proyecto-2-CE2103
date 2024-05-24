@@ -14,4 +14,6 @@ Bullet::Bullet(float xCord, float yCord)
 void Bullet::shoot(MapChunk playerPosition, float frameTime)
 {
     this->moveTo(playerPosition, frameTime);
+    this->graphX = playerPosition.coordinates[1];
+    this->graphY = playerPosition.coordinates[0];
 }
