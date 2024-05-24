@@ -102,7 +102,7 @@ int main(){
             breadcrumbList.insert(map.get(player.graphY, player.graphX));
         }
 
-        // cout << breadcrumbList.getSize() << endl;
+        cout << breadcrumbList.getSize() << endl;
 
         // *******************************************
         // Transitions between levels
@@ -177,7 +177,7 @@ int main(){
                 enemy->setTarget(&player);
                 enemy->engage();
             }
-            if ( i < sp[1] && i > 0){
+            if ( i < sp[0] && i >= 0){
                 for (int a = sp[0]+sp[1]; a < sp[0]+sp[1]+sp[2]; a++){
                     Enemy* rat = static_cast<Enemy*>(computer.getEntity(EntGroup::enemies,a));
                     if ( enemy->rangeToEntity(rat, false) ){
@@ -185,10 +185,15 @@ int main(){
                     }
                 }
             }
-            // if (enemy->isAtacking && std::abs(enemy->getPosition().x - player.getPosition().x) < 40.0f && std::abs(enemy->getPosition().y - player.getPosition().y) < 40.0f)
-            // {
-            //     enemy->attack();
-            // }
+            if ( i < sp[0]+sp[1] && i >= sp[0] ){
+                for (int a = 0; a < sp[0]; a++){
+                    Enemy *specter = static_cast<Enemy *>(computer.getEntity(EntGroup::enemies, a));
+                    if (enemy->rangeToEntity(&player, false) && !player.isSafe()){
+                        specter->setTarget(&player);
+                        specter->engage();
+                    }
+                }
+            }
             enemy->shift(frameTime, elapsedTime);
             map.locate_at(enemy, enemy->graphY, enemy->graphX, false);
             if (enemy->getHealth() > 0){

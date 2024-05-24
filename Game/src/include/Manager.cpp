@@ -9,19 +9,7 @@ Manager::Manager(Map2D* source, int specters, int eyes, int rats, int chocobos, 
     // [ ADD ENTITIES TO VECTORS ]
     this->origin = source;
     this->addEntities(EntityType::SPECTER, specters);
-    int specters_to_eyes[] = { specters, specters+eyes};
     this->addEntities(EntityType::EYE, eyes);
-    // [ ADD THE SPECTERS AS OBSERVERS OF THE EYES OF THE MAP]
-    for (int i = specters_to_eyes[0]; i < specters_to_eyes[1]; i++){
-        Eye* eye = static_cast<Eye*>(this->getEntity(EntGroup::enemies,i));
-        for (int j = 0; j < specters_to_eyes[0]; j++){
-            Specter* specter = static_cast<Specter*>(this->getEntity(EntGroup::enemies,j));
-            if (specter == nullptr){
-                std::cout << "null instance" << std::endl;
-            }
-            eye->addObserver(specter);
-        }
-    }
     this->addEntities(EntityType::RAT, rats);
     this->addEntities(EntityType::CHOCOBO, chocobos);
     this->addEntities(EntityType::SUPER, supers);
@@ -238,16 +226,7 @@ void Manager::evolve(int specters, int eyes, int rats, int chocobos, int supers,
 
     // [ INSERT THE NEWLY CREATED ENTITIES ]
     this->addEntities(EntityType::SPECTER, specters);
-    int specters_to_eyes[] = { specters, specters+eyes};
     this->addEntities(EntityType::EYE, eyes);
-    // [ ADD THE SPECTERS AS OBSERVERS OF THE EYES OF THE MAP]
-    for (int i = specters_to_eyes[0]; i < specters_to_eyes[1]; i++){
-        Eye* eye = static_cast<Eye*>(this->getEntity(EntGroup::enemies,i));
-        for (int j = 0; j < specters_to_eyes[0]; j++){
-            Specter* specter = static_cast<Specter*>(this->getEntity(EntGroup::enemies,j));
-            eye->addObserver(specter);
-        }
-    }
     this->addEntities(EntityType::RAT, rats);
     this->addEntities(EntityType::CHOCOBO, chocobos);
     this->addEntities(EntityType::SUPER, supers);

@@ -11,12 +11,6 @@ Eye::Eye(int xCord, int yCord, int skill_rates[]){
     this->setProperties(skill_rates);
  }
 
- void Eye::setTarget(Entity *entity){
-    this->target = entity;
-    this->detected = entity;
-    this->notify();
- }
-
 void Eye::setProperties(int scaling[]) {
     this->attributes.cooldown = 2;
     

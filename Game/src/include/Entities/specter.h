@@ -6,7 +6,7 @@
 #include "../../modules/patterns/Observer.h"
 
 /// @brief Class for creating a 'guardian specter' for the temple levels
-class Specter : public Enemy, public Observer {
+class Specter : public Enemy {
 public:
     //Attributes
     const Texture2D movingUpSprite = LoadTexture("Game/src/resources/player_assets/playerUp.png");
@@ -24,9 +24,6 @@ public: // Methods
     /// @param yCord: y coordinate of entity
     /// @param skill_rates: array(6) of attributes for scaling the difficulty of this enemy
     Specter(int xCord, int yCord, int skill_rates[]);
-
-    /// @brief Receive and update for this entity
-    void update(Entity* target) override;
     
 private:
     /// @brief Sets the enemy properties based on a rating (1-10) 

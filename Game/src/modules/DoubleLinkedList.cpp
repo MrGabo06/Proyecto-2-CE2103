@@ -93,7 +93,7 @@ void DoubleLinkedList<T>::find_remove(T search_value){
 template<typename T>
 B_Node<T>* DoubleLinkedList<T>::find(int index){
     if (index >= this->size || index < 0){
-        throw std::out_of_range("Index out of range");
+        throw std::out_of_range("DBLINKEDLIST: Index out of range");
     }
     int counter = 0;
     B_Node<T>* current = this->head;
@@ -110,7 +110,7 @@ B_Node<T>* DoubleLinkedList<T>::find(int index){
 template<typename T>
 T& DoubleLinkedList<T>::get(int index){
     if (index >= this->size || index < 0){
-        throw std::out_of_range("Index out of range");
+        throw std::out_of_range("DBLINKEDLIST:Index out of range");
     }
     int counter = 0;
     B_Node<T>* current = this->head;
